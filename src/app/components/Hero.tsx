@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 
 const Hero = () => {
   const lines = [
-    '> Hello, I\'m Wajiha Kulsum.',
-    '> I\'m a student and a web developer.',
-    '> I love creating UI/UX experiences.'
+    'whoami',
+    'Wajiha Kulsum',
+    'cat about.txt',
+    'I\'m a student and a web developer.',
+    'I love creating UI/UX experiences.'
   ];
 
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -35,13 +37,9 @@ const Hero = () => {
         
         return () => clearTimeout(timeout);
       } else {
-        // Current line is complete, move to next line after a pause
-        const timeout = setTimeout(() => {
-          setCurrentLineIndex(prev => prev + 1);
-          setCurrentText('');
-        }, 1000); // Pause between lines
-        
-        return () => clearTimeout(timeout);
+        // Current line is complete, move to next line immediately
+        setCurrentLineIndex(prev => prev + 1);
+        setCurrentText('');
       }
     } else {
       // All lines are complete
@@ -53,7 +51,7 @@ const Hero = () => {
     const completedLines = lines.slice(0, currentLineIndex);
     const currentDisplayLine = currentText;
     
-    return [...completedLines, currentDisplayLine].filter(line => line.length > 0);
+    return { completedLines, currentDisplayLine };
   };
 
   return (
@@ -61,44 +59,144 @@ const Hero = () => {
       <section className="h-full w-full bg-black relative overflow-hidden p-1">
         {/* Outer container for concentric effect */}
         <div className="w-full h-full bg-black p-1">
-          {/* Inner Terminal with green border */}
-          <div className="w-full h-full bg-gray-900 border-2 border-green-500 rounded-lg flex flex-col">
-            {/* Terminal Header */}
-            <div className="flex items-center justify-between bg-gray-900 px-4 py-2 rounded-t-lg border-b border-green-500 flex-shrink-0">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              </div>
-              <div className="text-green-400 text-sm font-mono">
-                wajiha@portfolio:~$
-              </div>
-              <div className="w-16"></div> {/* Spacer for centering */}
+                  {/* Inner Terminal with authentic look */}
+        <div className="w-full h-full bg-black border border-gray-600 rounded-md flex flex-col shadow-2xl" style={{fontFamily: 'JetBrains Mono, Consolas, "Liberation Mono", Menlo, "Courier New", monospace'}}>
+          {/* Terminal Header - Ubuntu style */}
+          <div className="flex items-center justify-between bg-gray-800 px-3 py-2 rounded-t-md border-b border-gray-700 flex-shrink-0">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-red-500 rounded-full shadow-sm"></div>
+              <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-sm"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-full shadow-sm"></div>
             </div>
+            <div className="text-gray-300 text-xs font-medium">
+              wajiha@portfolio: ~
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-4 h-4 flex items-center justify-center text-gray-400 hover:bg-gray-700 rounded text-xs cursor-pointer">_</div>
+              <div className="w-4 h-4 flex items-center justify-center text-gray-400 hover:bg-gray-700 rounded text-xs cursor-pointer">□</div>
+              <div className="w-4 h-4 flex items-center justify-center text-gray-400 hover:bg-red-600 rounded text-xs cursor-pointer">×</div>
+            </div>
+          </div>
             
             {/* Terminal Content */}
-            <div className="flex-1 flex items-center justify-center px-6 sm:px-8 lg:px-12">
-              <div className="w-full max-w-4xl">
-                <div className="font-mono text-green-400 space-y-3 sm:space-y-4">
-                  {getDisplayText().map((line, index) => (
-                    <div 
-                      key={index} 
-                      className="text-lg sm:text-xl lg:text-2xl xl:text-3xl leading-relaxed"
-                    >
-                      {line}
-                    </div>
-                  ))}
-                  
-                  {/* Cursor */}
-                  <div className="inline-block">
-                    <span 
-                      className={`text-lg sm:text-xl lg:text-2xl xl:text-3xl transition-opacity duration-100 ${
-                        showCursor ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    >
-                      |
-                    </span>
+            <div className="flex-1 flex flex-col p-4 pt-3">
+              <div className="w-full">
+                <div className="text-white space-y-2 text-left leading-relaxed text-base sm:text-lg lg:text-xl xl:text-2xl" style={{fontFamily: 'inherit'}}>
+                  {/* Initial prompt with first command */}
+                  <div className="flex">
+                    <span className="text-green-400 font-bold">wajiha@portfolio</span>
+                    <span className="text-white">:</span>
+                    <span className="text-blue-400 font-bold">~</span>
+                    <span className="text-white">$ </span>
+                    {currentLineIndex === 0 && getDisplayText().currentDisplayLine && (
+                      <span className="text-white">
+                        {getDisplayText().currentDisplayLine}
+                        <span className={`bg-white text-black transition-opacity duration-500 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>█</span>
+                      </span>
+                    )}
+                    {currentLineIndex === 0 && !getDisplayText().currentDisplayLine && (
+                      <span className={`bg-white text-black transition-opacity duration-500 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>█</span>
+                    )}
                   </div>
+                  
+                  {/* Completed lines */}
+                  {getDisplayText().completedLines.map((line, index) => {
+                    const isCommand = line === 'whoami' || line === 'cat about.txt';
+                    const isName = line === 'Wajiha Kulsum';
+                    
+                    if (index === 0) {
+                      // Skip first line as it's handled above with the initial prompt
+                      return null;
+                    }
+                    
+                    return (
+                      <div key={index} className="flex">
+                        {isCommand && (
+                          <>
+                            <span className="text-green-400 font-bold">wajiha@portfolio</span>
+                            <span className="text-white">:</span>
+                            <span className="text-blue-400 font-bold">~</span>
+                            <span className="text-white">$ </span>
+                          </>
+                        )}
+                        <span className={
+                          isName
+                            ? "text-gray-200 font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-5xl" 
+                            : isCommand
+                            ? "text-white"
+                            : "text-gray-300"
+                        }>
+                          {line}
+                        </span>
+                      </div>
+                    );
+                  })}
+                  
+                  {/* Current line being typed with cursor (for lines after first) */}
+                  {getDisplayText().currentDisplayLine && currentLineIndex > 0 && (
+                    <div className="flex">
+                      {(() => {
+                        const line = getDisplayText().currentDisplayLine;
+                        const isCommand = line === 'whoami' || line === 'cat about.txt';
+                        const isName = line === 'Wajiha Kulsum';
+                        
+                        return (
+                          <>
+                            {isCommand && (
+                              <>
+                                <span className="text-green-400 font-bold">wajiha@portfolio</span>
+                                <span className="text-white">:</span>
+                                <span className="text-blue-400 font-bold">~</span>
+                                <span className="text-white">$ </span>
+                              </>
+                            )}
+                            <span className={
+                              isName
+                                ? "text-gray-200 font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-5xl" 
+                                : isCommand
+                                ? "text-white"
+                                : "text-gray-300"
+                            }>
+                              {line}
+                              <span className={`bg-white text-black transition-opacity duration-500 ${showCursor ? 'opacity-100' : 'opacity-0'}`}>█</span>
+                            </span>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  )}
+                  
+                  {/* Show prompt with cursor when typing is complete */}
+                  {isTypingComplete && (
+                    <div className="flex">
+                      <span className="text-green-500 text-sm sm:text-base lg:text-lg">
+                        wajiha@portfolio:~$ 
+                      </span>
+                      <span 
+                        className={`text-sm sm:text-base lg:text-lg text-green-500 transition-opacity duration-100 ${
+                          showCursor ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      >
+                        |
+                      </span>
+                    </div>
+                  )}
+                  
+                  {/* Show cursor on empty line if no current text (for lines after first) */}
+                  {!getDisplayText().currentDisplayLine && currentLineIndex < lines.length && currentLineIndex > 0 && (
+                    <div className="flex">
+                      <span className="text-green-500 text-sm sm:text-base lg:text-lg">
+                        wajiha@portfolio:~$ 
+                      </span>
+                      <span 
+                        className={`text-sm sm:text-base lg:text-lg text-green-500 transition-opacity duration-100 ${
+                          showCursor ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      >
+                        |
+                      </span>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Optional: Show completion message */}
