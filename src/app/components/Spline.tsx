@@ -12,6 +12,42 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* Watermark Cover Overlays */}
+      <div className="absolute inset-0 pointer-events-none z-5">
+        {/* Bottom-right corner overlay */}
+        <div className="absolute bottom-0 right-0 w-32 h-16 bg-black"></div>
+        
+        {/* Bottom-left corner overlay */}
+        <div className="absolute bottom-0 left-0 w-32 h-16 bg-black"></div>
+        
+        {/* Bottom edge gradient overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+        
+        {/* Side edge overlays for extra coverage */}
+        <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-black to-transparent"></div>
+        <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-black to-transparent"></div>
+      </div>
+
+      {/* Decorative Elements to Make Overlays Look Intentional */}
+      <div className="absolute inset-0 pointer-events-none z-8">
+        {/* Bottom corner decorative dots */}
+        <div className="absolute bottom-6 right-6 flex space-x-2">
+          <div className="w-2 h-2 bg-purple-500/30 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-cyan-500/30 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+          <div className="w-2 h-2 bg-pink-500/30 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+        
+        <div className="absolute bottom-6 left-6 flex space-x-2">
+          <div className="w-1.5 h-1.5 bg-blue-500/20 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+          <div className="w-1.5 h-1.5 bg-green-500/20 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+        </div>
+
+        {/* Side edge floating particles */}
+        <div className="absolute top-1/4 right-4 w-1 h-1 bg-purple-400/40 rounded-full animate-float"></div>
+        <div className="absolute top-1/3 left-4 w-1 h-1 bg-cyan-400/40 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-1/4 right-4 w-1.5 h-1.5 bg-pink-400/30 rounded-full animate-float" style={{ animationDelay: '3s' }}></div>
+      </div>
       
       {/* Text Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none -mt-32">
