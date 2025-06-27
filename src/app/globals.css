@@ -21,6 +21,12 @@
 
 
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -29,9 +35,71 @@ html, body {
 
 body {
   margin: 0;
+  padding: 0;
   background: #000000;
   color: var(--foreground);
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Ensure scrolling works */
+* {
+  box-sizing: border-box;
+}
+
+#__next {
+  overflow-x: hidden;
+}
+
+/* Fix any potential Spline scroll blocking */
+canvas {
+  pointer-events: none !important;
+}
+
+/* Ensure all Spline elements don't block scroll */
+spline-viewer, 
+spline-viewer *, 
+[data-spline] *,
+.spline-viewer *,
+canvas[data-engine="spline"] {
+  pointer-events: none !important;
+}
+
+/* Force scroll capability */
+body, html {
+  scroll-behavior: smooth !important;
+  overflow-y: scroll !important;
+  overscroll-behavior: auto !important;
+}
+
+/* Selection colors for Web3 theme */
+::selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: white;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #a855f7, #06b6d4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #9333ea, #0891b2);
 }
 
 /* Web3 Animations */
