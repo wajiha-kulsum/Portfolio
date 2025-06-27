@@ -81,7 +81,7 @@ const Hero = () => {
             {/* Terminal Content */}
             <div className="flex-1 flex flex-col p-4 pt-3">
               <div className="w-full">
-                <div className="text-white space-y-2 text-left leading-relaxed text-base sm:text-lg lg:text-xl xl:text-2xl" style={{fontFamily: 'inherit'}}>
+                <div className="text-white space-y-3 text-left leading-relaxed text-xl sm:text-2xl lg:text-3xl xl:text-4xl" style={{fontFamily: 'inherit'}}>
                   {/* Initial prompt with first command */}
                   <div className="flex">
                     <span className="text-green-400 font-bold">wajiha@portfolio</span>
@@ -121,7 +121,7 @@ const Hero = () => {
                         )}
                         <span className={
                           isName
-                            ? "text-gray-200 font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-5xl" 
+                            ? "text-white font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl" 
                             : isCommand
                             ? "text-white"
                             : "text-gray-300"
@@ -152,7 +152,7 @@ const Hero = () => {
                             )}
                             <span className={
                               isName
-                                ? "text-gray-200 font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-5xl" 
+                                ? "text-white font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl" 
                                 : isCommand
                                 ? "text-white"
                                 : "text-gray-300"
