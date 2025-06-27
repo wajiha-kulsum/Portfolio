@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
+// Responsive Navigation Component - Mobile & Desktop
+
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
