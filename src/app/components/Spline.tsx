@@ -15,18 +15,18 @@ export default function Home() {
 
       {/* Watermark Cover Overlays */}
       <div className="absolute inset-0 pointer-events-none z-5">
-        {/* Bottom-right corner overlay */}
-        <div className="absolute bottom-0 right-0 w-32 h-16 bg-black"></div>
+        {/* Bottom-right corner overlay - Larger coverage */}
+        <div className="absolute bottom-0 right-0 w-48 h-24 bg-black"></div>
         
-        {/* Bottom-left corner overlay */}
-        <div className="absolute bottom-0 left-0 w-32 h-16 bg-black"></div>
+        {/* Bottom-left corner overlay - Larger coverage */}
+        <div className="absolute bottom-0 left-0 w-48 h-24 bg-black"></div>
         
-        {/* Bottom edge gradient overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+        {/* Bottom edge gradient overlay - Taller */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
         
-        {/* Side edge overlays for extra coverage */}
-        <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-black to-transparent"></div>
-        <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-black to-transparent"></div>
+        {/* Side edge overlays for extra coverage - Wider */}
+        <div className="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-l from-black via-black/60 to-transparent"></div>
+        <div className="absolute top-0 bottom-0 left-0 w-16 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
       </div>
 
       {/* Decorative Elements to Make Overlays Look Intentional */}
