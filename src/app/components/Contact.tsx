@@ -111,7 +111,7 @@ const Contact = () => {
               Get In <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400">Touch</span>
             </h2>
             <p className="text-gray-400 text-xl max-w-3xl mx-auto">
-              Let's collaborate and create something amazing together
+              Let&apos;s collaborate and create something amazing together
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full mt-6"></div>
           </div>
@@ -185,10 +185,10 @@ const Contact = () => {
               <div className="space-y-6">
                 <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-all duration-500">
                   <h3 className="text-xl font-semibold text-white mb-3">
-                    Let's Connect
+                    Let&apos;s Connect
                   </h3>
                   <p className="text-gray-300 leading-relaxed">
-                    I'm always interested in new opportunities and collaborations. 
+                    I&apos;m always interested in new opportunities and collaborations. 
                     Whether you have a project in mind or just want to chat about web development, 
                     feel free to reach out!
                   </p>
@@ -211,7 +211,7 @@ const Contact = () => {
                   Find Me Online
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {socialLinks.map((link, index) => (
+                  {socialLinks.map((link) => (
                     <a
                       key={link.name}
                       href={link.href}

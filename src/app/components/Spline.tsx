@@ -20,7 +20,7 @@ export default function Home() {
             Hello,
           </h1>
           <h2 className="text-white text-6xl md:text-7xl lg:text-8xl font-light tracking-wide">
-            I'm Wajiha Kulsum
+            I&apos;m Wajiha Kulsum
           </h2>
           <p className="text-gray-400 text-xl md:text-2xl lg:text-3xl font-light tracking-wide mt-6">
             Web Developer and UI Designer

@@ -58,7 +58,7 @@ const About = () => {
                   Who I Am
                 </h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
-                  I'm a passionate Web Developer and UI Designer with a love for creating immersive digital experiences. 
+                  I&apos;m a passionate Web Developer and UI Designer with a love for creating immersive digital experiences. 
                   I specialize in modern web technologies and enjoy bringing creative concepts to life through code.
                 </p>
               </div>
@@ -80,7 +80,7 @@ const About = () => {
                   My Passion
                 </h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
-                  I'm driven by the intersection of technology and creativity. Whether it's exploring new frameworks, 
+                  I&apos;m driven by the intersection of technology and creativity. Whether it&apos;s exploring new frameworks, 
                   designing seamless user journeys, or solving complex problems, I love pushing boundaries.
                 </p>
               </div>
@@ -110,13 +110,13 @@ const About = () => {
                       <span className="text-purple-400">const</span> <span className="text-cyan-400">developer</span> = {"{"}
                     </div>
                     <div className="ml-4 opacity-60">
-                      <span className="text-green-400">name</span>: <span className="text-yellow-400">"Wajiha Kulsum"</span>,
+                      <span className="text-green-400">name</span>: <span className="text-yellow-400">&quot;Wajiha Kulsum&quot;</span>,
                     </div>
                     <div className="ml-4 opacity-60">
-                      <span className="text-green-400">passion</span>: <span className="text-yellow-400">"Web Development"</span>,
+                      <span className="text-green-400">passion</span>: <span className="text-yellow-400">&quot;Web Development&quot;</span>,
                     </div>
                     <div className="ml-4 opacity-60">
-                      <span className="text-green-400">skills</span>: [<span className="text-yellow-400">"React"</span>, <span className="text-yellow-400">"Next.js"</span>, <span className="text-yellow-400">"UI/UX"</span>],
+                      <span className="text-green-400">skills</span>: [<span className="text-yellow-400">&quot;React&quot;</span>, <span className="text-yellow-400">&quot;Next.js&quot;</span>, <span className="text-yellow-400">&quot;UI/UX&quot;</span>],
                     </div>
                     <div className="opacity-70">{"}"}</div>
                   </div>

@@ -137,7 +137,7 @@ const Projects = () => {
 
                   {/* Tech stack */}
                   <div className="flex flex-wrap gap-2 mb-6 relative z-10">
-                    {project.tech.map((tech, techIndex) => (
+                    {project.tech.map((tech) => (
                       <span 
                         key={tech}
                         className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm text-gray-300 hover:bg-white/20 hover:text-white transition-all duration-300"

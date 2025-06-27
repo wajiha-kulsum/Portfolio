@@ -21,10 +21,15 @@ const Navigation = () => {
       // Update active section based on scroll position
       const sections = ['home', 'about-section', 'skills-section', 'projects-section', 'contact-section'];
       const currentSection = sections.find(section => {
-        const element = section === 'home' ? { offsetTop: 0, offsetHeight: window.innerHeight } : document.getElementById(section);
-        if (element) {
-          const rect = section === 'home' ? { top: 0, bottom: window.innerHeight } : element.getBoundingClientRect();
+        if (section === 'home') {
+          const rect = { top: 0, bottom: window.innerHeight };
           return rect.top <= 100 && rect.bottom > 100;
+        } else {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            return rect.top <= 100 && rect.bottom > 100;
+          }
         }
         return false;
       });
