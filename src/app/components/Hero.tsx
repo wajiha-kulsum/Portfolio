@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 const Hero = () => {
-  const lines = [
+  const lines = useMemo(() => [
     'whoami',
     'Wajiha Kulsum',
     'cat about.txt',
     'I\'m a student and a web developer.',
     'I love creating UI/UX experiences.'
-  ];
+  ], []);
 
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');

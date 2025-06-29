@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
 
@@ -20,8 +19,6 @@ const Navigation = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
       // Don't update active section if user manually navigated
       if (isManualNavigation) return;
       

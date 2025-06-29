@@ -58,7 +58,7 @@ const About = () => {
               <div className="flex-1 text-center lg:text-right">
                 <div>
                   <p className="text-gray-300 text-xl leading-relaxed font-poppins font-light tracking-wide">
-                    Hey! I'm from Mumbai, a web developer and designer who loves creating digital experiences.
+                    Hey! I&apos;m from Mumbai, a web developer and designer who loves creating digital experiences.
                   </p>
                   <p className="text-gray-300 text-xl leading-relaxed mt-4 font-poppins font-light tracking-wide">
                     Always curious about new technologies and up for connections with fellow creators.
