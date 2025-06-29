@@ -8,6 +8,7 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isManualNavigation, setIsManualNavigation] = useState(false);
 
   const navItems = [
     { id: 'home', label: 'Home', href: '#' },
@@ -21,12 +22,14 @@ const Navigation = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       
+      // Don't update active section if user manually navigated
+      if (isManualNavigation) return;
+      
       // Update active section based on scroll position
       const sections = ['home', 'about-section', 'skills-section', 'projects-section', 'contact-section'];
       const currentSection = sections.find(section => {
         if (section === 'home') {
-          const rect = { top: 0, bottom: window.innerHeight };
-          return rect.top <= 100 && rect.bottom > 100;
+          return window.scrollY < 100;
         } else {
           const element = document.getElementById(section);
           if (element) {
@@ -44,19 +47,39 @@ const Navigation = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isManualNavigation]);
 
-  const scrollToSection = (href: string) => {
-    if (href === '#') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToSection = (href: string, itemId: string) => {
+    // Set manual navigation flag to prevent scroll detection interference
+    setIsManualNavigation(true);
+    
+    // Immediately update active section for instant visual feedback
+    setActiveSection(itemId);
+    
+    if (href === '#' || itemId === 'home') {
+      // Enhanced scroll to top for Home
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+      
+      // Also use smooth scroll
+      window.scrollTo({ 
+        top: 0, 
+        behavior: 'smooth' 
+      });
     } else {
       const element = document.querySelector(href);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
+    
     // Close mobile menu after navigation
     setIsMobileMenuOpen(false);
+    
+    // Re-enable scroll detection after a delay
+    setTimeout(() => {
+      setIsManualNavigation(false);
+    }, 1000);
   };
 
   const toggleMobileMenu = () => {
@@ -66,34 +89,27 @@ const Navigation = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className={`hidden md:flex fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? 'backdrop-blur-lg bg-white/10 border border-white/20 shadow-2xl shadow-purple-500/10' 
-          : 'backdrop-blur-md bg-white/5 border border-white/10'
-      } rounded-full px-6 py-3`}>
+      <nav className="hidden md:flex fixed top-6 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-xl bg-black/20 border border-white/10 rounded-full px-2 py-2 shadow-2xl shadow-black/20">
         <div className="flex items-center space-x-1">
           {navItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => scrollToSection(item.href)}
-              className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              onClick={() => scrollToSection(item.href, item.id)}
+              className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 overflow-hidden group ${
                 activeSection === item.id
                   ? 'text-white bg-gradient-to-r from-purple-500 to-cyan-500 shadow-lg shadow-purple-500/25'
-                  : 'text-gray-300 hover:text-white hover:bg-white/10'
+                  : 'text-gray-300 hover:text-white hover:bg-gray-800/60'
               }`}
-            >
-              {item.label}
-              
-              {/* Active indicator */}
-              {activeSection === item.id && (
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 opacity-20 animate-pulse"></div>
-              )}
-            </button>
+                          >
+                {item.label}
+                
+                {/* Gradient border on hover for all items */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
+                  <div className="absolute inset-[1px] rounded-full bg-black"></div>
+                </div>
+              </button>
           ))}
         </div>
-
-        {/* Decorative glow effect */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-cyan-500/20 animate-pulse-glow opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
       </nav>
 
       {/* Mobile Navigation */}
@@ -101,11 +117,7 @@ const Navigation = () => {
         {/* Mobile Menu Toggle Button */}
         <button
           onClick={toggleMobileMenu}
-          className={`relative w-12 h-12 rounded-full transition-all duration-500 ${
-            isScrolled || isMobileMenuOpen
-              ? 'backdrop-blur-lg bg-white/10 border border-white/20 shadow-2xl shadow-purple-500/10' 
-              : 'backdrop-blur-md bg-white/5 border border-white/10'
-          } flex items-center justify-center group`}
+          className="relative w-12 h-12 rounded-full backdrop-blur-xl bg-black/20 border border-white/10 shadow-2xl shadow-black/20 flex items-center justify-center group"
         >
           {/* Hamburger Icon */}
           <div className="flex flex-col items-center justify-center w-5 h-5 space-y-1">
@@ -119,9 +131,6 @@ const Navigation = () => {
               isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
             }`}></span>
           </div>
-          
-          {/* Glow effect */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-cyan-500/20 animate-pulse-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
         </button>
 
         {/* Mobile Menu Overlay */}
@@ -130,34 +139,28 @@ const Navigation = () => {
             ? 'opacity-100 scale-100 translate-y-0' 
             : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'
         }`}>
-          <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl shadow-2xl shadow-purple-500/10 overflow-hidden min-w-[200px]">
+          <div className="backdrop-blur-xl bg-black/20 border border-white/10 rounded-2xl shadow-2xl shadow-black/20 overflow-hidden min-w-[200px]">
             <div className="px-2 py-3 space-y-1">
               {navItems.map((item, index) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`relative w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center ${
+                  onClick={() => scrollToSection(item.href, item.id)}
+                  className={`relative w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center overflow-hidden group ${
                     activeSection === item.id
                       ? 'text-white bg-gradient-to-r from-purple-500 to-cyan-500 shadow-lg shadow-purple-500/25'
-                      : 'text-gray-300 hover:text-white hover:bg-white/10'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-800/60'
                   }`}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <span className="relative z-10">{item.label}</span>
                   
-                  {/* Active indicator */}
-                  {activeSection === item.id && (
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 opacity-20 animate-pulse"></div>
-                  )}
-                  
-                  {/* Hover glow */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/10 to-cyan-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                  {/* Gradient border on hover for all items */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
+                    <div className="absolute inset-[1px] rounded-xl bg-black/20"></div>
+                  </div>
                 </button>
               ))}
             </div>
-            
-            {/* Bottom decoration */}
-            <div className="h-1 bg-gradient-to-r from-purple-500/50 to-cyan-500/50"></div>
           </div>
         </div>
       </nav>
