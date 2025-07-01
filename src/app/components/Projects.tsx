@@ -25,31 +25,31 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
-      title: "E-Commerce Platform",
-      description: "Modern e-commerce solution with React, Next.js, and Stripe integration. Features include user authentication, shopping cart, and admin dashboard.",
-      tech: ["React", "Next.js", "Tailwind", "Stripe"],
+      title: "Mentor Her",
+      description: "A mentorship platform connecting women with industry professionals. Features include user authentication, mentorship matching, and scheduling tools.",
+      tech: ["React", "Next.js", "Tailwind", "Node.js"],
       gradient: "from-purple-500 to-pink-500",
       status: "Live",
       link: "#",
       github: "#"
     },
     {
-      id: 4,
-      title: "Weather Dashboard",
-      description: "Real-time weather application with location-based forecasts, interactive maps, and beautiful data visualizations.",
-      tech: ["React", "APIs", "Chart.js", "CSS3"],
-      gradient: "from-orange-500 to-red-500",
-      status: "Completed",
+      id: 2,
+      title: "Serenity",
+      description: "A mental wellness application with guided meditation, mood tracking, and personalized recommendations for stress management.",
+      tech: ["React", "Node.js", "MongoDB", "Chart.js"],
+      gradient: "from-cyan-500 to-blue-500",
+      status: "In Progress",
       link: "#",
       github: "#"
     },
     {
-      id: 2,
-      title: "Task Management App",
-      description: "Collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-      tech: ["React", "Node.js", "Socket.io", "MongoDB"],
-      gradient: "from-cyan-500 to-blue-500",
-      status: "In Progress",
+      id: 3,
+      title: "Clinicalsh",
+      description: "Healthcare management system for clinics with appointment scheduling, patient records, and billing integration.",
+      tech: ["React", "TypeScript", "Firebase", "Tailwind"],
+      gradient: "from-orange-500 to-red-500",
+      status: "Completed",
       link: "#",
       github: "#"
     }
