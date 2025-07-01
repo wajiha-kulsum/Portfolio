@@ -1,6 +1,21 @@
+'use client';
+
 import Spline from '@splinetool/react-spline/next';
+import { useState } from 'react';
 
 export default function Home() {
+  const [githubMouse, setGithubMouse] = useState({ x: 50, y: 25 });
+  const [resumeMouse, setResumeMouse] = useState({ x: 50, y: 25 });
+  const [githubHovered, setGithubHovered] = useState(false);
+  const [resumeHovered, setResumeHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>, setMouse: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMouse({ x, y });
+  };
+
   return (
     <main className="relative w-full h-screen bg-black">
       {/* Spline 3D Scene */}
@@ -68,20 +83,42 @@ export default function Home() {
               href="https://github.com/wajihakulsum" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group relative px-8 py-3 bg-transparent border border-purple-500/50 text-white text-lg font-medium rounded-lg hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-300 backdrop-blur-sm"
+              className="group relative px-8 py-3 bg-black/20 border border-purple-500/50 text-white text-lg font-medium rounded-lg hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-300 backdrop-blur-sm overflow-hidden"
+              onMouseMove={(e) => handleMouseMove(e, setGithubMouse)}
+              onMouseEnter={() => setGithubHovered(true)}
+              onMouseLeave={() => setGithubHovered(false)}
             >
-              <span className="relative z-10">GitHub</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/10 to-purple-500/0 group-hover:from-purple-500/10 group-hover:via-purple-500/20 group-hover:to-purple-500/10 rounded-lg transition-all duration-300"></div>
+              <span className="relative z-20">GitHub</span>
+              <div 
+                className="absolute inset-0 rounded-lg"
+                style={{
+                  background: `radial-gradient(circle 80px at ${githubMouse.x}px ${githubMouse.y}px, rgba(147, 51, 234, 0.8), rgba(147, 51, 234, 0.4) 50%, rgba(147, 51, 234, 0.1) 80%, transparent)`,
+                  opacity: githubHovered ? 1 : 0,
+                  transition: 'opacity 0.2s ease-out',
+                  zIndex: 5,
+                }}
+              ></div>
             </a>
             
             <a 
               href="/resume.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group relative px-8 py-3 bg-transparent border border-cyan-500/50 text-white text-lg font-medium rounded-lg hover:bg-cyan-500/20 hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm"
+              className="group relative px-8 py-3 bg-black/20 border border-cyan-500/50 text-white text-lg font-medium rounded-lg hover:bg-cyan-500/20 hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm overflow-hidden"
+              onMouseMove={(e) => handleMouseMove(e, setResumeMouse)}
+              onMouseEnter={() => setResumeHovered(true)}
+              onMouseLeave={() => setResumeHovered(false)}
             >
-              <span className="relative z-10">Resume</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0 group-hover:from-cyan-500/10 group-hover:via-cyan-500/20 group-hover:to-cyan-500/10 rounded-lg transition-all duration-300"></div>
+              <span className="relative z-20">Resume</span>
+              <div 
+                className="absolute inset-0 rounded-lg"
+                style={{
+                  background: `radial-gradient(circle 80px at ${resumeMouse.x}px ${resumeMouse.y}px, rgba(6, 182, 212, 0.8), rgba(6, 182, 212, 0.4) 50%, rgba(6, 182, 212, 0.1) 80%, transparent)`,
+                  opacity: resumeHovered ? 1 : 0,
+                  transition: 'opacity 0.2s ease-out',
+                  zIndex: 5,
+                }}
+              ></div>
             </a>
           </div>
         </div>
