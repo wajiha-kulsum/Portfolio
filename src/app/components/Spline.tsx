@@ -61,6 +61,29 @@ export default function Home() {
           <p className="text-gray-400 text-xl md:text-2xl lg:text-3xl font-light tracking-wide mt-6">
             Web Developer and UI Designer
           </p>
+          
+          {/* Buttons */}
+          <div className="flex justify-center gap-6 mt-8 pointer-events-auto">
+            <a 
+              href="https://github.com/wajihakulsum" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group relative px-8 py-3 bg-transparent border border-purple-500/50 text-white text-lg font-medium rounded-lg hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-300 backdrop-blur-sm"
+            >
+              <span className="relative z-10">GitHub</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/10 to-purple-500/0 group-hover:from-purple-500/10 group-hover:via-purple-500/20 group-hover:to-purple-500/10 rounded-lg transition-all duration-300"></div>
+            </a>
+            
+            <a 
+              href="/resume.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group relative px-8 py-3 bg-transparent border border-cyan-500/50 text-white text-lg font-medium rounded-lg hover:bg-cyan-500/20 hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm"
+            >
+              <span className="relative z-10">Resume</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0 group-hover:from-cyan-500/10 group-hover:via-cyan-500/20 group-hover:to-cyan-500/10 rounded-lg transition-all duration-300"></div>
+            </a>
+          </div>
         </div>
       </div>
     </main>
