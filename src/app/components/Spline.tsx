@@ -65,7 +65,7 @@ export default function Home() {
           {/* Buttons */}
           <div className="flex justify-center gap-6 mt-8 pointer-events-auto">
             <a 
-              href="https://github.com/wajihakulsum" 
+              href="https://github.com/wajiha-kulsum" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group relative px-8 py-3 bg-transparent border border-purple-500/50 text-white text-lg font-medium rounded-lg hover:bg-purple-500/20 hover:border-purple-400 transition-all duration-300 backdrop-blur-sm"
@@ -75,7 +75,7 @@ export default function Home() {
             </a>
             
             <a 
-              href="/resume.pdf" 
+              href="/Wajiha_Kulsum.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group relative px-8 py-3 bg-transparent border border-cyan-500/50 text-white text-lg font-medium rounded-lg hover:bg-cyan-500/20 hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm"
