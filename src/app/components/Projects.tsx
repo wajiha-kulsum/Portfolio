@@ -30,8 +30,8 @@ const Projects = () => {
       tech: ["React", "Next.js", "Tailwind", "Node.js"],
       gradient: "from-purple-500 to-pink-500",
       status: "Live",
-      link: "#",
-      github: "#"
+      link: "https://mentorher-frontend.vercel.app/",
+      github: "https://github.com/wajiha-kulsum/MentorHer"
     },
     {
       id: 2,
@@ -148,12 +148,16 @@ const Projects = () => {
                     <div className="flex space-x-2 relative z-10">
                       <a 
                         href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex-1 bg-gradient-to-r from-purple-500 to-cyan-500 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 text-center"
                       >
                         View Project
                       </a>
                       <a 
                         href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="p-2 border border-white/20 rounded-lg text-gray-300 hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-300"
                         aria-label="View GitHub repository"
                       >
