@@ -50,8 +50,8 @@ const Projects = () => {
       tech: ["React", "TypeScript", "Firebase", "Tailwind"],
       gradient: "from-orange-500 to-red-500",
       status: "Completed",
-      link: "#",
-      github: "#"
+      link: "https://github.com/wajiha-kulsum/CliniCash",
+      github: "https://github.com/wajiha-kulsum/CliniCash"
     }
     
   ];
