@@ -40,8 +40,8 @@ const Projects = () => {
       tech: ["React", "Node.js", "MongoDB", "Chart.js"],
       gradient: "from-cyan-500 to-blue-500",
       status: "In Progress",
-      link: "#",
-      github: "#"
+      link: "https://github.com/wajiha-kulsum/H10_crwdstrk",
+      github: "https://github.com/wajiha-kulsum/H10_crwdstrk"
     },
     {
       id: 3,
