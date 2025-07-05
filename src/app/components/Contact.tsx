@@ -100,51 +100,91 @@ const Contact = () => {
             <div className="w-20 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full mt-6"></div>
           </div>
 
-          {/* Main Content - Centered Layout */}
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8 items-start">
+                    {/* Main Content - Centered Layout */}
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 items-stretch">
 
-                            {/* Social Links */}
-              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 hover:bg-white/8 transition-all duration-500">
+              {/* Social Links */}
+              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 hover:bg-white/8 transition-all duration-500 min-h-[400px] flex flex-col">
                 <h3 className="text-2xl font-semibold text-white mb-6 text-center">
                   Connect Online
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {socialLinks.map((link) => (
+                <div className="grid grid-cols-1 gap-4 flex-1">
+                  {socialLinks.map((link, index) => (
                     <a
                       key={link.name}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center justify-center px-6 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:scale-105 transition-all duration-300"
+                      className="group relative overflow-hidden flex items-center justify-start px-6 py-4 bg-gradient-to-r from-white/5 to-white/10 border border-white/20 rounded-xl hover:from-white/10 hover:to-white/15 hover:border-white/30 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-500 transform"
+                      style={{
+                        animationDelay: `${index * 100}ms`
+                      }}
                     >
-                      <div className={`text-gray-400 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:${link.color} transition-all duration-300`}>
-                        {link.icon}
+                      {/* Animated background gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-cyan-500/0 to-pink-500/0 group-hover:from-purple-500/5 group-hover:via-cyan-500/5 group-hover:to-pink-500/5 transition-all duration-500"></div>
+                      
+                      {/* Content */}
+                      <div className="relative flex items-center">
+                        <div className={`text-gray-400 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:${link.color} transition-all duration-500 transform group-hover:scale-110`}>
+                          {link.icon}
+                        </div>
+                        <span className="ml-4 text-gray-400 group-hover:text-white transition-all duration-500 font-medium text-lg group-hover:translate-x-1">
+                          {link.name}
+                        </span>
                       </div>
-                      <span className="ml-3 text-gray-400 group-hover:text-white transition-colors duration-300 font-medium">
-                        {link.name}
-                      </span>
+                      
+                      {/* Hover shine effect */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                      </div>
                     </a>
                   ))}
                 </div>
               </div>
 
               {/* Current Status */}
-              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 hover:bg-white/8 transition-all duration-500">
-                <h3 className="text-2xl font-semibold text-white mb-6 text-center">
+              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 hover:bg-white/8 transition-all duration-500 min-h-[400px] flex flex-col justify-center">
+                <h3 className="text-2xl font-semibold text-white mb-8 text-center">
                   Current Status
                 </h3>
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-6 flex-1 flex flex-col justify-center">
                   <div className="flex items-center justify-center">
-                    <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse mr-3"></div>
-                    <span className="text-green-400 text-lg font-semibold">Available</span>
+                    <div className="relative">
+                      <div className="w-6 h-6 bg-green-400 rounded-full animate-pulse"></div>
+                      <div className="absolute inset-0 w-6 h-6 bg-green-400 rounded-full animate-ping opacity-30"></div>
+                    </div>
+                    <span className="ml-4 text-green-400 text-xl font-bold">Available</span>
                   </div>
-                  <p className="text-gray-300 text-lg">
-                    Open for new projects and collaborations
-                  </p>
-                  <p className="text-gray-400 text-sm">
-                    Ready to discuss your next idea!
-                  </p>
+                  
+                  <div className="space-y-4">
+                    <p className="text-gray-300 text-xl font-medium">
+                      Open for new projects and collaborations
+                    </p>
+                    <p className="text-gray-400 text-base">
+                      Ready to discuss your next idea!
+                    </p>
+                  </div>
+                  
+                  {/* Status cards */}
+                  <div className="grid grid-cols-1 gap-3 mt-6">
+                    <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3">
+                      <div className="flex items-center justify-center">
+                        <svg className="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-green-300 text-sm font-medium">Accepting New Projects</span>
+                      </div>
+                    </div>
+                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
+                      <div className="flex items-center justify-center">
+                        <svg className="w-5 h-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-blue-300 text-sm font-medium">Response within 24h</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
