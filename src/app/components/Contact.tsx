@@ -205,7 +205,7 @@ const Contact = () => {
                 <div className="w-1 h-1 bg-pink-400 rounded-full animate-pulse animation-delay-2000"></div>
               </div>
               <p className="text-gray-500 text-xs">
-                © 2025 Wajiha Kulsum. Let's build something amazing together.
+                © 2025 Wajiha Kulsum. Let&apos;s build something amazing together.
               </p>
             </div>
           </div>
