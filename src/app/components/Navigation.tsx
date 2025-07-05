@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 // Responsive Navigation Component - Mobile & Desktop
 
 const Navigation = () => {
-  const [activeSection, setActiveSection] = useState('home')
+  const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
 
