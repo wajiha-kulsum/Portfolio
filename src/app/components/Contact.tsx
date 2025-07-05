@@ -7,8 +7,15 @@ import { useState, useEffect } from 'react';
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted) return;
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -22,7 +29,7 @@ const Contact = () => {
     if (element) observer.observe(element);
 
     return () => observer.disconnect();
-  }, []);
+  }, [hasMounted]);
 
   const socialLinks = [
     {
@@ -56,7 +63,7 @@ const Contact = () => {
       color: 'from-green-400 to-green-600'
     },
     {
-      name: 'Email',
+      name: 'wajihakulsum786@gmail.com',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -89,7 +96,7 @@ const Contact = () => {
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
-        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`transition-all duration-1000 ${hasMounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           
           {/* Professional Header */}
           <div className="text-center mb-8">
