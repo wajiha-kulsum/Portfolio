@@ -4,13 +4,6 @@ import { useState, useEffect } from 'react';
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,42 +20,6 @@ const Contact = () => {
 
     return () => observer.disconnect();
   }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Create Gmail compose URL - this ALWAYS works
-    setTimeout(() => {
-      const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
-      const body = encodeURIComponent(
-        `Hi Wajiha,\n\n` +
-        `Name: ${formData.name}\n` +
-        `Email: ${formData.email}\n\n` +
-        `Message:\n${formData.message}\n\n` +
-        `Best regards,\n${formData.name}`
-      );
-      
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=wajihakulsum786@gmail.com&su=${subject}&body=${body}`;
-      
-      // Open Gmail compose in new tab
-      window.open(gmailUrl, '_blank');
-      
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      setIsSubmitting(false);
-      
-      // Clear status after 8 seconds
-      setTimeout(() => setSubmitStatus('idle'), 8000);
-    }, 1000);
-  };
 
   const socialLinks = [
     {
@@ -138,205 +95,33 @@ const Contact = () => {
               Let&apos;s <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400">Connect</span>
             </h2>
             <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto">
-              Fill out the form below or use the direct email button - both open Gmail with a pre-filled message
+              Find me on social platforms and check my current availability
             </p>
             <div className="w-20 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full mt-6"></div>
           </div>
 
-          {/* Main Content - Horizontal Layout */}
-          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-            
-            {/* Contact Form - Takes 3/5 of the width */}
-            <div className="lg:col-span-3">
+          {/* Main Content - Centered Layout */}
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+
+                            {/* Social Links */}
               <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 hover:bg-white/8 transition-all duration-500">
-                <h3 className="text-xl sm:text-2xl font-semibold text-white mb-6 text-center lg:text-left">
-                  Send a Message
-                </h3>
-                <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-300 text-sm">
-                  <strong>📧 How it works:</strong> This form opens Gmail in a new tab with your message pre-filled. Works 100% of the time!
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name and Email in horizontal row */}
-                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                    <div>
-                      <label htmlFor="name" className="block text-gray-300 text-sm font-medium mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 transition-all duration-300"
-                        placeholder="Your name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all duration-300"
-                        placeholder="your.email@example.com"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-gray-300 text-sm font-medium mb-2">
-                      Project Details
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      rows={5}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 transition-all duration-300 resize-none"
-                      placeholder="Tell me about your project, requirements, timeline, and budget..."
-                      required
-                    ></textarea>
-                  </div>
-
-                  {/* Status Messages */}
-                  {submitStatus === 'success' && (
-                    <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-center">
-                      <div className="flex items-center justify-center mb-2">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Gmail opened in new tab!
-                      </div>
-                      <p className="text-sm text-green-300">
-                        A Gmail compose window opened with your message pre-filled. Just click <strong>"Send"</strong> to send it to Wajiha!
-                      </p>
-                    </div>
-                  )}
-                  
-                  {submitStatus === 'error' && (
-                    <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-center">
-                      <div className="flex items-center justify-center mb-2">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Failed to send message
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-sm text-red-300">Gmail couldn't open automatically.</p>
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText('wajihakulsum786@gmail.com');
-                            alert('Email address copied! Paste it in your email app.');
-                          }}
-                          className="px-4 py-2 bg-red-500/20 border border-red-500/30 rounded text-red-300 hover:bg-red-500/30 transition-colors text-sm"
-                        >
-                          Copy Email Address
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="space-y-3">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 text-white py-4 px-6 rounded-lg font-semibold hover:scale-[1.02] transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                    >
-                      {isSubmitting ? (
-                        <div className="flex items-center justify-center">
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Opening Gmail...
-                        </div>
-                      ) : (
-                        'Send Message'
-                      )}
-                    </button>
-                    
-                    <button
-                      type="button"
-                      onClick={() => {
-                        window.open('mailto:wajihakulsum786@gmail.com?subject=Portfolio Contact&body=Hi Wajiha, I would like to discuss a project with you.', '_blank');
-                      }}
-                      className="w-full bg-white/10 border border-white/20 text-white py-3 px-6 rounded-lg font-medium hover:bg-white/20 transition-all duration-300 text-sm"
-                    >
-                      📧 Quick Email (Alternative)
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            {/* Contact Info - Takes 2/5 of the width */}
-            <div className="lg:col-span-2 space-y-6">
-              
-              {/* Direct Contact */}
-              <div className="backdrop-blur-md bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20 rounded-2xl p-6 hover:from-purple-500/15 hover:to-cyan-500/15 transition-all duration-500">
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  📧 Direct Contact
-                </h3>
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <p className="text-gray-300 text-sm mb-3">Send me an email directly:</p>
-                    <button
-                      onClick={() => {
-                        window.open('https://mail.google.com/mail/?view=cm&fs=1&to=wajihakulsum786@gmail.com&su=Portfolio Contact&body=Hi Wajiha, I would like to discuss a project with you.', '_blank');
-                      }}
-                      className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white py-3 px-4 rounded-lg font-semibold hover:scale-105 transition-all duration-300"
-                    >
-                      ✉️ Open Gmail & Send
-                    </button>
-                  </div>
-                  
-                  <div className="border-t border-white/10 pt-4">
-                    <div className="flex items-center justify-between text-gray-300">
-                      <span className="text-sm">Email:</span>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText('wajihakulsum786@gmail.com');
-                          alert('Email copied to clipboard!');
-                        }}
-                        className="text-sm text-purple-400 hover:text-purple-300 underline"
-                      >
-                        wajihakulsum786@gmail.com
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between text-gray-300 mt-2">
-                      <span className="text-sm">Response:</span>
-                      <span className="text-sm text-cyan-400">Within 24 hours</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Social Links - Horizontal Layout */}
-              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-all duration-500">
-                <h3 className="text-xl font-semibold text-white mb-4">
+                <h3 className="text-2xl font-semibold text-white mb-6 text-center">
                   Connect Online
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {socialLinks.map((link) => (
                     <a
                       key={link.name}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:scale-105 transition-all duration-300 flex-1 min-w-fit"
+                      className="group flex items-center justify-center px-6 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:scale-105 transition-all duration-300"
                     >
                       <div className={`text-gray-400 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:${link.color} transition-all duration-300`}>
                         {link.icon}
                       </div>
-                      <span className="ml-2 text-gray-400 group-hover:text-white transition-colors duration-300 text-sm font-medium">
+                      <span className="ml-3 text-gray-400 group-hover:text-white transition-colors duration-300 font-medium">
                         {link.name}
                       </span>
                     </a>
@@ -344,21 +129,22 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Availability Status */}
-              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-all duration-500">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-1">
-                      Current Status
-                    </h3>
-                    <p className="text-gray-400 text-sm">
-                      Available for new projects
-                    </p>
+              {/* Current Status */}
+              <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 hover:bg-white/8 transition-all duration-500">
+                <h3 className="text-2xl font-semibold text-white mb-6 text-center">
+                  Current Status
+                </h3>
+                <div className="text-center space-y-4">
+                  <div className="flex items-center justify-center">
+                    <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse mr-3"></div>
+                    <span className="text-green-400 text-lg font-semibold">Available</span>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse mr-2"></div>
-                    <span className="text-green-400 text-sm font-medium">Active</span>
-                  </div>
+                  <p className="text-gray-300 text-lg">
+                    Open for new projects and collaborations
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    Ready to discuss your next idea!
+                  </p>
                 </div>
               </div>
             </div>
@@ -366,14 +152,14 @@ const Contact = () => {
 
           {/* Bottom Section */}
           <div className="mt-16 pt-8 border-t border-white/10">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex justify-center items-center gap-4">
               <div className="flex items-center space-x-4">
                 <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
                 <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse animation-delay-1000"></div>
                 <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse animation-delay-2000"></div>
               </div>
               <p className="text-gray-500 text-sm">
-                © 2025 Wajiha Kulsum. Professional web development services.
+                © 2025 Wajiha Kulsum. Let's build something amazing together.
               </p>
             </div>
           </div>
