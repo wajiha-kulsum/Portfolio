@@ -135,7 +135,7 @@ const Contact = () => {
                       
                       {/* Content */}
                       <div className="relative flex items-center">
-                        <div className={`text-gray-400 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:${link.color} transition-all duration-300 transform group-hover:scale-105`}>
+                        <div className="text-gray-400 group-hover:text-white transition-all duration-300 transform group-hover:scale-105">
                           {link.icon}
                         </div>
                         <span className="ml-3 text-gray-400 group-hover:text-white transition-all duration-300 font-medium text-sm">

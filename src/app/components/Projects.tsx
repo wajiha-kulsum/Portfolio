@@ -39,7 +39,7 @@ const Projects = () => {
       description: "A mental wellness application with guided meditation, mood tracking, and personalized recommendations for stress management.",
       tech: ["React", "Node.js", "MongoDB", "Chart.js"],
       gradient: "from-cyan-500 to-blue-500",
-      status: "In Progress",
+      // status: "In Progress",
       link: "https://github.com/wajiha-kulsum/H10_crwdstrk",
       github: "https://github.com/wajiha-kulsum/H10_crwdstrk"
     },
@@ -49,7 +49,7 @@ const Projects = () => {
       description: "Healthcare management system for clinics with appointment scheduling, patient records, and billing integration.",
       tech: ["React", "TypeScript", "Firebase", "Tailwind"],
       gradient: "from-orange-500 to-red-500",
-      status: "Completed",
+      // status: "Completed",
       link: "https://github.com/wajiha-kulsum/CliniCash",
       github: "https://github.com/wajiha-kulsum/CliniCash"
     }
