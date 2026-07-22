@@ -5,7 +5,7 @@ import { ContributionsSection } from "@/components/contributions-heatmap";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-full bg-[#020000] text-white">
+    <div className="min-h-screen w-full bg-[#020000] text-white overflow-x-hidden">
       {/* Floating Responsive Header for Desktop & Mobile */}
       <header className="fixed top-4 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none">
         <div className="flex items-center gap-3 sm:gap-6 nav-bar-bg backdrop-blur-xl px-4 sm:px-6 py-2.5 rounded-full border shadow-2xl pointer-events-auto max-w-[95vw] overflow-x-auto">
@@ -203,7 +203,9 @@ export default function Home() {
         {/* Book a call button */}
         <div className="absolute top-[3604px] left-1/2 -translate-x-1/2">
           <a
-            href="#contact"
+            href="https://cal.com/wajihakulsum"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex items-center justify-center gap-[15px] w-[253px] h-[49px] rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer"
           >
             <span className="font-[family-name:var(--font-bricolage)] text-[25px] font-semibold leading-[30px] text-black">
@@ -250,7 +252,7 @@ export default function Home() {
 
 function MobileView() {
   return (
-    <div className="block lg:hidden px-4 pt-24 pb-16 max-w-xl mx-auto space-y-16">
+    <div className="block lg:hidden px-4 sm:px-6 md:px-8 pt-24 pb-16 w-full max-w-3xl mx-auto space-y-16">
       {/* Mobile Hero */}
       <section id="about" className="flex flex-col items-center text-center pt-4">
         <h1 className="font-[family-name:var(--font-bricolage)] text-5xl sm:text-7xl font-bold tracking-tight text-white">
@@ -265,7 +267,7 @@ function MobileView() {
 
         <a
           href="#contact"
-          className="group w-full max-w-xs mt-6 py-3.5 px-6 rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+          className="group w-full max-w-xs sm:max-w-sm mt-6 py-3.5 px-6 rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg"
         >
           <span className="font-[family-name:var(--font-bricolage)] text-xl font-medium text-black">
             About me
@@ -273,7 +275,7 @@ function MobileView() {
         </a>
 
         {/* Mobile Social Pills */}
-        <div className="grid grid-cols-2 gap-3 mt-6 w-full max-w-xs">
+        <div className="grid grid-cols-2 gap-3 mt-6 w-full max-w-xs sm:max-w-sm">
           <MobilePillButton href="https://www.behance.net/wajihakulsum">Behance</MobilePillButton>
           <MobilePillButton href="http://linkedin.com/in/wajihakulsum/">Linkedin</MobilePillButton>
           <MobilePillButton href="https://github.com/wajiha-kulsum">Github</MobilePillButton>
@@ -287,7 +289,7 @@ function MobileView() {
           My Contributions
         </h3>
         <div className="bg-[#6969692B] p-4 rounded-xl overflow-x-auto shadow-lg">
-          <ContributionsSection />
+          <ContributionsSection desktop={false} />
         </div>
       </section>
 
@@ -367,7 +369,9 @@ function MobileView() {
           Got a project ? Want to collaborate ?
         </p>
         <a
-          href="#contact"
+          href="https://cal.com/wajihakulsum"
+          target="_blank"
+          rel="noopener noreferrer"
           className="group inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-lg cursor-pointer"
         >
           <span className="font-[family-name:var(--font-bricolage)] text-xl font-semibold">

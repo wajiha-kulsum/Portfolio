@@ -31,7 +31,7 @@ const DEFAULT_CELLS: string[] = Array.from({ length: 52 * 7 }, (_, i) =>
   seededColor(Math.floor(i / 7), i % 7)
 );
 
-export function ContributionsSection() {
+export function ContributionsSection({ desktop = true }: { desktop?: boolean }) {
   const [total, setTotal] = useState<number | null>(null);
   const [cells, setCells] = useState<string[]>(DEFAULT_CELLS);
 
@@ -43,7 +43,6 @@ export function ContributionsSection() {
           setTotal(data.totalContributions);
         }
         if (Array.isArray(data.cells) && data.cells.length > 0) {
-          // Take last 52 weeks (364 days) so grid fits without scrollbar
           const formatted = data.cells.slice(-364);
           setCells(formatted);
         }
@@ -51,14 +50,40 @@ export function ContributionsSection() {
       .catch((err) => console.error("Failed to load contributions:", err));
   }, []);
 
+  const grid = (
+    <div
+      className="grid gap-[3px]"
+      style={{
+        gridTemplateColumns: "repeat(52, 19px)",
+        gridTemplateRows: "repeat(7, 19px)",
+      }}
+    >
+      {cells.slice(0, 52 * 7).map((c, i) => (
+        <div
+          key={i}
+          className="rounded-[5px] transition-colors duration-300"
+          style={{ width: "19px", height: "19px", backgroundColor: c }}
+        />
+      ))}
+    </div>
+  );
+
+  if (!desktop) {
+    return (
+      <div className="space-y-3">
+        <p className="text-sm font-light">
+          {total !== null ? total : "125"} contributions in the last year
+        </p>
+        {grid}
+      </div>
+    );
+  }
+
   return (
     <>
-      {/* Stats */}
       <p className="absolute top-[1306px] left-[135px] text-[20px] font-light leading-[24px]">
         {total !== null ? total : "125"} contributions in the last year
       </p>
-
-      {/* Heatmap without scrollbar */}
       <div
         className="absolute left-[135px] top-[1099px] rounded-[8px] bg-[#6969692B] flex items-center justify-center overflow-hidden"
         style={{
@@ -67,21 +92,7 @@ export function ContributionsSection() {
           boxShadow: "16px 16px 12px rgba(0,0,0,0.05)",
         }}
       >
-        <div
-          className="grid gap-[3px]"
-          style={{
-            gridTemplateColumns: "repeat(52, 19px)",
-            gridTemplateRows: "repeat(7, 19px)",
-          }}
-        >
-          {cells.slice(0, 52 * 7).map((c, i) => (
-            <div
-              key={i}
-              className="rounded-[5px] transition-colors duration-300"
-              style={{ width: "19px", height: "19px", backgroundColor: c }}
-            />
-          ))}
-        </div>
+        {grid}
       </div>
     </>
   );
