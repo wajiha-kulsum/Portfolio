@@ -5,8 +5,8 @@ import { ContributionsSection } from "@/components/contributions-heatmap";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-full bg-[#020000] text-white overflow-x-auto">
-      {/* Floating Responsive Header */}
+    <div className="min-h-screen w-full bg-[#020000] text-white">
+      {/* Floating Responsive Header for Desktop & Mobile */}
       <header className="fixed top-4 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none">
         <div className="flex items-center gap-3 sm:gap-6 nav-bar-bg backdrop-blur-xl px-4 sm:px-6 py-2.5 rounded-full border shadow-2xl pointer-events-auto max-w-[95vw] overflow-x-auto">
           <nav className="flex items-center gap-4 sm:gap-8 whitespace-nowrap">
@@ -20,8 +20,11 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Canvas Container */}
-      <div className="relative mx-auto" style={{ width: 1440, height: 4048 }}>
+      {/* Mobile / Tablet Fluid View (Screen < 1024px) */}
+      <MobileView />
+
+      {/* Desktop Canvas View (Screen >= 1024px) */}
+      <div className="hidden lg:block relative mx-auto" style={{ width: 1440, height: 4048 }}>
         {/* Decorative arrow circle */}
         <div className="group absolute top-[371px] left-[1237px] z-10 w-[67px] h-[67px] rounded-full border-2 border-white flex items-center justify-center cursor-pointer">
           <ArrowUpRight size={26} strokeWidth={2} className="text-white transition-transform duration-300 group-hover:rotate-45" />
@@ -240,6 +243,237 @@ export default function Home() {
         <h2 className="absolute top-[3925px] left-[-17px] font-[family-name:var(--font-bricolage)] text-[130px] font-bold leading-[156px] whitespace-nowrap">
           LET&rsquo;S WORK TOGETHER
         </h2>
+      </div>
+    </div>
+  );
+}
+
+function MobileView() {
+  return (
+    <div className="block lg:hidden px-4 pt-24 pb-16 max-w-xl mx-auto space-y-16">
+      {/* Mobile Hero */}
+      <section id="about" className="flex flex-col items-center text-center pt-4">
+        <h1 className="font-[family-name:var(--font-bricolage)] text-5xl sm:text-7xl font-bold tracking-tight text-white">
+          Wajiha
+        </h1>
+        <h2 className="font-[family-name:var(--font-bricolage)] text-5xl sm:text-7xl font-bold tracking-tight text-white mt-1">
+          Kulsum
+        </h2>
+        <p className="text-base sm:text-lg text-white/80 mt-4 max-w-md leading-relaxed">
+          I blend UX UI and Full Stack Development to create intuitive, high-impact digital experiences.
+        </p>
+
+        <a
+          href="#contact"
+          className="group w-full max-w-xs mt-6 py-3.5 px-6 rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+        >
+          <span className="font-[family-name:var(--font-bricolage)] text-xl font-medium text-black">
+            About me
+          </span>
+        </a>
+
+        {/* Mobile Social Pills */}
+        <div className="grid grid-cols-2 gap-3 mt-6 w-full max-w-xs">
+          <MobilePillButton href="https://www.behance.net/wajihakulsum">Behance</MobilePillButton>
+          <MobilePillButton href="http://linkedin.com/in/wajihakulsum/">Linkedin</MobilePillButton>
+          <MobilePillButton href="https://github.com/wajiha-kulsum">Github</MobilePillButton>
+          <MobilePillButton href="/Wajiha_Resume.pdf">Resume</MobilePillButton>
+        </div>
+      </section>
+
+      {/* Mobile Contributions */}
+      <section className="space-y-4">
+        <h3 className="text-3xl font-medium font-[family-name:var(--font-bricolage)] text-white">
+          My Contributions
+        </h3>
+        <div className="bg-[#6969692B] p-4 rounded-xl overflow-x-auto shadow-lg">
+          <ContributionsSection />
+        </div>
+      </section>
+
+      {/* Mobile Experience */}
+      <section id="experience" className="space-y-6 pt-4">
+        <h3 className="text-3xl font-medium font-[family-name:var(--font-bricolage)] text-white">
+          Experience
+        </h3>
+        <div className="space-y-6">
+          <MobileExpCard
+            role="UI/UX Design Intern"
+            company="AkaiSpace — On-site"
+            date="Dec 2025 – May 2026"
+            bullets={[
+              "Conceptualized and designed user interfaces and user flows for the AkaiEarn data labeling platform, creating wireframes and high-fidelity prototypes using Figma. Ensuring complex web3 workflows were accessible to everyday users.",
+              "Created high-fidelity prototypes and design systems for our AI-powered tools, focusing on clarity, and visual appeal.",
+            ]}
+          />
+          <MobileExpCard
+            role="UI/UX Design Intern"
+            company="The Tann Mann Foundation — Remote"
+            date="Feb 2025 – Mar 2025"
+            bullets={[
+              "Led end-to-end design process from wireframing to high-fidelity prototypes using Figma, managing design iterations through collaborative workflows and tracking project milestones via design sprints.",
+              "Delivered cohesive user experience designs aligned with user research insights, improving interface usability by 25%.",
+              "Optimized design systems and user flows through iterative prototyping, user testing, and design pattern standardization.",
+            ]}
+          />
+          <MobileExpCard
+            role="Full Stack Developer Intern"
+            company="Pitchmatter"
+            date="Jul 2025 – Oct 2025"
+            bullets={[
+              "Developed 15+ React components with Redux state management and Axios integration, boosting performance by 35%.",
+              "Built automated testing workflows using React Testing Library, achieving 85% code coverage.",
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* Mobile Work */}
+      <section id="projects" className="space-y-6 pt-4">
+        <h3 className="text-3xl font-medium font-[family-name:var(--font-bricolage)] text-white">
+          Work
+        </h3>
+        <div className="space-y-6">
+          <MobileProjectCard
+            imageSrc="/akai_space.png"
+            imageAlt="AkaiSpace"
+            name="AkaiSpace"
+            subtitle="Data annotation Platform"
+          />
+          <MobileProjectCard
+            imageSrc="/akai_earn.png"
+            imageAlt="AkaiEarn"
+            name="AkaiEarn"
+            desc="Gamified data labeling App to complete AI annotation tasks."
+          />
+          <MobileProjectCard
+            imageSrc="/penumbra.png"
+            imageAlt="Penumbra"
+            name="Penumbra"
+            subtitle="A secure OTC trading platform"
+          />
+          <MobileProjectCard
+            imageSrc="/docoprint.png"
+            imageAlt="DocoPrint"
+            name="DocoPrint"
+            subtitle="A digital printing platform"
+          />
+        </div>
+      </section>
+
+      {/* Mobile Footer */}
+      <section id="contact" className="space-y-8 pt-8 border-t border-white/10 text-center">
+        <p className="text-2xl sm:text-3xl font-semibold text-white">
+          Got a project ? Want to collaborate ?
+        </p>
+        <a
+          href="#contact"
+          className="group inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-lg cursor-pointer"
+        >
+          <span className="font-[family-name:var(--font-bricolage)] text-xl font-semibold">
+            Book a call
+          </span>
+          <ArrowUpRight
+            className="text-black transition-transform duration-300 group-hover:rotate-45"
+            size={24}
+            strokeWidth={2}
+          />
+        </a>
+
+        <div className="space-y-2 text-white/80">
+          <p className="text-lg font-medium text-white">Contacts</p>
+          <p className="text-base font-semibold text-white">wajihakulsum786@gmail.com</p>
+          <p className="text-base font-semibold text-white">+91-7841912389</p>
+          <p className="text-base font-semibold text-white">Mumbai, India</p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 pt-4">
+          <FooterSocial href="https://www.behance.net/wajihakulsum">Behance</FooterSocial>
+          <FooterSocial href="http://linkedin.com/in/wajihakulsum/">Linkedin</FooterSocial>
+          <FooterSocial href="https://github.com/wajiha-kulsum">Github</FooterSocial>
+          <FooterSocial href="/Wajiha_Resume.pdf">Resume</FooterSocial>
+        </div>
+
+        <h2 className="font-[family-name:var(--font-bricolage)] text-4xl sm:text-5xl font-bold tracking-tight text-white pt-6">
+          LET&rsquo;S WORK TOGETHER
+        </h2>
+      </section>
+    </div>
+  );
+}
+
+function MobilePillButton({ children, href }: { children: string; href?: string }) {
+  const Component = href ? "a" : "button";
+  return (
+    <Component
+      href={href}
+      target={href ? "_blank" : undefined}
+      rel={href ? "noopener noreferrer" : undefined}
+      className="group py-2.5 px-4 rounded-full border border-white/40 flex items-center justify-center gap-1.5 text-sm text-white transition-colors hover:bg-white/10 cursor-pointer"
+    >
+      <span>{children}</span>
+      <ArrowUpRight size={16} strokeWidth={2} className="text-white flex-shrink-0 transition-transform duration-300 group-hover:rotate-45" />
+    </Component>
+  );
+}
+
+function MobileExpCard({
+  role,
+  company,
+  date,
+  bullets,
+}: {
+  role: string;
+  company: string;
+  date: string;
+  bullets: string[];
+}) {
+  return (
+    <div className="p-5 rounded-xl bg-[#0B0B0B85] border border-white/10 space-y-3">
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+        <h4 className="text-xl font-medium text-white">{role}</h4>
+        <span className="text-xs text-white/60">{date}</span>
+      </div>
+      <p className="text-sm font-medium text-white/70">{company}</p>
+      <ul className="space-y-2 text-xs sm:text-sm text-white/80 list-disc list-inside">
+        {bullets.map((bullet, idx) => (
+          <li key={idx} className="leading-relaxed">{bullet}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function MobileProjectCard({
+  imageSrc,
+  imageAlt,
+  name,
+  subtitle,
+  desc,
+}: {
+  imageSrc: string;
+  imageAlt: string;
+  name: string;
+  subtitle?: string;
+  desc?: string;
+}) {
+  return (
+    <div className="group rounded-xl bg-[#0B0B0B85] border border-white/10 overflow-hidden space-y-3 p-4 transition-colors hover:bg-[#EDEFE2]/10">
+      <div className="relative w-full h-48 rounded-lg overflow-hidden">
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          fill
+          className="object-cover"
+          unoptimized
+        />
+      </div>
+      <div className="space-y-1">
+        <h4 className="text-xl font-semibold text-white group-hover:text-amber-200 transition-colors">
+          {name}
+        </h4>
+        {subtitle && <p className="text-sm text-white/70">{subtitle}</p>}
+        {desc && <p className="text-xs text-white/60">{desc}</p>}
       </div>
     </div>
   );
