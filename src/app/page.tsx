@@ -6,20 +6,22 @@ import { ContributionsSection } from "@/components/contributions-heatmap";
 export default function Home() {
   return (
     <div className="relative bg-[#020000] text-white" style={{ width: 1440, height: 4048, margin: "0 auto", overflow: "hidden" }}>
-      {/* Nav */}
-      <nav className="absolute top-[68px] left-[135px] flex items-center gap-[100px] z-50">
-        <NavLink href="#about">About</NavLink>
-        <NavLink href="#projects">Projects</NavLink>
-        <NavLink href="#experience">Experience</NavLink>
-        <NavLink href="#contact">Contact</NavLink>
-      </nav>
-
-      {/* Dark mode toggle */}
-      <ThemeToggle className="absolute top-[64px] left-[1201px] z-50" />
+      {/* Fixed Header with Nav & Theme Toggle that stays visible while scrolling */}
+      <header className="fixed top-[28px] left-0 right-0 z-50 pointer-events-none">
+        <div className="relative max-w-[1440px] mx-auto h-[60px]">
+          <nav className="absolute top-0 left-[135px] flex items-center gap-[80px] bg-[#020000]/85 light:bg-[#F5F5F0]/85 backdrop-blur-md px-8 py-3 rounded-full border border-white/10 light:border-black/10 shadow-lg pointer-events-auto">
+            <NavLink href="#about">About</NavLink>
+            <NavLink href="#projects">Projects</NavLink>
+            <NavLink href="#experience">Experience</NavLink>
+            <NavLink href="#contact">Contact</NavLink>
+          </nav>
+          <ThemeToggle className="absolute top-0 left-[1201px] pointer-events-auto" />
+        </div>
+      </header>
 
       {/* Decorative arrow circle */}
-      <div className="absolute top-[371px] left-[1237px] z-10 w-[67px] h-[67px] rounded-full border-2 border-white flex items-center justify-center">
-        <ArrowUpRight size={26} strokeWidth={2} className="text-white" />
+      <div className="group absolute top-[371px] left-[1237px] z-10 w-[67px] h-[67px] rounded-full border-2 border-white flex items-center justify-center cursor-pointer">
+        <ArrowUpRight size={26} strokeWidth={2} className="text-white transition-transform duration-300 group-hover:rotate-45" />
       </div>
 
       {/* Hero - Wajiha */}
@@ -42,10 +44,10 @@ export default function Home() {
         and Full Stack
       </p>
 
-      {/* About me pill */}
+      {/* About me pill button - redirects to footer */}
       <a
         href="#contact"
-        className="absolute top-[371px] left-[793px] w-[410px] h-[67px] rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center z-10 cursor-pointer"
+        className="group absolute top-[371px] left-[793px] w-[410px] h-[67px] rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center gap-[10px] z-10 cursor-pointer"
       >
         <span className="font-[family-name:var(--font-bricolage)] text-[40px] font-normal leading-[48px] text-black">
           About me
@@ -182,6 +184,9 @@ export default function Home() {
         />
       </svg>
 
+      {/* Contact Section Anchor Target */}
+      <div id="contact" className="absolute top-[3500px] left-0 right-0" />
+
       {/* Got a project CTA */}
       <div className="absolute top-[3524px] left-1/2 -translate-x-1/2 text-center">
         <p className="text-[42px] font-semibold leading-[52px] whitespace-nowrap">
@@ -191,20 +196,23 @@ export default function Home() {
 
       {/* Book a call button */}
       <div className="absolute top-[3604px] left-1/2 -translate-x-1/2">
-        <button className="group flex items-center justify-center gap-[15px] w-[253px] h-[49px] rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer">
+        <a
+          href="#contact"
+          className="group flex items-center justify-center gap-[15px] w-[253px] h-[49px] rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer"
+        >
           <span className="font-[family-name:var(--font-bricolage)] text-[25px] font-semibold leading-[30px] text-black">
             Book a call
           </span>
           <ArrowUpRight
-            className="text-black transition-transform group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
+            className="text-black transition-transform duration-300 group-hover:rotate-45"
             size={33}
             strokeWidth={2}
           />
-        </button>
+        </a>
       </div>
 
       {/* Contact info */}
-      <div id="contact" className="absolute top-[3653px] left-[128px]">
+      <div className="absolute top-[3653px] left-[128px]">
         <p className="text-[22px] font-normal leading-[28px]">Contacts</p>
         <p className="text-[22px] font-bold leading-[28px] mt-[16px]">
           wajihakulsum786@gmail.com
@@ -248,37 +256,27 @@ function FooterSocial({ children, href }: { children: string; href?: string }) {
       href={href}
       target={href ? "_blank" : undefined}
       rel={href ? "noopener noreferrer" : undefined}
-      className="flex items-center gap-[5px] cursor-pointer hover:opacity-80 transition-opacity text-white"
+      className="group flex items-center gap-[5px] cursor-pointer hover:opacity-80 transition-opacity text-white"
     >
       <span className="text-[22px] font-normal leading-[28px]">{children}</span>
-      <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0" />
+      <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0 transition-transform duration-300 group-hover:rotate-45" />
     </Component>
   );
 }
 
 function PillButton({ left, children, href }: { left: number; children: string; href?: string }) {
-  if (href) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute top-[749px] w-[250px] h-[67px] rounded-full border-[0.8px] border-white flex items-center justify-center gap-[8px] text-[22px] leading-[28px] text-white transition-colors hover:bg-white/5 cursor-pointer"
-        style={{ left }}
-      >
-        {children}
-        <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0" />
-      </a>
-    );
-  }
+  const Component = href ? "a" : "button";
   return (
-    <button
-      className="absolute top-[749px] w-[250px] h-[67px] rounded-full border-[0.8px] border-white flex items-center justify-center gap-[8px] text-[22px] leading-[28px] text-white transition-colors hover:bg-white/5 cursor-pointer"
+    <Component
+      href={href}
+      target={href ? "_blank" : undefined}
+      rel={href ? "noopener noreferrer" : undefined}
+      className="group absolute top-[749px] w-[250px] h-[67px] rounded-full border-[0.8px] border-white flex items-center justify-center gap-[8px] text-[22px] leading-[28px] text-white transition-colors hover:bg-white/5 cursor-pointer"
       style={{ left }}
     >
       {children}
-      <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0" />
-    </button>
+      <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0 transition-transform duration-300 group-hover:rotate-45" />
+    </Component>
   );
 }
 
