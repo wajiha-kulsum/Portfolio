@@ -34,26 +34,32 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-center rounded-full bg-[#222] dark-toggle-bg p-[6px] gap-[6px]">
+      <div className="flex items-center justify-center rounded-full bg-[#1A1A1A] light:bg-[#EAEAEA] p-[3px] border border-white/10 light:border-black/10">
         <button
           type="button"
           onClick={() => toggleTheme("dark")}
-          className={`flex items-center justify-center rounded-full px-3 py-1.5 transition-all cursor-pointer ${
-            theme === "dark" ? "bg-black text-white shadow" : "text-white/40 hover:text-white"
+          className={`flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+            theme === "dark"
+              ? "bg-[#2A2A2A] text-white shadow-sm"
+              : "text-white/50 hover:text-white"
           }`}
           aria-label="Dark mode"
         >
-          <Moon className="w-[23px] h-[23px]" />
+          <Moon className="w-4 h-4 mr-1" />
+          <span>Dark</span>
         </button>
         <button
           type="button"
           onClick={() => toggleTheme("light")}
-          className={`flex items-center justify-center rounded-full px-3 py-1.5 transition-all cursor-pointer ${
-            theme === "light" ? "bg-white text-black shadow" : "text-white/40 hover:text-white"
+          className={`flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+            theme === "light"
+              ? "bg-white text-black shadow-sm"
+              : "text-white/50 light:text-black/50 hover:text-black"
           }`}
           aria-label="Light mode"
         >
-          <Sun className="w-[23px] h-[23px]" />
+          <Sun className="w-4 h-4 mr-1" />
+          <span>Light</span>
         </button>
       </div>
     </div>

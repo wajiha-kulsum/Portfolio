@@ -21,9 +21,15 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-/* Light Theme overrides */
+.nav-bar-bg {
+  background-color: rgba(18, 18, 18, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Light Theme Overrides */
 html.light {
   --background: #F5F5F0;
   --foreground: #111111;
@@ -45,7 +51,8 @@ html.light .text-white {
 
 html.light .text-white\/80,
 html.light .text-white\/70,
-html.light .text-white\/60 {
+html.light .text-white\/60,
+html.light .text-white\/50 {
   color: #444444 !important;
 }
 
@@ -53,12 +60,16 @@ html.light .border-white {
   border-color: #111111 !important;
 }
 
+html.light .border-white\/10,
+html.light .border-white\/20,
 html.light .border-white\/80 {
-  border-color: #111111 !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
-html.light .dark-toggle-bg {
-  background-color: #E2E2DC !important;
+html.light .nav-bar-bg {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.light .bg-white {
