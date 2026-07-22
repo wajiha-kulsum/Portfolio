@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 interface ThemeToggleProps {
@@ -7,16 +8,53 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  // ponytail: dark-only design, toggle exists in design but always dark
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+    if (saved) {
+      setTheme(saved);
+      if (saved === "light") {
+        document.documentElement.classList.add("light");
+      } else {
+        document.documentElement.classList.remove("light");
+      }
+    }
+  }, []);
+
+  const toggleTheme = (newTheme: "dark" | "light") => {
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    if (newTheme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+  };
+
   return (
     <div className={className}>
-      <div className="flex items-center justify-center rounded-full bg-[#222] p-[6px] gap-[6px]">
-        <div className="flex items-center justify-center rounded-full bg-black px-3 py-1.5">
+      <div className="flex items-center justify-center rounded-full bg-[#222] dark-toggle-bg p-[6px] gap-[6px]">
+        <button
+          type="button"
+          onClick={() => toggleTheme("dark")}
+          className={`flex items-center justify-center rounded-full px-3 py-1.5 transition-all cursor-pointer ${
+            theme === "dark" ? "bg-black text-white shadow" : "text-white/40 hover:text-white"
+          }`}
+          aria-label="Dark mode"
+        >
           <Moon className="w-[23px] h-[23px]" />
-        </div>
-        <div className="flex items-center justify-center rounded-full px-3 py-1.5">
-          <Sun className="w-[23px] h-[23px] text-white/40" />
-        </div>
+        </button>
+        <button
+          type="button"
+          onClick={() => toggleTheme("light")}
+          className={`flex items-center justify-center rounded-full px-3 py-1.5 transition-all cursor-pointer ${
+            theme === "light" ? "bg-white text-black shadow" : "text-white/40 hover:text-white"
+          }`}
+          aria-label="Light mode"
+        >
+          <Sun className="w-[23px] h-[23px]" />
+        </button>
       </div>
     </div>
   );

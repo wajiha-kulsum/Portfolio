@@ -8,10 +8,10 @@ export default function Home() {
     <div className="relative bg-[#020000] text-white" style={{ width: 1440, height: 4048, margin: "0 auto", overflow: "hidden" }}>
       {/* Nav */}
       <nav className="absolute top-[68px] left-[135px] flex items-center gap-[100px] z-50">
-        <NavLink>About</NavLink>
-        <NavLink>Projects</NavLink>
-        <NavLink>Experience</NavLink>
-        <NavLink>Contact</NavLink>
+        <NavLink href="#about">About</NavLink>
+        <NavLink href="#projects">Projects</NavLink>
+        <NavLink href="#experience">Experience</NavLink>
+        <NavLink href="#contact">Contact</NavLink>
       </nav>
 
       {/* Dark mode toggle */}
@@ -23,7 +23,7 @@ export default function Home() {
       </div>
 
       {/* Hero - Wajiha */}
-      <section className="absolute top-[296px] left-[137px]">
+      <section id="about" className="absolute top-[296px] left-[137px]">
         <h1 className="font-[family-name:var(--font-bricolage)] text-[150px] font-medium leading-[180px] tracking-[0.05em]">
           Wajiha
         </h1>
@@ -43,11 +43,14 @@ export default function Home() {
       </p>
 
       {/* About me pill */}
-      <div className="absolute top-[371px] left-[793px] w-[410px] h-[67px] rounded-full bg-white flex items-center justify-center z-10">
+      <a
+        href="#contact"
+        className="absolute top-[371px] left-[793px] w-[410px] h-[67px] rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center z-10 cursor-pointer"
+      >
         <span className="font-[family-name:var(--font-bricolage)] text-[40px] font-normal leading-[48px] text-black">
           About me
         </span>
-      </div>
+      </a>
 
       {/* Social pills */}
       <PillButton left={135} href="https://www.behance.net/wajihakulsum">Behance</PillButton>
@@ -78,7 +81,7 @@ export default function Home() {
       </p>
 
       {/* Experience */}
-      <h3 className="absolute top-[1431px] left-[135px] text-[50px] font-medium leading-[60px]">
+      <h3 id="experience" className="absolute top-[1431px] left-[135px] text-[50px] font-medium leading-[60px]">
         Experience
       </h3>
       <ExpCard
@@ -114,7 +117,7 @@ export default function Home() {
       />
 
       {/* Work */}
-      <h3 className="absolute top-[2044px] left-[135px] text-[50px] font-medium leading-[60px]">
+      <h3 id="projects" className="absolute top-[2044px] left-[135px] text-[50px] font-medium leading-[60px]">
         Work
       </h3>
 
@@ -201,7 +204,7 @@ export default function Home() {
       </div>
 
       {/* Contact info */}
-      <div className="absolute top-[3653px] left-[128px]">
+      <div id="contact" className="absolute top-[3653px] left-[128px]">
         <p className="text-[22px] font-normal leading-[28px]">Contacts</p>
         <p className="text-[22px] font-bold leading-[28px] mt-[16px]">
           wajihakulsum786@gmail.com
@@ -230,11 +233,11 @@ export default function Home() {
   );
 }
 
-function NavLink({ children }: { children: string }) {
+function NavLink({ children, href }: { children: string; href: string }) {
   return (
-    <span className="text-[25px] font-light leading-[30px] cursor-pointer">
+    <a href={href} className="text-[25px] font-light leading-[30px] cursor-pointer hover:opacity-80 transition-opacity">
       {children}
-    </span>
+    </a>
   );
 }
 

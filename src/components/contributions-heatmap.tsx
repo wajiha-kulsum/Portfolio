@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-// Fallback deterministic colors if offline or loading
 function seededColor(week: number, day: number) {
   const seed = week * 31 + day * 7 + 1;
   const r = ((seed * 9301 + 49297) % 233280) / 233280;
@@ -44,7 +43,9 @@ export function ContributionsSection() {
           setTotal(data.totalContributions);
         }
         if (Array.isArray(data.cells) && data.cells.length > 0) {
-          setCells(data.cells);
+          // Take last 52 weeks (364 days) so grid fits without scrollbar
+          const formatted = data.cells.slice(-364);
+          setCells(formatted);
         }
       })
       .catch((err) => console.error("Failed to load contributions:", err));
@@ -57,9 +58,9 @@ export function ContributionsSection() {
         {total !== null ? total : "125"} contributions in the last year
       </p>
 
-      {/* Heatmap */}
+      {/* Heatmap without scrollbar */}
       <div
-        className="absolute left-[135px] top-[1099px] rounded-[8px] bg-[#6969692B] flex items-center justify-center overflow-x-auto p-4"
+        className="absolute left-[135px] top-[1099px] rounded-[8px] bg-[#6969692B] flex items-center justify-center overflow-hidden"
         style={{
           width: "1169px",
           height: "191px",
@@ -69,11 +70,11 @@ export function ContributionsSection() {
         <div
           className="grid gap-[3px]"
           style={{
-            gridTemplateColumns: `repeat(${Math.ceil(cells.length / 7)}, 19px)`,
+            gridTemplateColumns: "repeat(52, 19px)",
             gridTemplateRows: "repeat(7, 19px)",
           }}
         >
-          {cells.map((c, i) => (
+          {cells.slice(0, 52 * 7).map((c, i) => (
             <div
               key={i}
               className="rounded-[5px] transition-colors duration-300"
