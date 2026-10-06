@@ -1,66 +1,88 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 
-interface ThemeToggleProps {
-  className?: string;
+type Theme = "light" | "dark";
+
+const OPTIONS = [
+  { id: "light", icon: Sun, label: "Light mode" },
+  { id: "dark", icon: Moon, label: "Dark mode" },
+] as const;
+
+/** Reads the applied theme from the <html> attribute (string identity is stable). */
+function getTheme(): Theme {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
-export function ThemeToggle({ className }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+/** React reports "light" for SSR; the client value is adopted after hydration. */
+function getServerTheme(): Theme {
+  return "light";
+}
 
-  useEffect(() => {
-    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
-    if (saved) {
-      setTheme(saved);
-      if (saved === "light") {
-        document.documentElement.classList.add("light");
-      } else {
-        document.documentElement.classList.remove("light");
-      }
-    }
-  }, []);
-
-  const toggleTheme = (newTheme: "dark" | "light") => {
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    if (newTheme === "light") {
-      document.documentElement.classList.add("light");
-    } else {
-      document.documentElement.classList.remove("light");
-    }
+/**
+ * The DOM attribute + localStorage are external systems: other documents may
+ * change the attribute (e.g. cross-tab storage events), so subscribe with a
+ * MutationObserver plus a storage listener.
+ */
+function subscribe(onChange: () => void): () => void {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  window.addEventListener("storage", onChange);
+  return () => {
+    observer.disconnect();
+    window.removeEventListener("storage", onChange);
   };
+}
+
+/**
+ * Light/dark segmented control. Light is the default; a tiny script in the
+ * root layout applies `data-theme="dark"` before first paint, so there is
+ * never a flash. The toggle only sets an intention — an effect applies it to
+ * the DOM and persists the choice.
+ */
+export function ThemeToggle({ className }: { className?: string }) {
+  const active = useSyncExternalStore(subscribe, getTheme, getServerTheme);
+  const [requested, setRequested] = useState<Theme | null>(null);
+
+  // Apply intentions to the external world (attribute + persistence).
+  useEffect(() => {
+    if (requested === null || requested === getTheme()) return;
+    if (requested === "dark") {
+      document.documentElement.dataset.theme = "dark";
+    } else {
+      delete document.documentElement.dataset.theme;
+    }
+    try {
+      localStorage.setItem("theme", requested);
+    } catch {
+      // Private browsing / storage disabled — theme just won't persist.
+    }
+  }, [requested]);
 
   return (
-    <div className={className}>
-      <div className="flex items-center justify-center rounded-full bg-[#1A1A1A] light:bg-[#EAEAEA] p-[3px] border border-white/10 light:border-black/10">
-        <button
-          type="button"
-          onClick={() => toggleTheme("dark")}
-          className={`flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
-            theme === "dark"
-              ? "bg-[#2A2A2A] text-white shadow-sm"
-              : "text-white/50 hover:text-white"
-          }`}
-          aria-label="Dark mode"
-        >
-          <Moon className="w-4 h-4 mr-1" />
-          <span>Dark</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => toggleTheme("light")}
-          className={`flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
-            theme === "light"
-              ? "bg-white text-black shadow-sm"
-              : "text-white/50 light:text-black/50 hover:text-black"
-          }`}
-          aria-label="Light mode"
-        >
-          <Sun className="w-4 h-4 mr-1" />
-          <span>Light</span>
-        </button>
+    <div className={className} role="group" aria-label="Color scheme">
+      <div className="flex items-center gap-0.5 rounded-full border border-border p-0.5">
+        {OPTIONS.map(({ id, icon: Icon, label }) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setRequested(id)}
+            aria-label={label}
+            aria-pressed={active === id}
+            className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ${
+              active === id
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Icon size={13} strokeWidth={2} />
+            <span className="sr-only">{label}</span>
+          </button>
+        ))}
       </div>
     </div>
   );
