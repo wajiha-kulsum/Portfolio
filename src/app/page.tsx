@@ -1,649 +1,338 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { ContributionsSection } from "@/components/contributions-heatmap";
+
+import { SiteNav } from "@/components/site-nav";
+import { ContributionGraph } from "@/components/contribution-graph";
+import {
+  EXPERIENCE,
+  PROJECTS,
+  PROFILE,
+  SOCIAL_LINKS,
+  type SocialLink,
+} from "@/lib/site";
 
 export default function Home() {
   return (
-    <div className="min-h-screen w-full bg-[#020000] text-white overflow-x-hidden">
-      {/* Floating Responsive Header for Desktop & Mobile */}
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none">
-        <div className="flex items-center gap-3 sm:gap-6 nav-bar-bg backdrop-blur-xl px-4 sm:px-6 py-2.5 rounded-full border shadow-2xl pointer-events-auto max-w-[95vw] overflow-x-auto">
-          <nav className="flex items-center gap-4 sm:gap-8 whitespace-nowrap">
-            <NavLink href="#about">About</NavLink>
-            <NavLink href="#projects">Projects</NavLink>
-            <NavLink href="#experience">Experience</NavLink>
-            <NavLink href="#contact">Contact</NavLink>
-          </nav>
-          <div className="h-4 w-[1px] bg-white/20 light:bg-black/20 flex-shrink-0" />
-          <ThemeToggle className="flex-shrink-0" />
-        </div>
-      </header>
+    <div id="top" className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <SiteNav />
 
-      {/* Mobile / Tablet Fluid View (Screen < 1024px) */}
-      <MobileView />
-
-      {/* Desktop Canvas View (Screen >= 1024px) */}
-      <div className="hidden lg:block relative mx-auto" style={{ width: 1440, height: 4048 }}>
-        {/* Decorative arrow circle */}
-        <div className="group absolute top-[371px] left-[1237px] z-10 w-[67px] h-[67px] rounded-full border-2 border-white flex items-center justify-center cursor-pointer">
-          <ArrowUpRight size={26} strokeWidth={2} className="text-white transition-transform duration-300 group-hover:rotate-45" />
-        </div>
-
-        {/* Hero - Wajiha */}
-        <section id="about" className="absolute top-[296px] left-[137px]">
-          <h1 className="font-[family-name:var(--font-bricolage)] text-[150px] font-medium leading-[180px] tracking-[0.05em]">
-            Wajiha
-          </h1>
-        </section>
-
-        {/* Hero - Kulsum */}
-        <section className="absolute top-[457px] left-[734px]">
-          <h2 className="font-[family-name:var(--font-bricolage)] text-[150px] font-medium leading-[180px] tracking-[0.05em]">
-            Kulsum
-          </h2>
-        </section>
-
-        {/* Tagline */}
-        <p className="absolute top-[508px] left-[137px] w-[527px] text-[30px] font-normal leading-[36px]">
-          I blend UX UI and Full Stack I blend UX UI and Full Stack I blend UX UI
-          and Full Stack
-        </p>
-
-        {/* About me pill button - redirects to footer */}
-        <a
-          href="#contact"
-          className="group absolute top-[371px] left-[793px] w-[410px] h-[67px] rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center gap-[10px] z-10 cursor-pointer"
-        >
-          <span className="font-[family-name:var(--font-bricolage)] text-[40px] font-normal leading-[48px] text-black">
-            About me
-          </span>
-        </a>
-
-        {/* Social pills */}
-        <PillButton left={135} href="https://www.behance.net/wajihakulsum">Behance</PillButton>
-        <PillButton left={431} href="http://linkedin.com/in/wajihakulsum/">Linkedin</PillButton>
-        <PillButton left={727} href="https://github.com/wajiha-kulsum">Github</PillButton>
-        <PillButton left={1054} href="/Wajiha_Resume.pdf">Resume</PillButton>
-
-        {/* My Contributions heading */}
-        <h3 className="absolute top-[1013px] left-[135px] text-[50px] font-medium leading-[60px]">
-          My Contributions
-        </h3>
-
-        {/* Live GitHub Contributions Stats & Heatmap */}
+      <main>
+        <Hero />
         <ContributionsSection />
+        <ExperienceSection />
+        <WorkSection />
+        <ContactSection />
+      </main>
+    </div>
+  );
+}
 
-        {/* Legend */}
-        <p className="absolute top-[1306px] left-[1107px] text-[20px] font-light leading-[24px]">
-          Less
-        </p>
-        <div className="absolute top-[1308px] left-[1146px] flex items-center gap-[4px]">
-          <div className="w-[19px] h-[19px] rounded-[5px] bg-[#121111]" />
-          <div className="w-[19px] h-[19px] rounded-[5px] bg-[#93E7A2]" />
-          <div className="w-[19px] h-[19px] rounded-[5px] bg-[#2F984A]" />
-          <div className="w-[19px] h-[19px] rounded-[5px] bg-[#216435]" />
-        </div>
-        <p className="absolute top-[1306px] left-[1256px] text-[20px] font-light leading-[24px]">
-          More
-        </p>
+/* -------------------------------------------------------------------------- */
+/* Hero                                                                        */
+/* -------------------------------------------------------------------------- */
 
-        {/* Experience */}
-        <h3 id="experience" className="absolute top-[1431px] left-[135px] text-[50px] font-medium leading-[60px]">
-          Experience
-        </h3>
-        <ExpCard
-          top="1517px"
-          role="UI/UX Design Intern"
-          company="AkaiSpace — On-site"
-          date="Dec 2025 – May 2026"
-          bullets={[
-            "Conceptualized and designed user interfaces and user flows for the AkaiEarn data labeling platform, creating wireframes and high-fidelity prototypes using Figma. Ensuring complex web3 workflows were accessible to everyday users.",
-            "Created high-fidelity prototypes and design systems for our AI-powered tools, focusing on clarity, and visual appeal.",
-          ]}
-        />
-        <ExpCard
-          top="1685px"
-          role="UI/UX Design Intern"
-          company="The Tann Mann Foundation — Remote"
-          date="Feb 2025 – Mar 2025"
-          bullets={[
-            "Led end-to-end design process from wireframing to high-fidelity prototypes using Figma, managing design iterations through collaborative workflows and tracking project milestones via design sprints.",
-            "Delivered cohesive user experience designs aligned with user research insights, improving interface usability by 25%.",
-            "Optimized design systems and user flows through iterative prototyping, user testing, and design pattern standardization.",
-          ]}
-        />
-        <ExpCard
-          top="1885px"
-          role="Full Stack Developer Intern"
-          company="Pitchmatter"
-          date="Jul 2025 – Oct 2025"
-          bullets={[
-            "Developed 15+ React components with Redux state management and Axios integration, boosting performance by 35%.",
-            "Built automated testing workflows using React Testing Library, achieving 85% code coverage.",
-          ]}
-        />
+function Hero() {
+  return (
+    <section id="about" className="relative overflow-hidden px-6 pb-20 pt-32 sm:pt-36">
+      {/* Soft top glow, Attio-style */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[-260px] h-[560px] w-[900px] max-w-[120vw] -translate-x-1/2 rounded-full opacity-70 blur-3xl"
+        style={{ background: "radial-gradient(closest-side, var(--glow), transparent)" }}
+      />
 
-        {/* Work */}
-        <h3 id="projects" className="absolute top-[2044px] left-[135px] text-[50px] font-medium leading-[60px]">
-          Work
-        </h3>
-
-        <ProjectCard
-          cardStyle={{ left: 585, top: 2129, width: 718, height: 600, borderRadius: 10 }}
-          imageSrc="/akai_space.png"
-          imageAlt="AkaiSpace"
-          imageStyle={{ left: 601, top: 2143, width: 686, height: 457 }}
-          name="AkaiSpace"
-          subtitle="Data annotation Platform"
-          textTop={2632}
-          textLeft={607}
-        />
-
-        <ProjectCard
-          cardStyle={{ left: 135, top: 2239, width: 436, height: 490, borderRadius: 10 }}
-          imageSrc="/akai_earn.png"
-          imageAlt="AkaiEarn"
-          imageStyle={{ left: 155, top: 2255, width: 397, height: 321 }}
-          name="AkaiEarn"
-          desc="Gamified data labeling App to complete AI annotation tasks."
-          textTop={2595}
-          textLeft={150}
-          descWidth={397}
-        />
-
-        <ProjectCard
-          cardStyle={{ left: 135, top: 2744, width: 722, height: 648, borderRadius: 10 }}
-          imageSrc="/penumbra.png"
-          imageAlt="Penumbra"
-          imageStyle={{ left: 152, top: 2758, width: 689, height: 516 }}
-          name="Penumbra"
-          subtitle="A secure OTC trading platform"
-          subtitleGap={10}
-          textTop={3291}
-          textLeft={152}
-        />
-
-        <ProjectCard
-          cardStyle={{ left: 876, top: 2744, width: 427, height: 524, borderRadius: 8 }}
-          imageSrc="/docoprint.png"
-          imageAlt="DocoPrint"
-          imageStyle={{ left: 896, top: 2762, width: 388, height: 361 }}
-          name="DocoPrint"
-          subtitle="A digital printing platform"
-          subtitleGap={11}
-          textTop={3152}
-          textLeft={896}
-        />
-
-        {/* Footer divider ellipse */}
-        <svg
-          viewBox="0 0 655 655"
-          width="655"
-          height="655"
-          className="absolute top-[3520px] left-[387px] pointer-events-none"
-        >
-          <path
-            d="M327.500 0.000C508.373 0.000 655.000 146.627 655.000 327.500C655.000 508.373 508.373 655.000 327.500 655.000C146.627 655.000 0.000 508.373 0.000 327.500C0.000 146.627 146.627 0.000 327.500 0.000Z"
-            fillRule="nonzero"
-            fill="#191818"
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-10 text-center md:flex-row md:items-center md:gap-14 md:text-left">
+        {/* Circular profile picture, live from GitHub */}
+        <div className="card-shadow relative h-40 w-40 shrink-0 overflow-hidden rounded-full border border-border bg-card p-1.5 sm:h-48 sm:w-48">
+          <Image
+            src={PROFILE.avatar}
+            alt={`${PROFILE.name} on GitHub`}
+            width={192}
+            height={192}
+            priority
+            sizes="192px"
+            className="h-full w-full rounded-full object-cover"
           />
-        </svg>
-
-        {/* Contact Section Anchor Target */}
-        <div id="contact" className="absolute top-[3500px] left-0 right-0" />
-
-        {/* Got a project CTA */}
-        <div className="absolute top-[3524px] left-1/2 -translate-x-1/2 text-center">
-          <p className="text-[42px] font-semibold leading-[52px] whitespace-nowrap">
-            Got a project ? What to collaborate ?
-          </p>
         </div>
 
-        {/* Book a call button */}
-        <div className="absolute top-[3604px] left-1/2 -translate-x-1/2">
-          <a
-            href="https://cal.com/wajihakulsum"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-center gap-[15px] w-[253px] h-[49px] rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer"
-          >
-            <span className="font-[family-name:var(--font-bricolage)] text-[25px] font-semibold leading-[30px] text-black">
+        <div className="min-w-0">
+          <p className="section-eyebrow">Hey, this is</p>
+          <h1 className="mt-3 font-display text-[clamp(2.75rem,8vw,5rem)] font-medium leading-[1.05] tracking-[-0.03em]">
+            Wajiha Kulsum
+          </h1>
+
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            {PROFILE.tagline}
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+            <a
+              href={PROFILE.booking}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary px-6 py-3 text-sm font-medium"
+            >
               Book a call
-            </span>
-            <ArrowUpRight
-              className="text-black transition-transform duration-300 group-hover:rotate-45"
-              size={33}
-              strokeWidth={2}
-            />
-          </a>
-        </div>
+              <ArrowUpRight size={16} strokeWidth={2} />
+            </a>
+            <a href="#work" className="btn-outline px-6 py-3 text-sm font-medium">
+              View my work
+            </a>
+          </div>
 
-        {/* Contact info */}
-        <div className="absolute top-[3653px] left-[128px]">
-          <p className="text-[22px] font-normal leading-[28px]">Contacts</p>
-          <p className="text-[22px] font-bold leading-[28px] mt-[16px]">
-            wajihakulsum786@gmail.com
-          </p>
-          <p className="text-[22px] font-bold leading-[28px] mt-[16px]">
-            +91-7841912389
-          </p>
-          <p className="text-[22px] font-bold leading-[28px] mt-[16px]">
-            Mumbai, India
-          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-2.5 md:justify-start">
+            {SOCIAL_LINKS.map((link) => (
+              <PillLink key={link.label} link={link} small />
+            ))}
+          </div>
         </div>
-
-        {/* Social links */}
-        <div className="absolute top-[3653px] left-[1167px] w-[140px] flex flex-col items-end gap-[14px]">
-          <FooterSocial href="https://www.behance.net/wajihakulsum">Behance</FooterSocial>
-          <FooterSocial href="http://linkedin.com/in/wajihakulsum/">Linkedin</FooterSocial>
-          <FooterSocial href="https://github.com/wajiha-kulsum">Github</FooterSocial>
-          <FooterSocial href="/Wajiha_Resume.pdf">Resume</FooterSocial>
-        </div>
-
-        {/* Big CTA text */}
-        <h2 className="absolute top-[3925px] left-[-17px] font-[family-name:var(--font-bricolage)] text-[130px] font-bold leading-[156px] whitespace-nowrap">
-          LET&rsquo;S WORK TOGETHER
-        </h2>
       </div>
-    </div>
+    </section>
   );
 }
 
-function MobileView() {
+function PillLink({ link, small = false }: { link: SocialLink; small?: boolean }) {
   return (
-    <div className="block lg:hidden px-4 sm:px-6 md:px-8 pt-24 pb-16 w-full max-w-3xl mx-auto space-y-16">
-      {/* Mobile Hero */}
-      <section id="about" className="flex flex-col items-center text-center pt-4">
-        <h1 className="font-[family-name:var(--font-bricolage)] text-5xl sm:text-7xl font-bold tracking-tight text-white">
-          Wajiha
-        </h1>
-        <h2 className="font-[family-name:var(--font-bricolage)] text-5xl sm:text-7xl font-bold tracking-tight text-white mt-1">
-          Kulsum
-        </h2>
-        <p className="text-base sm:text-lg text-white/80 mt-4 max-w-md leading-relaxed">
-          I blend UX UI and Full Stack Development to create intuitive, high-impact digital experiences.
-        </p>
-
-        <a
-          href="#contact"
-          className="group w-full max-w-xs sm:max-w-sm mt-6 py-3.5 px-6 rounded-full bg-white hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg"
-        >
-          <span className="font-[family-name:var(--font-bricolage)] text-xl font-medium text-black">
-            About me
-          </span>
-        </a>
-
-        {/* Mobile Social Pills */}
-        <div className="grid grid-cols-2 gap-3 mt-6 w-full max-w-xs sm:max-w-sm">
-          <MobilePillButton href="https://www.behance.net/wajihakulsum">Behance</MobilePillButton>
-          <MobilePillButton href="http://linkedin.com/in/wajihakulsum/">Linkedin</MobilePillButton>
-          <MobilePillButton href="https://github.com/wajiha-kulsum">Github</MobilePillButton>
-          <MobilePillButton href="/Wajiha_Resume.pdf">Resume</MobilePillButton>
-        </div>
-      </section>
-
-      {/* Mobile Contributions */}
-      <section className="space-y-4">
-        <h3 className="text-3xl font-medium font-[family-name:var(--font-bricolage)] text-white">
-          My Contributions
-        </h3>
-        <div className="bg-[#6969692B] p-4 rounded-xl overflow-x-auto shadow-lg">
-          <ContributionsSection desktop={false} />
-        </div>
-      </section>
-
-      {/* Mobile Experience */}
-      <section id="experience" className="space-y-6 pt-4">
-        <h3 className="text-3xl font-medium font-[family-name:var(--font-bricolage)] text-white">
-          Experience
-        </h3>
-        <div className="space-y-6">
-          <MobileExpCard
-            role="UI/UX Design Intern"
-            company="AkaiSpace — On-site"
-            date="Dec 2025 – May 2026"
-            bullets={[
-              "Conceptualized and designed user interfaces and user flows for the AkaiEarn data labeling platform, creating wireframes and high-fidelity prototypes using Figma. Ensuring complex web3 workflows were accessible to everyday users.",
-              "Created high-fidelity prototypes and design systems for our AI-powered tools, focusing on clarity, and visual appeal.",
-            ]}
-          />
-          <MobileExpCard
-            role="UI/UX Design Intern"
-            company="The Tann Mann Foundation — Remote"
-            date="Feb 2025 – Mar 2025"
-            bullets={[
-              "Led end-to-end design process from wireframing to high-fidelity prototypes using Figma, managing design iterations through collaborative workflows and tracking project milestones via design sprints.",
-              "Delivered cohesive user experience designs aligned with user research insights, improving interface usability by 25%.",
-              "Optimized design systems and user flows through iterative prototyping, user testing, and design pattern standardization.",
-            ]}
-          />
-          <MobileExpCard
-            role="Full Stack Developer Intern"
-            company="Pitchmatter"
-            date="Jul 2025 – Oct 2025"
-            bullets={[
-              "Developed 15+ React components with Redux state management and Axios integration, boosting performance by 35%.",
-              "Built automated testing workflows using React Testing Library, achieving 85% code coverage.",
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* Mobile Work */}
-      <section id="projects" className="space-y-6 pt-4">
-        <h3 className="text-3xl font-medium font-[family-name:var(--font-bricolage)] text-white">
-          Work
-        </h3>
-        <div className="space-y-6">
-          <MobileProjectCard
-            imageSrc="/akai_space.png"
-            imageAlt="AkaiSpace"
-            name="AkaiSpace"
-            subtitle="Data annotation Platform"
-          />
-          <MobileProjectCard
-            imageSrc="/akai_earn.png"
-            imageAlt="AkaiEarn"
-            name="AkaiEarn"
-            desc="Gamified data labeling App to complete AI annotation tasks."
-          />
-          <MobileProjectCard
-            imageSrc="/penumbra.png"
-            imageAlt="Penumbra"
-            name="Penumbra"
-            subtitle="A secure OTC trading platform"
-          />
-          <MobileProjectCard
-            imageSrc="/docoprint.png"
-            imageAlt="DocoPrint"
-            name="DocoPrint"
-            subtitle="A digital printing platform"
-          />
-        </div>
-      </section>
-
-      {/* Mobile Footer */}
-      <section id="contact" className="space-y-8 pt-8 border-t border-white/10 text-center">
-        <p className="text-2xl sm:text-3xl font-semibold text-white">
-          Got a project ? Want to collaborate ?
-        </p>
-        <a
-          href="https://cal.com/wajihakulsum"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-lg cursor-pointer"
-        >
-          <span className="font-[family-name:var(--font-bricolage)] text-xl font-semibold">
-            Book a call
-          </span>
-          <ArrowUpRight
-            className="text-black transition-transform duration-300 group-hover:rotate-45"
-            size={24}
-            strokeWidth={2}
-          />
-        </a>
-
-        <div className="space-y-2 text-white/80">
-          <p className="text-lg font-medium text-white">Contacts</p>
-          <p className="text-base font-semibold text-white">wajihakulsum786@gmail.com</p>
-          <p className="text-base font-semibold text-white">+91-7841912389</p>
-          <p className="text-base font-semibold text-white">Mumbai, India</p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-4 pt-4">
-          <FooterSocial href="https://www.behance.net/wajihakulsum">Behance</FooterSocial>
-          <FooterSocial href="http://linkedin.com/in/wajihakulsum/">Linkedin</FooterSocial>
-          <FooterSocial href="https://github.com/wajiha-kulsum">Github</FooterSocial>
-          <FooterSocial href="/Wajiha_Resume.pdf">Resume</FooterSocial>
-        </div>
-
-        <h2 className="font-[family-name:var(--font-bricolage)] text-4xl sm:text-5xl font-bold tracking-tight text-white pt-6">
-          LET&rsquo;S WORK TOGETHER
-        </h2>
-      </section>
-    </div>
-  );
-}
-
-function MobilePillButton({ children, href }: { children: string; href?: string }) {
-  const Component = href ? "a" : "button";
-  return (
-    <Component
-      href={href}
-      target={href ? "_blank" : undefined}
-      rel={href ? "noopener noreferrer" : undefined}
-      className="group py-2.5 px-4 rounded-full border border-white/40 flex items-center justify-center gap-1.5 text-sm text-white transition-colors hover:bg-white/10 cursor-pointer"
+    <a
+      href={link.href}
+      {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={`pill text-sm ${small ? "px-4 py-2" : "px-5 py-2.5"}`}
     >
-      <span>{children}</span>
-      <ArrowUpRight size={16} strokeWidth={2} className="text-white flex-shrink-0 transition-transform duration-300 group-hover:rotate-45" />
-    </Component>
-  );
-}
-
-function MobileExpCard({
-  role,
-  company,
-  date,
-  bullets,
-}: {
-  role: string;
-  company: string;
-  date: string;
-  bullets: string[];
-}) {
-  return (
-    <div className="p-5 rounded-xl bg-[#0B0B0B85] border border-white/10 space-y-3">
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-        <h4 className="text-xl font-medium text-white">{role}</h4>
-        <span className="text-xs text-white/60">{date}</span>
-      </div>
-      <p className="text-sm font-medium text-white/70">{company}</p>
-      <ul className="space-y-2 text-xs sm:text-sm text-white/80 list-disc list-inside">
-        {bullets.map((bullet, idx) => (
-          <li key={idx} className="leading-relaxed">{bullet}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function MobileProjectCard({
-  imageSrc,
-  imageAlt,
-  name,
-  subtitle,
-  desc,
-}: {
-  imageSrc: string;
-  imageAlt: string;
-  name: string;
-  subtitle?: string;
-  desc?: string;
-}) {
-  return (
-    <div className="group rounded-xl bg-[#0B0B0B85] border border-white/10 overflow-hidden space-y-3 p-4 transition-colors hover:bg-[#EDEFE2]/10">
-      <div className="relative w-full h-48 rounded-lg overflow-hidden">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          className="object-cover"
-          unoptimized
-        />
-      </div>
-      <div className="space-y-1">
-        <h4 className="text-xl font-semibold text-white group-hover:text-amber-200 transition-colors">
-          {name}
-        </h4>
-        {subtitle && <p className="text-sm text-white/70">{subtitle}</p>}
-        {desc && <p className="text-xs text-white/60">{desc}</p>}
-      </div>
-    </div>
-  );
-}
-
-function NavLink({ children, href }: { children: string; href: string }) {
-  return (
-    <a href={href} className="text-sm sm:text-[20px] font-light cursor-pointer hover:opacity-80 transition-opacity">
-      {children}
+      {link.label}
+      <ArrowUpRight
+        size={14}
+        strokeWidth={2}
+        className="text-muted-foreground transition-transform duration-300 hover:rotate-45"
+        aria-hidden
+      />
     </a>
   );
 }
 
-function FooterSocial({ children, href }: { children: string; href?: string }) {
-  const Component = href ? "a" : "div";
-  return (
-    <Component
-      href={href}
-      target={href ? "_blank" : undefined}
-      rel={href ? "noopener noreferrer" : undefined}
-      className="group flex items-center gap-[5px] cursor-pointer hover:opacity-80 transition-opacity text-white"
-    >
-      <span className="text-[22px] font-normal leading-[28px]">{children}</span>
-      <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0 transition-transform duration-300 group-hover:rotate-45" />
-    </Component>
-  );
-}
+/* -------------------------------------------------------------------------- */
+/* Contributions                                                               */
+/* -------------------------------------------------------------------------- */
 
-function PillButton({ left, children, href }: { left: number; children: string; href?: string }) {
-  const Component = href ? "a" : "button";
+function ContributionsSection() {
   return (
-    <Component
-      href={href}
-      target={href ? "_blank" : undefined}
-      rel={href ? "noopener noreferrer" : undefined}
-      className="group absolute top-[749px] w-[250px] h-[67px] rounded-full border-[0.8px] border-white flex items-center justify-center gap-[8px] text-[22px] leading-[28px] text-white transition-colors hover:bg-white/5 cursor-pointer"
-      style={{ left }}
-    >
-      {children}
-      <ArrowUpRight size={26} strokeWidth={2} className="text-white flex-shrink-0 transition-transform duration-300 group-hover:rotate-45" />
-    </Component>
-  );
-}
-
-function ExpCard({
-  top,
-  role,
-  company,
-  date,
-  bullets,
-}: {
-  top: string;
-  role: string;
-  company: string;
-  date: string;
-  bullets: string[];
-}) {
-  return (
-    <div className="absolute left-[135px] w-[1170px]" style={{ top }}>
-      <div className="flex items-baseline justify-between w-full">
-        <div className="flex items-center gap-[12px] flex-wrap">
-          <p className="text-[26px] font-medium leading-[32px] text-white">
-            {role}
-          </p>
-          <span className="text-[20px] font-normal text-white/70">
-            &bull; {company}
-          </span>
-        </div>
-        <p className="text-[18px] font-light leading-[22px] text-white/60 whitespace-nowrap">
-          {date}
-        </p>
+    <section id="contributions" className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+      <SectionHeader eyebrow="GitHub" title="My contributions" />
+      <div className="mt-10">
+        <ContributionGraph />
       </div>
-      <ul className="mt-[10px] space-y-[6px] text-[16px] leading-[24px] text-white/80 list-disc list-inside max-w-[1100px]">
-        {bullets.map((bullet, idx) => (
-          <li key={idx}>{bullet}</li>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Experience                                                                  */
+/* -------------------------------------------------------------------------- */
+
+function ExperienceSection() {
+  return (
+    <section id="experience" className="border-y border-border bg-faint">
+      <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+        <SectionHeader
+          eyebrow="Career"
+          title="Experience"
+          description="Where I have been learning, designing, and shipping so far."
+        />
+
+        <ol className="mt-10 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card card-shadow">
+          {EXPERIENCE.map((entry) => (
+            <li key={`${entry.company}-${entry.date}`} className="p-6 sm:p-8">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <h3 className="text-lg font-medium">{entry.role}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {entry.company} &middot; {entry.location}
+                  </p>
+                </div>
+                <p className="whitespace-nowrap text-sm text-muted-foreground tabular-nums">
+                  {entry.date}
+                </p>
+              </div>
+
+              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
+                {entry.bullets.map((bullet, index) => (
+                  <li key={index} className="flex gap-2.5">
+                    <span
+                      aria-hidden
+                      className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-muted-foreground/60"
+                    />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Work                                                                        */
+/* -------------------------------------------------------------------------- */
+
+function WorkSection() {
+  return (
+    <section id="work" className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+      <SectionHeader eyebrow="Work" title="Selected projects" />
+
+      <div className="mt-12 grid gap-6 md:grid-cols-2">
+        {PROJECTS.map((project) => (
+          <article
+            key={project.name}
+            className="group card-shadow overflow-hidden rounded-2xl border border-border bg-card transition-transform duration-300 hover:-translate-y-1"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden border-b border-border bg-faint">
+              <Image
+                src={project.image}
+                alt={project.imageAlt}
+                fill
+                sizes="(min-width: 768px) 550px, 100vw"
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
+
+            <div className="flex items-start justify-between gap-4 p-6">
+              <div>
+                <h3 className="font-display text-xl font-medium">{project.name}</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{project.subtitle}</p>
+                {project.description && (
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {project.description}
+                  </p>
+                )}
+              </div>
+              <span
+                aria-hidden
+                className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 group-hover:border-transparent group-hover:bg-foreground group-hover:text-background"
+              >
+                <ArrowUpRight
+                  size={15}
+                  strokeWidth={2}
+                  className="transition-transform duration-300 group-hover:rotate-45"
+                />
+              </span>
+            </div>
+          </article>
         ))}
-      </ul>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Contact + footer                                                            */
+/* -------------------------------------------------------------------------- */
+
+function ContactSection() {
+  return (
+    <section id="contact" className="mx-auto max-w-6xl px-6 pb-20 pt-20 sm:pb-24 sm:pt-28">
+      <div className="text-center">
+        <p className="section-eyebrow">Contact</p>
+        <h2 className="mt-3 font-display text-4xl font-medium tracking-tight sm:text-6xl">
+          Let&rsquo;s work together
+        </h2>
+        <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
+          Got a project? Want to collaborate? I&rsquo;d love to hear from you.
+        </p>
+        <a
+          href={PROFILE.booking}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary mt-10 px-7 py-3 text-sm font-medium"
+        >
+          Book a call
+          <ArrowUpRight size={16} strokeWidth={2} />
+        </a>
+      </div>
+
+      <div className="mx-auto mt-20 grid max-w-3xl gap-10 border-t border-border pt-12 sm:grid-cols-2">
+        <div className="space-y-6">
+          <ContactItem label="Email">
+            <a
+              href={`mailto:${PROFILE.email}`}
+              className="font-medium transition-opacity hover:opacity-70"
+            >
+              {PROFILE.email}
+            </a>
+          </ContactItem>
+          <ContactItem label="Phone">
+            <a
+              href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
+              className="font-medium transition-opacity hover:opacity-70"
+            >
+              {PROFILE.phone}
+            </a>
+          </ContactItem>
+          <ContactItem label="Location">
+            <span className="font-medium">{PROFILE.location}</span>
+          </ContactItem>
+        </div>
+
+        <ul className="space-y-3 sm:justify-self-end">
+          {SOCIAL_LINKS.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="group inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
+              >
+                {link.label}
+                <ArrowUpRight
+                  size={14}
+                  strokeWidth={2}
+                  className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
+                  aria-hidden
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function ContactItem({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{label}</p>
+      <div className="mt-2 text-sm">{children}</div>
     </div>
   );
 }
 
-function ProjectCard({
-  cardStyle,
-  imageSrc,
-  imageAlt,
-  imageStyle,
-  name,
-  subtitle,
-  subtitleGap = 6,
-  desc,
-  textTop,
-  textLeft,
-  descWidth,
+/* -------------------------------------------------------------------------- */
+/* Shared                                                                      */
+/* -------------------------------------------------------------------------- */
+
+function SectionHeader({
+  eyebrow,
+  title,
+  description,
 }: {
-  cardStyle: {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-    borderRadius: number;
-  };
-  imageSrc: string;
-  imageAlt: string;
-  imageStyle: { left: number; top: number; width: number; height: number };
-  name: string;
-  subtitle?: string;
-  subtitleGap?: number;
-  desc?: string;
-  textTop: number;
-  textLeft: number;
-  descWidth?: number;
+  eyebrow: string;
+  title: string;
+  description?: string;
 }) {
   return (
-    <div
-      className="absolute group cursor-pointer transition-colors duration-300 rounded-[10px] bg-[#0B0B0B85] hover:bg-[#EDEFE2]"
-      style={{
-        left: cardStyle.left,
-        top: cardStyle.top,
-        width: cardStyle.width,
-        height: cardStyle.height,
-        borderRadius: cardStyle.borderRadius,
-      }}
-    >
-      <Image
-        src={imageSrc}
-        alt={imageAlt}
-        width={imageStyle.width}
-        height={imageStyle.height}
-        className="absolute"
-        style={{
-          left: imageStyle.left - cardStyle.left,
-          top: imageStyle.top - cardStyle.top,
-          width: imageStyle.width,
-          height: imageStyle.height,
-          objectFit: "cover",
-          borderRadius: 10,
-        }}
-        unoptimized
-      />
-      <div
-        className="absolute"
-        style={{
-          left: textLeft - cardStyle.left,
-          top: textTop - cardStyle.top,
-        }}
-      >
-        <p className="text-[28px] font-semibold leading-[34px] text-white group-hover:text-black transition-colors duration-300">
-          {name}
-        </p>
-        {subtitle && (
-          <p
-            className="text-[20px] font-medium leading-[24px] text-[#AAAAAA] group-hover:text-[#3A3A3A] transition-colors duration-300"
-            style={{ marginTop: subtitleGap }}
-          >
-            {subtitle}
-          </p>
-        )}
-        {desc && (
-          <p
-            className="text-[18px] font-medium leading-[22px] mt-[8px] text-[#6B6B6B]"
-            style={descWidth ? { width: descWidth } : undefined}
-          >
-            {desc}
-          </p>
-        )}
+    <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p className="section-eyebrow">{eyebrow}</p>
+        <h2 className="mt-3 font-display text-3xl font-medium tracking-tight sm:text-4xl">
+          {title}
+        </h2>
       </div>
+      {description && (
+        <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:text-right">
+          {description}
+        </p>
+      )}
     </div>
   );
 }
