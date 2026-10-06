@@ -15,9 +15,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Wajiha Kulsum — Portfolio",
-  description: "UX/UI & Full Stack Developer",
+  title: "Wajiha Kulsum — UX/UI & Full-Stack Developer",
+  description:
+    "Portfolio of Wajiha Kulsum, a Mumbai-based designer-engineer blending UX/UI and full-stack development to build intuitive, high-impact digital products.",
 };
+
+/**
+ * Applies the saved color scheme before first paint so the page never
+ * flashes the wrong theme. Light is the default; dark is opt-in.
+ */
+const themeScript = `try{if(localStorage.getItem("theme")==="dark"){document.documentElement.dataset.theme="dark";}}catch(e){}`;
 
 export default function RootLayout({
   children,
@@ -25,8 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${inter.variable}`}>
-      <body className="antialiased min-h-screen overflow-x-hidden">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${bricolage.variable} ${inter.variable}`}
+    >
+      <body className="antialiased">
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {children}
       </body>
     </html>
