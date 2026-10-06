@@ -1,22 +1,35 @@
 # Wajiha Kulsum — Portfolio
 
-**Live site:** [wajiha.xyz](https://wajiha.xyz)
+[**Live Demo**](https://wajiha.xyz) • [**Report Bug**](https://github.com/KulsumWajiha/portfolio/issues)
 
-My personal portfolio — work, experience, and a live GitHub contributions graph, all on one page.
+A minimal, performant portfolio showcasing featured projects, work experience, and an automated GitHub activity graph — designed and developed end-to-end.
 
-Built with **Next.js 16**, **React 19**, **Tailwind CSS 4**, and **TypeScript**.
+![Portfolio Preview](https://wajiha.xyz/og-image.png)
 
-## Run it locally
+## Highlights
 
-```bash
-npm install
-npm run dev
-```
+- **Dynamic GitHub Graph:** Renders real-time contribution data server-side via the GitHub GraphQL/REST API with 1-hour cache revalidation.
+- **Modern Tech Stack:** Powered by Next.js 16 App Router, React 19, Tailwind CSS v4, and TypeScript.
+- **Production-Ready:** Strict type safety, clean ESLint configurations, and optimized Core Web Vitals out of the box.
 
-Open [http://localhost:3000](http://localhost:3000).
+## Tech Stack
 
-## Notes
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Library:** [React 19](https://react.dev/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Deployment:** [Vercel](https://vercel.com/)
 
-- The contributions graph reads from GitHub's API (cached server-side, refreshed hourly) and works with zero setup.
-- Add a `GITHUB_TOKEN` in `.env.local` for exact per-day contribution counts instead of heat levels.
-- `npm run build` and `npm run lint` both pass clean.
+## Getting Started
+
+### Prerequisites
+
+- Node.js `18.x` or higher
+- `npm`, `pnpm`, or `yarn`
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/KulsumWajiha/portfolio.git](https://github.com/KulsumWajiha/portfolio.git)
+   cd portfolio
