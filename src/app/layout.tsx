@@ -21,10 +21,10 @@ export const metadata: Metadata = {
 };
 
 /**
- * Applies the saved color scheme before first paint so the page never
- * flashes the wrong theme. Light is the default; dark is opt-in.
+ * Runs before first paint: an explicit saved choice wins, otherwise the
+ * theme follows the device's OS color scheme. Either way there is no flash.
  */
-const themeScript = `try{if(localStorage.getItem("theme")==="dark"){document.documentElement.dataset.theme="dark";}}catch(e){}`;
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.dataset.theme="dark";}}catch(e){}`;
 
 export default function RootLayout({
   children,
