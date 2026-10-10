@@ -5,6 +5,7 @@ import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
 import {
   EXPERIENCE,
+  NAV_LINKS,
   PROJECTS,
   PROFILE,
   SOCIAL_LINKS,
@@ -24,6 +25,8 @@ export default function Home() {
         <WorkSection />
         <ContactSection />
       </main>
+
+      <SiteFooter />
     </div>
   );
 }
@@ -307,59 +310,80 @@ function ContactSection() {
           Got a project? Want to collaborate? Tell me about it — I usually reply within a day.
         </p>
       </div>
-
-      <div className="mx-auto mt-20 grid max-w-3xl gap-10 border-t border-border pt-12 sm:grid-cols-2">
-        <div className="space-y-6">
-          <ContactItem label="Email">
-            <a
-              href={`mailto:${PROFILE.email}`}
-              className="font-medium transition-opacity hover:opacity-70"
-            >
-              {PROFILE.email}
-            </a>
-          </ContactItem>
-          <ContactItem label="Phone">
-            <a
-              href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
-              className="font-medium transition-opacity hover:opacity-70"
-            >
-              {PROFILE.phone}
-            </a>
-          </ContactItem>
-          <ContactItem label="Location">
-            <span className="font-medium">{PROFILE.location}</span>
-          </ContactItem>
-        </div>
-
-        <ul className="space-y-3 sm:justify-self-end">
-          {SOCIAL_LINKS.map((link) => (
-            <li key={link.label}>
-              <a
-                href={link.href}
-                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="group inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
-              >
-                {link.label}
-                <ArrowUpRight
-                  size={14}
-                  strokeWidth={2}
-                  className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
-                  aria-hidden
-                />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
     </section>
   );
 }
 
-function ContactItem({ label, children }: { label: string; children: React.ReactNode }) {
+function SiteFooter() {
+  return (
+    <footer className="border-t border-border bg-faint">
+      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <div className="grid gap-12 sm:grid-cols-3">
+          <FooterColumn title="Pages">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="block w-fit font-medium transition-opacity hover:opacity-70"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </FooterColumn>
+
+          <FooterColumn title="Elsewhere">
+            {SOCIAL_LINKS.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="group inline-flex w-fit items-center gap-1.5 font-medium transition-opacity hover:opacity-70"
+                >
+                  {link.label}
+                  <ArrowUpRight
+                    size={14}
+                    strokeWidth={2}
+                    className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
+                    aria-hidden
+                  />
+                </a>
+              </li>
+            ))}
+          </FooterColumn>
+
+          <FooterColumn title="Contact">
+            <li>
+              <a
+                href={`mailto:${PROFILE.email}`}
+                className="block w-fit font-medium transition-opacity hover:opacity-70"
+              >
+                {PROFILE.email}
+              </a>
+            </li>
+            <li>
+              <a
+                href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
+                className="block w-fit font-medium transition-opacity hover:opacity-70"
+              >
+                {PROFILE.phone}
+              </a>
+            </li>
+            <li>
+              <span className="block text-muted-foreground">{PROFILE.location}</span>
+            </li>
+          </FooterColumn>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{label}</p>
-      <div className="mt-2 text-sm">{children}</div>
+      <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{title}</p>
+      <ul className="mt-4 space-y-2.5 text-sm">{children}</ul>
     </div>
   );
 }
