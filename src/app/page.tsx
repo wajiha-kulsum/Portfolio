@@ -307,7 +307,7 @@ function ContactSection() {
         </div>
 
         <p className="mt-8 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Got a project? Want to collaborate? Tell me about it — I usually reply within a day.
+          Got a project? Want to collaborate? Tell me about it.
         </p>
       </div>
     </section>
@@ -376,16 +376,6 @@ function SiteFooter() {
         </div>
       </div>
 
-      {/* Giant outlined wordmark — pure decoration, cropped at the baseline */}
-      <div aria-hidden className="overflow-hidden px-6">
-        <p
-          className="mx-auto max-w-6xl translate-y-[16%] select-none whitespace-nowrap font-display text-[clamp(4.5rem,17.5vw,13rem)] font-semibold leading-[0.8] tracking-[-0.02em] text-transparent"
-          style={{ WebkitTextStroke: "1px var(--watermark)" }}
-        >
-          WAJIHA
-        </p>
-      </div>
-
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-6 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Wajiha Kulsum</p>
@@ -403,6 +393,18 @@ function SiteFooter() {
             />
           </a>
         </div>
+      </div>
+
+      {/* Giant outlined name — cropped so only the top sliver shows at the
+       * page edge. The fixed 0.4em-tall strip clips the glyphs; everything
+       * below the crop line simply doesn't render. */}
+      <div aria-hidden className="overflow-hidden px-6 text-[clamp(3rem,12vw,11rem)]">
+        <p
+          className="h-[0.4em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
+          style={{ WebkitTextStroke: "1px var(--watermark)" }}
+        >
+          Wajiha Kulsum
+        </p>
       </div>
     </footer>
   );
