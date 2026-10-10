@@ -376,7 +376,7 @@ function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-border">
+      <div>
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-6 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Wajiha Kulsum</p>
           <p>{PROFILE.location}</p>
