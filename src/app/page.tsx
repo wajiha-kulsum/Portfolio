@@ -395,14 +395,23 @@ function SiteFooter() {
         </div>
       </div>
 
-      {/* Giant outlined name — clipped to an 0.9em-tall strip, so ~90% of
-       * the glyphs peek up from the page edge. */}
-      <div aria-hidden className="overflow-hidden px-6 text-[clamp(3.5rem,13vw,13rem)]">
+      {/* Giant outlined name — "Wajiha" on phones, full name on desktop;
+       * clipped to an 0.9em-tall strip so the glyphs peek from the edge. */}
+      <div
+        aria-hidden
+        className="overflow-hidden px-6 text-[clamp(4.5rem,22vw,13rem)] sm:text-[clamp(3.5rem,13vw,13rem)]"
+      >
         <p
-          className="h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
+          className="hidden h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent sm:block"
           style={{ WebkitTextStroke: "1px var(--watermark)" }}
         >
           Wajiha Kulsum
+        </p>
+        <p
+          className="h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent sm:hidden"
+          style={{ WebkitTextStroke: "1px var(--watermark)" }}
+        >
+          Wajiha
         </p>
       </div>
 
