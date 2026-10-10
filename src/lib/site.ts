@@ -21,6 +21,8 @@ export type Project = {
   description?: string;
   image: string;
   imageAlt: string;
+  /** Link to the Behance case-study gallery, when one exists. */
+  behanceUrl?: string;
 };
 
 export const PROFILE = {
