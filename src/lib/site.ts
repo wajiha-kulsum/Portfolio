@@ -102,6 +102,7 @@ export const PROJECTS: Project[] = [
       "A companion app where annotators complete AI annotation tasks through gamified micro-quests.",
     image: "/akai_earn.png",
     imageAlt: "AkaiEarn gamified labeling app preview",
+    behanceUrl: "https://www.behance.net/gallery/250108249/App-Design",
   },
   {
     name: "Penumbra",
