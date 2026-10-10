@@ -395,12 +395,11 @@ function SiteFooter() {
         </div>
       </div>
 
-      {/* Giant outlined name — cropped so only the top sliver shows at the
-       * page edge. The fixed 0.4em-tall strip clips the glyphs; everything
-       * below the crop line simply doesn't render. */}
+      {/* Giant outlined name — clipped to an 0.8em-tall strip, so ~80% of
+       * the glyphs peek up from the page edge. */}
       <div aria-hidden className="overflow-hidden px-6 text-[clamp(3rem,12vw,11rem)]">
         <p
-          className="h-[0.4em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
+          className="h-[0.8em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
           style={{ WebkitTextStroke: "1px var(--watermark)" }}
         >
           Wajiha Kulsum
@@ -410,7 +409,7 @@ function SiteFooter() {
       {/* Progressive blur — melts the name into the page edge */}
       <div
         aria-hidden
-        className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-20 sm:h-24"
+        className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-32"
       />
     </footer>
   );
