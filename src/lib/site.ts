@@ -93,6 +93,7 @@ export const PROJECTS: Project[] = [
       "A labeling workspace that keeps complex annotation pipelines simple for AI teams.",
     image: "/akai_space.png",
     imageAlt: "AkaiSpace data annotation platform preview",
+    behanceUrl: "https://www.behance.net/gallery/250951879/Web-Design",
   },
   {
     name: "AkaiEarn",
