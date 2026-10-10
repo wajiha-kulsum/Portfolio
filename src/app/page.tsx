@@ -240,7 +240,7 @@ function ProjectCard({ project }: { project: Project }) {
   );
 
   const className =
-    "group card-shadow block overflow-hidden rounded-2xl border border-border bg-card transition-transform duration-300 hover:-translate-y-1";
+    "group project-card block overflow-hidden rounded-2xl border border-border bg-card";
 
   // The entire card is one link to the Behance case study: a single tab stop
   // for keyboard users and no invalid nested anchors. Cards without a URL
