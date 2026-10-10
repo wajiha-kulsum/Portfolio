@@ -395,11 +395,11 @@ function SiteFooter() {
         </div>
       </div>
 
-      {/* Giant outlined name — clipped to an 0.8em-tall strip, so ~80% of
+      {/* Giant outlined name — clipped to an 0.9em-tall strip, so ~90% of
        * the glyphs peek up from the page edge. */}
-      <div aria-hidden className="overflow-hidden px-6 text-[clamp(3rem,12vw,11rem)]">
+      <div aria-hidden className="overflow-hidden px-6 text-[clamp(3.5rem,13vw,13rem)]">
         <p
-          className="h-[0.8em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
+          className="h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
           style={{ WebkitTextStroke: "1px var(--watermark)" }}
         >
           Wajiha Kulsum
@@ -409,7 +409,7 @@ function SiteFooter() {
       {/* Progressive blur — melts the name into the page edge */}
       <div
         aria-hidden
-        className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-32"
+        className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-44"
       />
     </footer>
   );
