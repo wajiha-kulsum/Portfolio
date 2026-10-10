@@ -200,7 +200,7 @@ function ProjectCard({ project }: { project: Project }) {
           alt={project.imageAlt}
           fill
           sizes="(min-width: 768px) 550px, 100vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05] group-focus-visible:scale-[1.05]"
         />
       </div>
 
