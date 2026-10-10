@@ -134,7 +134,7 @@ function ContributionsSection() {
 
 function ExperienceSection() {
   return (
-    <section id="experience" className="border-y border-border bg-faint">
+    <section id="experience">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
         <SectionHeader
           eyebrow="Career"
@@ -316,7 +316,7 @@ function ContactSection() {
 
 function SiteFooter() {
   return (
-    <footer className="relative border-t border-border bg-faint">
+    <footer className="relative">
       <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
         <div className="grid gap-12 sm:grid-cols-3">
           <FooterColumn title="Pages">
