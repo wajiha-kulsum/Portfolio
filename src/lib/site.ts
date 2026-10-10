@@ -120,5 +120,6 @@ export const PROJECTS: Project[] = [
       "Order, customize, and track print jobs from a single streamlined interface.",
     image: "/docoprint.png",
     imageAlt: "DocoPrint digital printing platform preview",
+    behanceUrl: "https://www.behance.net/gallery/239408869/Printing",
   },
 ];
