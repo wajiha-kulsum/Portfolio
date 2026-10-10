@@ -296,7 +296,7 @@ function ContactSection() {
             href={`mailto:${PROFILE.email}`}
             className="group inline-flex items-center gap-1.5 text-sm font-medium"
           >
-            {PROFILE.email}
+            <span className="link-underline">{PROFILE.email}</span>
             <ArrowUpRight
               size={14}
               strokeWidth={2}
@@ -324,7 +324,7 @@ function SiteFooter() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="block w-fit font-medium transition-opacity hover:opacity-70"
+                  className="link-underline block w-fit font-medium"
                 >
                   {link.label}
                 </a>
@@ -338,9 +338,9 @@ function SiteFooter() {
                 <a
                   href={link.href}
                   {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group inline-flex w-fit items-center gap-1.5 font-medium transition-opacity hover:opacity-70"
+                  className="group inline-flex w-fit items-center gap-1.5 font-medium"
                 >
-                  {link.label}
+                  <span className="link-underline">{link.label}</span>
                   <ArrowUpRight
                     size={14}
                     strokeWidth={2}
@@ -356,7 +356,7 @@ function SiteFooter() {
             <li>
               <a
                 href={`mailto:${PROFILE.email}`}
-                className="block w-fit font-medium transition-opacity hover:opacity-70"
+                className="link-underline block w-fit font-medium"
               >
                 {PROFILE.email}
               </a>
@@ -364,7 +364,7 @@ function SiteFooter() {
             <li>
               <a
                 href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
-                className="block w-fit font-medium transition-opacity hover:opacity-70"
+                className="link-underline block w-fit font-medium"
               >
                 {PROFILE.phone}
               </a>
