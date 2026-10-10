@@ -8,6 +8,7 @@ import {
   PROJECTS,
   PROFILE,
   SOCIAL_LINKS,
+  type Project,
   type SocialLink,
 } from "@/lib/site";
 
@@ -183,61 +184,64 @@ function WorkSection() {
 
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         {PROJECTS.map((project) => (
-          <article
-            key={project.name}
-            className="group card-shadow overflow-hidden rounded-2xl border border-border bg-card transition-transform duration-300 hover:-translate-y-1"
-          >
-            <div className="relative aspect-[4/3] overflow-hidden border-b border-border bg-faint">
-              <Image
-                src={project.image}
-                alt={project.imageAlt}
-                fill
-                sizes="(min-width: 768px) 550px, 100vw"
-                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              />
-            </div>
-
-            <div className="flex items-start justify-between gap-4 p-6">
-              <div>
-                <h3 className="font-display text-xl font-medium">{project.name}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{project.subtitle}</p>
-                {project.description && (
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {project.description}
-                  </p>
-                )}
-                {project.behanceUrl && (
-                  <a
-                    href={project.behanceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/link mt-4 inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
-                  >
-                    View case study on Behance
-                    <ArrowUpRight
-                      size={14}
-                      strokeWidth={2}
-                      className="text-muted-foreground transition-transform duration-300 group-hover/link:rotate-45"
-                      aria-hidden
-                    />
-                  </a>
-                )}
-              </div>
-              <span
-                aria-hidden
-                className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 group-hover:border-transparent group-hover:bg-foreground group-hover:text-background"
-              >
-                <ArrowUpRight
-                  size={15}
-                  strokeWidth={2}
-                  className="transition-transform duration-300 group-hover:rotate-45"
-                />
-              </span>
-            </div>
-          </article>
+          <ProjectCard key={project.name} project={project} />
         ))}
       </div>
     </section>
+  );
+}
+
+function ProjectCard({ project }: { project: Project }) {
+  return (
+    <article className="group card-shadow overflow-hidden rounded-2xl border border-border bg-card transition-transform duration-300 hover:-translate-y-1">
+      <div className="relative aspect-[4/3] overflow-hidden border-b border-border bg-faint">
+        <Image
+          src={project.image}
+          alt={project.imageAlt}
+          fill
+          sizes="(min-width: 768px) 550px, 100vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+        />
+      </div>
+
+      <div className="flex items-start justify-between gap-4 p-6">
+        <div>
+          <h3 className="font-display text-xl font-medium">{project.name}</h3>
+          <p className="mt-1.5 text-sm text-muted-foreground">{project.subtitle}</p>
+          {project.description && (
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {project.description}
+            </p>
+          )}
+          {project.behanceUrl && (
+            <a
+              href={project.behanceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/link mt-4 inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
+            >
+              View case study on Behance
+              <ArrowUpRight
+                size={14}
+                strokeWidth={2}
+                className="text-muted-foreground transition-transform duration-300 group-hover/link:rotate-45"
+                aria-hidden
+              />
+            </a>
+          )}
+        </div>
+        <span
+          aria-hidden
+          className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 group-hover:border-transparent group-hover:bg-foreground group-hover:text-background"
+        >
+          <ArrowUpRight
+            size={15}
+            strokeWidth={2}
+            className="transition-transform duration-300 group-hover:rotate-45"
+          />
+        </span>
+      </div>
+    </article>
   );
 }
 
