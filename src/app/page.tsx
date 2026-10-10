@@ -192,8 +192,8 @@ function WorkSection() {
 }
 
 function ProjectCard({ project }: { project: Project }) {
-  return (
-    <article className="group card-shadow overflow-hidden rounded-2xl border border-border bg-card transition-transform duration-300 hover:-translate-y-1">
+  const content = (
+    <>
       <div className="relative aspect-[4/3] overflow-hidden border-b border-border bg-faint">
         <Image
           src={project.image}
@@ -214,20 +214,15 @@ function ProjectCard({ project }: { project: Project }) {
             </p>
           )}
           {project.behanceUrl && (
-            <a
-              href={project.behanceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group/link mt-4 inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
-            >
+            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium">
               View case study on Behance
               <ArrowUpRight
                 size={14}
                 strokeWidth={2}
-                className="text-muted-foreground transition-transform duration-300 group-hover/link:rotate-45"
+                className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
                 aria-hidden
               />
-            </a>
+            </span>
           )}
         </div>
         <span
@@ -241,8 +236,30 @@ function ProjectCard({ project }: { project: Project }) {
           />
         </span>
       </div>
-    </article>
+    </>
   );
+
+  const className =
+    "group card-shadow block overflow-hidden rounded-2xl border border-border bg-card transition-transform duration-300 hover:-translate-y-1";
+
+  // The entire card is one link to the Behance case study: a single tab stop
+  // for keyboard users and no invalid nested anchors. Cards without a URL
+  // stay plain articles.
+  if (project.behanceUrl) {
+    return (
+      <a
+        href={project.behanceUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${project.name} — view case study on Behance`}
+        className={className}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return <article className={className}>{content}</article>;
 }
 
 /* -------------------------------------------------------------------------- */
