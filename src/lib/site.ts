@@ -111,6 +111,7 @@ export const PROJECTS: Project[] = [
       "Over-the-counter trading flows designed around trust, privacy, and clarity.",
     image: "/penumbra.png",
     imageAlt: "Penumbra OTC trading platform preview",
+    behanceUrl: "https://www.behance.net/gallery/250964789/Web-Design-Waitlist",
   },
   {
     name: "DocoPrint",
