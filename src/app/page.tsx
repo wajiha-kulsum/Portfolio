@@ -316,7 +316,7 @@ function ContactSection() {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-faint">
+    <footer className="relative border-t border-border bg-faint">
       <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
         <div className="grid gap-12 sm:grid-cols-3">
           <FooterColumn title="Pages">
@@ -406,6 +406,12 @@ function SiteFooter() {
           Wajiha Kulsum
         </p>
       </div>
+
+      {/* Progressive blur — melts the name into the page edge */}
+      <div
+        aria-hidden
+        className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-20 sm:h-24"
+      />
     </footer>
   );
 }

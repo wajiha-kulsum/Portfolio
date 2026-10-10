@@ -171,6 +171,17 @@ body {
   transform-origin: 0 50%;
 }
 
+/* Progressive blur: fully blurred at the bottom edge, dissolving to nothing
+ * upward. The gradient mask feathers the backdrop-filter itself, so the
+ * footer name melts into the page instead of being cut by a hard line.
+ * Without backdrop-filter support the layer is simply invisible. */
+.blur-fade {
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  mask-image: linear-gradient(to top, black 0%, transparent 100%);
+}
+
 /* Project cards: gentle lift, border tint, and deepened shadow on hover.
  * Respects prefers-reduced-motion via the global rule below. */
 .project-card {
