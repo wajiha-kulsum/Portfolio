@@ -318,7 +318,7 @@ function SiteFooter() {
   return (
     <footer className="relative">
       <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        <div className="grid gap-12 sm:grid-cols-3">
+        <div className="grid gap-10">
           <FooterColumn title="Pages">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
@@ -417,9 +417,11 @@ function SiteFooter() {
 
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div>
-      <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{title}</p>
-      <ul className="mt-4 space-y-2.5 text-sm">{children}</ul>
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:gap-6">
+      <p className="w-24 shrink-0 text-xs uppercase tracking-[0.15em] text-muted-foreground">
+        {title}
+      </p>
+      <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">{children}</ul>
     </div>
   );
 }
