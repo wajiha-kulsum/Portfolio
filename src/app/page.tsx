@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
@@ -373,6 +373,35 @@ function SiteFooter() {
               <span className="block text-muted-foreground">{PROFILE.location}</span>
             </li>
           </FooterColumn>
+        </div>
+      </div>
+
+      {/* Giant outlined wordmark — pure decoration, cropped at the baseline */}
+      <div aria-hidden className="overflow-hidden px-6">
+        <p
+          className="mx-auto max-w-6xl translate-y-[16%] select-none whitespace-nowrap font-display text-[clamp(4.5rem,17.5vw,13rem)] font-semibold leading-[0.8] tracking-[-0.02em] text-transparent"
+          style={{ WebkitTextStroke: "1px var(--watermark)" }}
+        >
+          WAJIHA
+        </p>
+      </div>
+
+      <div className="border-t border-border">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-6 text-xs text-muted-foreground">
+          <p>© {new Date().getFullYear()} Wajiha Kulsum</p>
+          <p>{PROFILE.location}</p>
+          <a
+            href="#top"
+            className="group inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+          >
+            Back to top
+            <ArrowUp
+              size={12}
+              strokeWidth={2}
+              className="transition-transform duration-300 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </a>
         </div>
       </div>
     </footer>
