@@ -268,24 +268,44 @@ function ProjectCard({ project }: { project: Project }) {
 
 function ContactSection() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 pb-20 pt-20 sm:pb-24 sm:pt-28">
-      <div className="text-center">
-        <p className="section-eyebrow">Contact</p>
-        <h2 className="mt-3 font-display text-4xl font-medium tracking-tight sm:text-6xl">
-          Let&rsquo;s work together
+    <section id="contact" className="mx-auto max-w-6xl px-6 pb-16 pt-24 sm:pt-28">
+      <p className="section-eyebrow">Contact</p>
+
+      {/* Loud, editorial CTA — big type instead of a centered button */}
+      <div className="mt-6">
+        <h2 className="font-display text-[clamp(2.75rem,9vw,7rem)] font-medium leading-[0.95] tracking-[-0.03em]">
+          Let&rsquo;s work
+          <br />
+          together
         </h2>
-        <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
-          Got a project? Want to collaborate? I&rsquo;d love to hear from you.
+
+        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+          <a
+            href={PROFILE.booking}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary px-7 py-3 text-sm font-medium"
+          >
+            Book a call
+            <ArrowUpRight size={16} strokeWidth={2} />
+          </a>
+          <a
+            href={`mailto:${PROFILE.email}`}
+            className="group inline-flex items-center gap-1.5 text-sm font-medium"
+          >
+            {PROFILE.email}
+            <ArrowUpRight
+              size={14}
+              strokeWidth={2}
+              className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
+              aria-hidden
+            />
+          </a>
+        </div>
+
+        <p className="mt-8 max-w-md text-sm leading-relaxed text-muted-foreground">
+          Got a project? Want to collaborate? Tell me about it — I usually reply within a day.
         </p>
-        <a
-          href={PROFILE.booking}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary mt-10 px-7 py-3 text-sm font-medium"
-        >
-          Book a call
-          <ArrowUpRight size={16} strokeWidth={2} />
-        </a>
       </div>
 
       <div className="mx-auto mt-20 grid max-w-3xl gap-10 border-t border-border pt-12 sm:grid-cols-2">
