@@ -206,6 +206,22 @@ function WorkSection() {
                     {project.description}
                   </p>
                 )}
+                {project.behanceUrl && (
+                  <a
+                    href={project.behanceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link mt-4 inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
+                  >
+                    View case study on Behance
+                    <ArrowUpRight
+                      size={14}
+                      strokeWidth={2}
+                      className="text-muted-foreground transition-transform duration-300 group-hover/link:rotate-45"
+                      aria-hidden
+                    />
+                  </a>
+                )}
               </div>
               <span
                 aria-hidden
