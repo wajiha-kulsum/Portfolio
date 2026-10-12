@@ -57,7 +57,7 @@ export function SiteNav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="link-underline rounded-full px-3 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-full px-3 py-1 text-sm text-muted-foreground transition-colors duration-200 hover:bg-[var(--hover)] hover:text-foreground"
               >
                 {link.label}
               </a>
@@ -82,7 +82,7 @@ export function SiteNav() {
 
         {/* Mobile dropdown */}
         {open && (
-          <div className="nav-glass absolute inset-x-0 top-full mt-2 rounded-2xl border border-border p-2 sm:hidden">
+          <div className="nav-glass menu-pop absolute inset-x-0 top-full mt-2 rounded-2xl border border-border p-2 sm:hidden">
             <ul className="flex flex-col">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
