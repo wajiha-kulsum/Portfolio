@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -10,16 +10,35 @@ import { NAV_LINKS } from "@/lib/site";
  * Floating frosted-glass pill navigation. Desktop keeps the inline links;
  * phones collapse them into a dropdown menu under the pill, driven by a
  * hamburger toggle. Links close the menu after navigating to an anchor.
+ * The glass deepens once the page is scrolled past the top.
  */
 export function SiteNav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Scroll state, throttled to one update per frame.
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setScrolled(window.scrollY > 8));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
       <div className="relative w-full sm:w-fit">
         <nav
           aria-label="Primary"
-          className="nav-glass flex items-center justify-between gap-1 rounded-full border border-border py-1.5 pl-4 pr-2 sm:justify-start sm:gap-2"
+          className={`nav-glass flex items-center justify-between gap-1 rounded-full border border-border py-1.5 pl-4 pr-2 sm:justify-start sm:gap-2 ${
+            scrolled ? "nav-scrolled" : ""
+          }`}
         >
           <a
             href="#about"

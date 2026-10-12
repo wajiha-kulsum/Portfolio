@@ -154,6 +154,16 @@ body {
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
+/* Once the page is scrolled the glass picks up more opacity and a deeper
+ * shadow, so content sliding underneath stays readable. */
+.nav-scrolled {
+  background: var(--nav-scrolled);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 24px 48px -16px var(--glass-shadow);
+}
+
 .card-shadow {
   box-shadow: var(--shadow-card);
 }
