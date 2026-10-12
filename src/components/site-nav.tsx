@@ -19,7 +19,7 @@ export function SiteNav() {
       <div className="relative w-full sm:w-fit">
         <nav
           aria-label="Primary"
-          className="nav-glass flex items-center justify-between gap-1 rounded-full border border-border py-1.5 pl-4 pr-2 shadow-sm sm:justify-start sm:gap-2"
+          className="nav-glass flex items-center justify-between gap-1 rounded-full border border-border py-1.5 pl-4 pr-2 sm:justify-start sm:gap-2"
         >
           <a
             href="#about"
@@ -63,7 +63,7 @@ export function SiteNav() {
 
         {/* Mobile dropdown */}
         {open && (
-          <div className="nav-glass absolute inset-x-0 top-full mt-2 rounded-2xl border border-border p-2 shadow-lg sm:hidden">
+          <div className="nav-glass absolute inset-x-0 top-full mt-2 rounded-2xl border border-border p-2 sm:hidden">
             <ul className="flex flex-col">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
