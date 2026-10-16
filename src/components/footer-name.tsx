@@ -33,7 +33,7 @@ export function FooterName({ text, className }: { text: string; className?: stri
       ref={wrapRef}
       onPointerMove={track}
       onPointerLeave={hide}
-      className="footer-name relative h-[0.9em] select-none overflow-hidden whitespace-nowrap"
+      className="footer-name relative h-[0.8em] select-none overflow-hidden whitespace-nowrap"
       style={{ "--mx": "-999px", "--my": "-999px" } as CSSProperties}
     >
       {/* Base copy — the hollow strokes */}

@@ -397,7 +397,8 @@ function SiteFooter() {
       </div>
 
       {/* Giant outlined name — "Wajiha" on phones, full name on desktop;
-       * clipped to an 0.9em-tall strip so the glyphs peek from the edge. */}
+       * clipped to an 0.8em strip so ~80% of the glyphs peek from the edge,
+       * with the cursor glow melting them into the background. */}
       <div
         aria-hidden
         className="overflow-hidden px-6 text-[clamp(4.5rem,22vw,13rem)] sm:text-[clamp(3.5rem,13vw,13rem)]"
