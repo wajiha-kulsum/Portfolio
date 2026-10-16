@@ -33,12 +33,12 @@ export function FooterName({ text, className }: { text: string; className?: stri
       ref={wrapRef}
       onPointerMove={track}
       onPointerLeave={hide}
-      className="footer-name relative h-[0.8em] select-none overflow-hidden whitespace-nowrap"
+      className={`footer-name relative h-[0.8em] select-none overflow-hidden whitespace-nowrap ${className ?? ""}`}
       style={{ "--mx": "-999px", "--my": "-999px" } as CSSProperties}
     >
       {/* Base copy — the hollow strokes */}
       <p
-        className={`${SHARED} block ${className ?? ""}`}
+        className={`${SHARED} block`}
         style={{ WebkitTextStroke: "1px var(--watermark)" }}
         aria-hidden
       >
@@ -46,7 +46,7 @@ export function FooterName({ text, className }: { text: string; className?: stri
       </p>
       {/* Glow copy — brighter strokes plus an aura, clipped to the cursor */}
       <p
-        className={`name-glow absolute inset-0 ${SHARED} ${className ?? ""}`}
+        className={`name-glow absolute inset-0 ${SHARED}`}
         style={{ WebkitTextStroke: "1px var(--name-glow)" }}
       >
         {text}
