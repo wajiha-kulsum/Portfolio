@@ -19,7 +19,7 @@ export default function Home() {
     <div id="top" className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <SiteNav />
 
-      <main>
+      <main id="main">
         <Hero />
         <ContributionsSection />
         <ExperienceSection />
