@@ -315,7 +315,7 @@ function ContactSection() {
 }
 
 const NAME_STRIP_CLASS =
-  "name-strip fx-fill h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent";
+  "name-strip fx-merged h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent";
 
 /**
  * The giant outlined footer name, one <span> per letter so hover effects can
