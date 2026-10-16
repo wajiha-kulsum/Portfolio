@@ -28,6 +28,8 @@
   --nav-scrolled: linear-gradient(to bottom, rgba(255, 255, 255, 0.92), rgba(252, 252, 250, 0.82));
   --glass-highlight: rgba(255, 255, 255, 0.95);
   --glass-shadow: rgba(15, 15, 15, 0.14);
+  --name-fill: color-mix(in srgb, var(--foreground) 38%, transparent);
+  --name-glow: color-mix(in srgb, var(--foreground) 45%, transparent);
   --glow: rgba(15, 15, 15, 0.06);
   --watermark: rgba(16, 16, 16, 0.16);
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px -20px rgba(0, 0, 0, 0.18);
@@ -53,6 +55,8 @@
   --nav-scrolled: linear-gradient(to bottom, rgba(28, 28, 27, 0.85), rgba(10, 10, 9, 0.78));
   --glass-highlight: rgba(255, 255, 255, 0.09);
   --glass-shadow: rgba(0, 0, 0, 0.55);
+  --name-fill: color-mix(in srgb, var(--foreground) 40%, transparent);
+  --name-glow: color-mix(in srgb, var(--foreground) 55%, transparent);
   --glow: rgba(245, 245, 242, 0.06);
   --watermark: rgba(245, 245, 242, 0.14);
   --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 32px -18px rgba(0, 0, 0, 0.6);
@@ -195,6 +199,38 @@ body {
  * upward. The gradient mask feathers the backdrop-filter itself, so the
  * footer name melts into the page instead of being cut by a hard line.
  * Without backdrop-filter support the layer is simply invisible. */
+/* ---------------------------------------------------------------------------
+ * Footer name — hover effects. Strip carries ONE variant class:
+ *   fx-fill    outline fills solid and drains away, letter by letter
+ *   fx-glow    a light passes through the strokes (commit 2)
+ *   fx-swing   letters rock with a pendulum swing (commit 3)
+ *   fx-mist    a blur ripple rolls across (commit 4)
+ *   fx-merged  all four chained, one after another (commit 4, default)
+ * Letters overlap slightly via the 45ms stagger, so waves merge.
+ * ------------------------------------------------------------------------- */
+.name-letter {
+  display: inline-block;
+  transform-origin: 50% 100%;
+}
+.name-strip:hover .name-letter {
+  animation-timing-function: ease;
+}
+
+/* fx-fill — outline fills and drains */
+.name-strip:hover.fx-fill .name-letter {
+  animation-name: name-fill;
+  animation-duration: 0.7s;
+}
+@keyframes name-fill {
+  0%,
+  100% {
+    color: transparent;
+  }
+  50% {
+    color: var(--name-fill);
+  }
+}
+
 .blur-fade {
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);

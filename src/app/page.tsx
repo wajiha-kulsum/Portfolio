@@ -314,6 +314,34 @@ function ContactSection() {
   );
 }
 
+const NAME_STRIP_CLASS =
+  "name-strip fx-fill h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent";
+
+/**
+ * The giant outlined footer name, one <span> per letter so hover effects can
+ * sweep across it. Variant = which hover animation the strip runs:
+ * fx-fill | fx-glow | fx-swing | fx-mist | fx-merged (all four chained).
+ */
+function OutlinedName({ text, className }: { text: string; className?: string }) {
+  return (
+    <p
+      className={`${NAME_STRIP_CLASS} ${className ?? ""}`}
+      style={{ WebkitTextStroke: "1px var(--watermark)" }}
+      aria-hidden
+    >
+      {Array.from(text).map((char, index) => (
+        <span
+          key={index}
+          className="name-letter"
+          style={{ animationDelay: `${index * 45}ms` }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function SiteFooter() {
   return (
     <footer className="relative">
@@ -401,18 +429,8 @@ function SiteFooter() {
         aria-hidden
         className="overflow-hidden px-6 text-[clamp(4.5rem,22vw,13rem)] sm:text-[clamp(3.5rem,13vw,13rem)]"
       >
-        <p
-          className="hidden h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent sm:block"
-          style={{ WebkitTextStroke: "1px var(--watermark)" }}
-        >
-          Wajiha Kulsum
-        </p>
-        <p
-          className="h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent sm:hidden"
-          style={{ WebkitTextStroke: "1px var(--watermark)" }}
-        >
-          Wajiha
-        </p>
+        <OutlinedName text="Wajiha Kulsum" className="hidden sm:block" />
+        <OutlinedName text="Wajiha" className="sm:hidden" />
       </div>
 
       {/* Progressive blur — melts the name into the page edge */}
