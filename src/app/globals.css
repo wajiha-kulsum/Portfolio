@@ -231,6 +231,21 @@ body {
   }
 }
 
+/* fx-glow — a light passes through the strokes */
+.name-strip:hover.fx-glow .name-letter {
+  animation-name: name-glow;
+  animation-duration: 0.9s;
+}
+@keyframes name-glow {
+  0%,
+  100% {
+    filter: none;
+  }
+  50% {
+    filter: drop-shadow(0 0 0.06em var(--name-glow));
+  }
+}
+
 .blur-fade {
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
