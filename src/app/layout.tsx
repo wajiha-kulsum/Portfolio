@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -15,9 +15,39 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://wajiha.xyz"),
   title: "Wajiha Kulsum — UX/UI & Full-Stack Developer",
   description:
     "Portfolio of Wajiha Kulsum, a Mumbai-based designer-engineer blending UX/UI and full-stack development to build intuitive, high-impact digital products.",
+  openGraph: {
+    title: "Wajiha Kulsum — UX/UI & Full-Stack Developer",
+    description:
+      "Work, experience, and a live GitHub contributions graph — all on one page.",
+    url: "https://wajiha.xyz",
+    siteName: "Wajiha Kulsum",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: `https://avatars.githubusercontent.com/wajiha-kulsum?size=512`,
+        width: 512,
+        height: 512,
+        alt: "Wajiha Kulsum",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Wajiha Kulsum — UX/UI & Full-Stack Developer",
+    description: "Work, experience, and a live GitHub contributions graph.",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfcfa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a09" },
+  ],
 };
 
 /**
