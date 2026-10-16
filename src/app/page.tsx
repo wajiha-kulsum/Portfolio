@@ -3,6 +3,7 @@ import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
+import { FooterName } from "@/components/footer-name";
 import {
   EXPERIENCE,
   NAV_LINKS,
@@ -401,18 +402,8 @@ function SiteFooter() {
         aria-hidden
         className="overflow-hidden px-6 text-[clamp(4.5rem,22vw,13rem)] sm:text-[clamp(3.5rem,13vw,13rem)]"
       >
-        <p
-          className="hidden h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent"
-          style={{ WebkitTextStroke: "1px var(--watermark)" }}
-        >
-          Wajiha Kulsum
-        </p>
-        <p
-          className="h-[0.9em] select-none overflow-hidden whitespace-nowrap text-center font-display font-semibold leading-none tracking-[-0.02em] text-transparent sm:hidden"
-          style={{ WebkitTextStroke: "1px var(--watermark)" }}
-        >
-          Wajiha
-        </p>
+        <FooterName text="Wajiha Kulsum" className="hidden sm:block" />
+        <FooterName text="Wajiha" className="sm:hidden" />
       </div>
 
       {/* Progressive blur — melts the name into the page edge */}
