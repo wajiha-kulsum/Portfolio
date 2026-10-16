@@ -246,6 +246,24 @@ body {
   }
 }
 
+/* fx-swing — pendulum rock around the baseline */
+.name-strip:hover.fx-swing .name-letter {
+  animation-name: name-swing;
+  animation-duration: 0.8s;
+}
+@keyframes name-swing {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(3.5deg);
+  }
+  75% {
+    transform: rotate(-2.5deg);
+  }
+}
+
 .blur-fade {
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
