@@ -154,13 +154,15 @@ body {
     inset 0 1px 0 var(--glass-highlight),
     0 1px 2px rgba(0, 0, 0, 0.05),
     0 16px 40px -16px var(--glass-shadow);
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Once the page is scrolled the glass picks up more opacity and a deeper
- * shadow, so content sliding underneath stays readable. */
+/* Once the page is scrolled the pill condenses and the glass picks up more
+ * opacity and a deeper shadow, so content sliding underneath stays
+ * readable. transform-only so layout never shifts. */
 .nav-scrolled {
   background: var(--nav-scrolled);
+  transform: scale(0.97);
   box-shadow:
     inset 0 1px 0 var(--glass-highlight),
     0 2px 4px rgba(0, 0, 0, 0.06),
