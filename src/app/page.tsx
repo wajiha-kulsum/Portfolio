@@ -353,27 +353,28 @@ function SiteFooter() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title="Contact">
-            <li>
+          {/* Contact info is exactly what <address> is for — the browser's
+           * default italics are reset via not-italic. */}
+          <div>
+            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+              Contact
+            </p>
+            <address className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm not-italic sm:block sm:space-y-2.5">
               <a
                 href={`mailto:${PROFILE.email}`}
                 className="link-underline block w-fit font-medium"
               >
                 {PROFILE.email}
               </a>
-            </li>
-            <li>
               <a
                 href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
                 className="link-underline block w-fit font-medium"
               >
                 {PROFILE.phone}
               </a>
-            </li>
-            <li>
               <span className="block text-muted-foreground">{PROFILE.location}</span>
-            </li>
-          </FooterColumn>
+            </address>
+          </div>
         </div>
       </div>
 
