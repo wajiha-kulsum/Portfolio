@@ -109,7 +109,11 @@ export function ContributionGraph({ className }: { className?: string }) {
         </p>
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-1">
+      <div
+        role="img"
+        aria-label="GitHub contributions for the last year, shown as a heat map"
+        className="mt-6 overflow-x-auto pb-1"
+      >
         <div className="flex flex-col gap-1.5">
           {/* Month labels aligned above the week columns */}
           <div className="flex gap-[3px] text-[10px] leading-4 text-muted-foreground sm:gap-1">
