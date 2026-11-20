@@ -350,6 +350,38 @@ body {
   text-decoration-color: currentColor;
 }
 
+/* Inspect mode: a dev-mode overlay for whatever the pointer is over. */
+.inspect-box {
+  position: fixed;
+  z-index: 70;
+  pointer-events: none;
+  outline: 1px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  transition: top 0.12s ease, left 0.12s ease, width 0.12s ease, height 0.12s ease;
+}
+.inspect-tag {
+  position: fixed;
+  z-index: 71;
+  pointer-events: none;
+  max-width: min(420px, calc(100vw - 24px));
+  border-radius: 6px;
+  background: var(--foreground);
+  color: var(--background);
+  padding: 6px 9px;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.55;
+  white-space: pre;
+  box-shadow: 0 8px 24px -10px var(--glass-shadow);
+}
+.inspect-tag b {
+  color: var(--accent);
+  font-weight: 500;
+}
+[data-inspect] main {
+  cursor: crosshair;
+}
+
 /* The one orchestrated moment: the hero settles in, in order. */
 @keyframes rise {
   from {
