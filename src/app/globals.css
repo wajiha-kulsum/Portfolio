@@ -269,6 +269,112 @@ body {
   transform-origin: top center;
 }
 
+/* ---------------------------------------------------------------------------
+ * The page's one idea: a design file's selection frame. Screenshots sit on a
+ * flat plate with a hairline inner outline; hovering the work selects it,
+ * with corner handles and the shot's real pixel size, like Figma.
+ * ------------------------------------------------------------------------- */
+.shot {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--shot-outline);
+  pointer-events: none;
+}
+.shot img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sel {
+  position: absolute;
+  inset: -7px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), inset 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sel-handle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: var(--background);
+  border: 1px solid var(--accent);
+}
+.sel-handle:nth-child(1) { top: -4px; left: -4px; }
+.sel-handle:nth-child(2) { top: -4px; right: -4px; }
+.sel-handle:nth-child(3) { bottom: -4px; left: -4px; }
+.sel-handle:nth-child(4) { bottom: -4px; right: -4px; }
+.sel-tag {
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 1px 6px;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 18px;
+}
+@media (hover: hover) {
+  .work:hover .sel {
+    opacity: 1;
+    inset: -5px;
+  }
+  .work:hover .shot img {
+    transform: scale(1.015);
+  }
+}
+.work:focus-visible .sel {
+  opacity: 1;
+}
+
+/* Links inside the work captions and contact */
+.text-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+.text-link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* The one orchestrated moment: the hero settles in, in order. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* GitHub heat cell */
+.heat-cell {
+  border-radius: 3px;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+.heat-cell:hover {
+  transform: scale(1.3);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
