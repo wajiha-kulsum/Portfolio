@@ -4,30 +4,85 @@ import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
 import { FooterName } from "@/components/footer-name";
+import { HeroOrbit } from "@/components/hero-orbit";
 import {
-  EXPERIENCE,
+  AKAIEARN,
+  AKAISPACE,
+  MERIDIAN,
   NAV_LINKS,
-  PROJECTS,
   PROFILE,
   SOCIAL_LINKS,
+  STUDIES,
   type Project,
-  type SocialLink,
+  type Shot,
 } from "@/lib/site";
+
+const LANE = "mx-auto w-full max-w-[1120px] px-6";
+const BTN = "inline-flex h-11 items-center justify-center gap-2 px-5 text-sm font-medium";
+const EXTERNAL = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 export default function Home() {
   return (
-    <div id="top" className="min-h-screen overflow-x-hidden bg-background text-foreground">
+    <div id="top" className="min-h-screen overflow-x-clip bg-background text-foreground">
       <SiteNav />
 
       <main id="main">
         <Hero />
-        <ContributionsSection />
-        <ExperienceSection />
         <WorkSection />
+        <ContributionsSection />
         <ContactSection />
       </main>
 
       <SiteFooter />
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shared pieces                                                               */
+/* -------------------------------------------------------------------------- */
+
+/** Figma-style selection: frame, four handles and the shot's pixel size. */
+function Selection({ size }: { size?: string }) {
+  return (
+    <span aria-hidden className="sel">
+      <span className="sel-handle" />
+      <span className="sel-handle" />
+      <span className="sel-handle" />
+      <span className="sel-handle" />
+      {size && <span className="sel-tag">{size}</span>}
+    </span>
+  );
+}
+
+function ShotImage({ shot, sizes, priority = false, className = "" }: {
+  shot: Shot;
+  sizes: string;
+  priority?: boolean;
+  className?: string;
+}) {
+  return (
+    <Image
+      src={shot.src}
+      alt={shot.alt}
+      width={shot.width}
+      height={shot.height}
+      sizes={sizes}
+      priority={priority}
+      className={`block h-auto w-full ${className}`}
+    />
+  );
+}
+
+function SectionTitle({ title, children }: { title: string; children?: React.ReactNode }) {
+  return (
+    <div className="max-w-[60ch]">
+      <h2 className="text-[clamp(2rem,4vw,2.75rem)] font-medium leading-[1.1] tracking-[-0.025em] text-balance">
+        {title}
+      </h2>
+      {children && (
+        <p className="mt-3 text-lg leading-relaxed text-muted-foreground text-pretty">{children}</p>
+      )}
     </div>
   );
 }
@@ -38,140 +93,68 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section id="about" className="relative overflow-hidden px-6 pb-20 pt-32 sm:pt-36">
-      {/* Soft top glow, Attio-style */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[-260px] h-[560px] w-[900px] max-w-[120vw] -translate-x-1/2 rounded-full opacity-70 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, var(--glow), transparent)" }}
-      />
-
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-10 text-center md:flex-row md:items-center md:gap-14 md:text-left">
-        {/* Circular profile picture, live from GitHub */}
-        <div className="card-shadow relative h-40 w-40 shrink-0 overflow-hidden rounded-full border border-border bg-card p-1.5 sm:h-48 sm:w-48">
-          <Image
-            src={PROFILE.avatar}
-            alt={`${PROFILE.name} on GitHub`}
-            width={192}
-            height={192}
-            priority
-            sizes="192px"
-            className="h-full w-full rounded-full object-cover"
-          />
+    <section id="about" className="relative overflow-x-clip pt-24 sm:pt-28">
+      <div className={LANE}>
+        <div
+          className="rise flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm"
+          style={{ "--d": "0ms" } as React.CSSProperties}
+        >
+          <p>
+            Hi, I&rsquo;m <span className="font-medium">{PROFILE.name}</span>, based in {PROFILE.location}.
+          </p>
+          <p className="inline-flex items-center gap-2 text-muted-foreground">
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
+            {PROFILE.availability}
+          </p>
         </div>
+      </div>
 
-        <div className="min-w-0">
-          <p className="section-eyebrow">Hey, this is</p>
-          <h1 className="mt-3 font-display text-[clamp(2.75rem,8vw,5rem)] font-medium leading-[1.05] tracking-[-0.03em]">
-            Wajiha Kulsum
-          </h1>
+      {/* The giant words sit behind the orbit; the h1 reads as one sentence. */}
+      <h1 className="sr-only">Wajiha Kulsum, a product designer who also writes the code.</h1>
+      <div className="relative mx-auto max-w-[1440px] px-6 sm:px-10">
+        <p
+          aria-hidden
+          className="hero-word rise relative z-0 mt-6 sm:mt-2"
+          style={{ "--d": "80ms" } as React.CSSProperties}
+        >
+          Product
+        </p>
+        <div
+          className="rise relative z-10 -my-16 sm:-my-28 lg:-my-40"
+          style={{ "--d": "200ms" } as React.CSSProperties}
+        >
+          <HeroOrbit />
+        </div>
+        <p
+          aria-hidden
+          className="hero-word rise relative z-0 text-right"
+          style={{ "--d": "140ms" } as React.CSSProperties}
+        >
+          designer
+        </p>
+      </div>
 
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
+      <div
+        className={`${LANE} rise mt-8 flex flex-col gap-8 sm:mt-10 md:flex-row md:items-end md:justify-between`}
+        style={{ "--d": "320ms" } as React.CSSProperties}
+      >
+        <div className="max-w-[44ch]">
+          <p className="text-[clamp(1.5rem,2.6vw,2rem)] leading-tight tracking-[-0.02em]">
+            who also writes the code.
+          </p>
+          <p className="mt-3 text-lg leading-relaxed text-muted-foreground text-pretty">
             {PROFILE.tagline}
           </p>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-            <a
-              href={PROFILE.booking}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary px-6 py-3 text-sm font-medium"
-            >
-              Book a call
-              <ArrowUpRight size={16} strokeWidth={2} />
-            </a>
-            <a href="#work" className="btn-outline px-6 py-3 text-sm font-medium">
-              View my work
-            </a>
-          </div>
-
-          <div className="mt-10 flex flex-wrap justify-center gap-2.5 md:justify-start">
-            {SOCIAL_LINKS.map((link) => (
-              <PillLink key={link.label} link={link} small />
-            ))}
-          </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function PillLink({ link, small = false }: { link: SocialLink; small?: boolean }) {
-  return (
-    <a
-      href={link.href}
-      {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`pill text-sm ${small ? "px-4 py-2" : "px-5 py-2.5"}`}
-    >
-      {link.label}
-      <ArrowUpRight
-        size={14}
-        strokeWidth={2}
-        className="text-muted-foreground transition-transform duration-300 hover:rotate-45"
-        aria-hidden
-      />
-    </a>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Contributions                                                               */
-/* -------------------------------------------------------------------------- */
-
-function ContributionsSection() {
-  return (
-    <section id="contributions" className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-      <SectionHeader eyebrow="GitHub" title="My contributions" />
-      <div className="mt-10">
-        <ContributionGraph />
-      </div>
-    </section>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Experience                                                                  */
-/* -------------------------------------------------------------------------- */
-
-function ExperienceSection() {
-  return (
-    <section id="experience">
-      <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-        <SectionHeader
-          eyebrow="Career"
-          title="Experience"
-          description="Where I have been learning, designing, and shipping so far."
-        />
-
-        <ol className="mt-10 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card card-shadow">
-          {EXPERIENCE.map((entry) => (
-            <li key={`${entry.company}-${entry.date}`} className="p-6 sm:p-8">
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <h3 className="text-lg font-medium">{entry.role}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {entry.company} &middot; {entry.location}
-                  </p>
-                </div>
-                <p className="whitespace-nowrap text-sm text-muted-foreground tabular-nums">
-                  {entry.date}
-                </p>
-              </div>
-
-              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
-                {entry.bullets.map((bullet, index) => (
-                  <li key={index} className="flex gap-2.5">
-                    <span
-                      aria-hidden
-                      className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-muted-foreground/60"
-                    />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
+        <div className="flex flex-wrap gap-3">
+          <a href={PROFILE.booking} {...EXTERNAL} className={`btn-primary ${BTN}`}>
+            Book a call
+            <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
+          </a>
+          <a href="#story" className={`btn-outline ${BTN}`}>
+            Read my story
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -181,89 +164,165 @@ function ExperienceSection() {
 /* Work                                                                        */
 /* -------------------------------------------------------------------------- */
 
-function WorkSection() {
+function ProjectCaption({ project }: { project: Project }) {
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-      <SectionHeader eyebrow="Work" title="Selected projects" />
-
-      <div className="mt-12 grid gap-6 md:grid-cols-2">
-        {PROJECTS.map((project) => (
-          <ProjectCard key={project.name} project={project} />
+    <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+      <div className="max-w-[58ch]">
+        <h3 className="text-xl font-medium tracking-[-0.01em]">
+          {project.name}
+          <span className="ml-3 text-base font-normal text-muted-foreground">{project.role}</span>
+        </h3>
+        <p className="mt-2 leading-relaxed text-muted-foreground text-pretty">{project.summary}</p>
+      </div>
+      <ul className="flex shrink-0 flex-wrap gap-x-5 gap-y-2 text-sm sm:pt-1">
+        {project.links.map((link) => (
+          <li key={link.href}>
+            <a href={link.href} {...EXTERNAL} className="group inline-flex items-center gap-1 font-medium">
+              <span className="text-link">{link.label}</span>
+              <ArrowUpRight
+                size={14}
+                strokeWidth={2}
+                aria-hidden
+                className="text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </li>
         ))}
+      </ul>
+    </div>
+  );
+}
+
+function WorkSection() {
+  const [, flow, agent] = MERIDIAN.shots;
+  return (
+    <section id="work" className="pt-28 sm:pt-36">
+      <div className={LANE}>
+        <SectionTitle title="Selected work">
+          Products I designed, and the ones I also shipped in code.
+        </SectionTitle>
+
+        {/* Meridian: the inside of the product */}
+        <article className="mt-14">
+          <div className="grid gap-8 rounded-2xl bg-plate p-5 sm:p-8 md:grid-cols-2 md:gap-8">
+            {[flow, agent].map((shot) => (
+              <a
+                key={shot.src}
+                href={MERIDIAN.links[0].href}
+                {...EXTERNAL}
+                aria-label={`Meridian: ${shot.alt}`}
+                className="work relative block"
+              >
+                <div className="shot">
+                  <ShotImage shot={shot} sizes="(min-width: 1120px) 480px, (min-width: 768px) 45vw, 90vw" />
+                </div>
+                <Selection size="1440 × 900" />
+              </a>
+            ))}
+          </div>
+          <ProjectCaption project={MERIDIAN} />
+        </article>
+
+        {/* AkaiSpace and AkaiEarn: one company, web and app */}
+        <div className="mt-20 grid gap-x-6 gap-y-16 lg:grid-cols-12">
+          <article className="lg:col-span-7">
+            <a
+              href={AKAISPACE.links[0].href}
+              {...EXTERNAL}
+              aria-label="Open AkaiSpace, akaispace.xyz"
+              className="work block overflow-hidden rounded-2xl bg-plate lg:h-[440px]"
+            >
+              <div className="relative ml-5 mt-5 sm:ml-8 sm:mt-8 md:w-[720px]">
+                <div className="shot rounded-r-none lg:rounded-b-none">
+                  <ShotImage shot={AKAISPACE.shots[0]} sizes="(min-width: 768px) 720px, 90vw" />
+                </div>
+              </div>
+            </a>
+            <ProjectCaption project={AKAISPACE} />
+          </article>
+
+          <article className="lg:col-span-5">
+            <a
+              href={AKAIEARN.links[0].href}
+              {...EXTERNAL}
+              aria-label="Open AkaiEarn on Google Play"
+              className="work flex h-[360px] items-end justify-center overflow-hidden rounded-2xl bg-plate px-4 pt-8 sm:h-[440px]"
+            >
+              {AKAIEARN.shots.map((shot, index) => (
+                <div
+                  key={shot.src}
+                  className={`shot relative -mb-6 h-[64%] shrink-0 rounded-[14px] ${
+                    index === 1 ? "z-10 -mx-8" : "origin-bottom scale-[0.9]"
+                  }`}
+                >
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    width={shot.width}
+                    height={shot.height}
+                    sizes="200px"
+                    className="block h-full w-auto"
+                  />
+                </div>
+              ))}
+            </a>
+            <ProjectCaption project={AKAIEARN} />
+          </article>
+        </div>
+
+        {/* Smaller studies, straight from Behance */}
+        <div className="mt-24">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+            <h3 className="text-xl font-medium tracking-[-0.01em]">More on Behance</h3>
+            <a
+              href={SOCIAL_LINKS[0].href}
+              {...EXTERNAL}
+              className="group inline-flex items-center gap-1 text-sm font-medium"
+            >
+              <span className="text-link">All case studies</span>
+              <ArrowUpRight size={14} strokeWidth={2} aria-hidden className="text-muted-foreground" />
+            </a>
+          </div>
+
+          <ul className="-mx-6 mt-8 flex snap-x snap-mandatory scroll-px-6 gap-5 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0 md:pb-0">
+            {STUDIES.map((study) => (
+              <li key={study.name} className="w-[66%] shrink-0 snap-start md:w-auto">
+                <a href={study.href} {...EXTERNAL} className="work group block">
+                  <div className="relative">
+                    <div className="shot">
+                      <ShotImage shot={study.shot} sizes="(min-width: 768px) 210px, 45vw" />
+                    </div>
+                    <Selection />
+                  </div>
+                  <p className="mt-4 text-sm font-medium">{study.name}</p>
+                  <p className="mt-1 text-sm leading-snug text-muted-foreground">{study.summary}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
 }
 
-function ProjectCard({ project }: { project: Project }) {
-  const content = (
-    <>
-      <div className="relative aspect-[4/3] overflow-hidden border-b border-border bg-faint">
-        <Image
-          src={project.image}
-          alt={project.imageAlt}
-          fill
-          sizes="(min-width: 768px) 550px, 100vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05] group-focus-visible:scale-[1.05]"
-        />
-      </div>
+/* -------------------------------------------------------------------------- */
+/* Contributions                                                               */
+/* -------------------------------------------------------------------------- */
 
-      <div className="flex items-start justify-between gap-4 p-6">
-        <div>
-          <h3 className="font-display text-xl font-medium">{project.name}</h3>
-          <p className="mt-1.5 text-sm text-muted-foreground">{project.subtitle}</p>
-          {project.description && (
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {project.description}
-            </p>
-          )}
-          {project.behanceUrl && (
-            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium">
-              View case study on Behance
-              <ArrowUpRight
-                size={14}
-                strokeWidth={2}
-                className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
-                aria-hidden
-              />
-            </span>
-          )}
+function ContributionsSection() {
+  return (
+    <section id="contributions" className="pt-28 sm:pt-36">
+      <div className={LANE}>
+        <SectionTitle title="Code, most days">
+          Live from GitHub. I build what I design, mostly in React, Next.js and TypeScript.
+        </SectionTitle>
+        <div className="mt-10">
+          <ContributionGraph />
         </div>
-        <span
-          aria-hidden
-          className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 group-hover:border-transparent group-hover:bg-foreground group-hover:text-background"
-        >
-          <ArrowUpRight
-            size={15}
-            strokeWidth={2}
-            className="transition-transform duration-300 group-hover:rotate-45"
-          />
-        </span>
       </div>
-    </>
+    </section>
   );
-
-  const className =
-    "group project-card block overflow-hidden rounded-2xl border border-border bg-card";
-
-  // The entire card is one link to the Behance case study: a single tab stop
-  // for keyboard users and no invalid nested anchors. Cards without a URL
-  // stay plain articles.
-  if (project.behanceUrl) {
-    return (
-      <a
-        href={project.behanceUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${project.name} — view case study on Behance`}
-        className={className}
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return <article className={className}>{content}</article>;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -272,44 +331,27 @@ function ProjectCard({ project }: { project: Project }) {
 
 function ContactSection() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 pb-16 pt-24 sm:pt-28">
-      <p className="section-eyebrow">Contact</p>
-
-      {/* Loud, editorial CTA — big type instead of a centered button */}
-      <div className="mt-6">
-        <h2 className="font-display text-[clamp(2.75rem,9vw,7rem)] font-medium leading-[0.95] tracking-[-0.03em]">
+    <section id="contact" className="pb-16 pt-32 sm:pt-44">
+      <div className={LANE}>
+        <h2 className="text-[clamp(3rem,10vw,7.5rem)] font-normal leading-[0.95] tracking-[-0.045em]">
           Let&rsquo;s work
           <br />
           together
         </h2>
 
+        <p className="mt-8 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
+          Got a product that needs designing, building, or both? Tell me about it.
+        </p>
+
         <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-          <a
-            href={PROFILE.booking}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary px-7 py-3 text-sm font-medium"
-          >
+          <a href={PROFILE.booking} {...EXTERNAL} className={`btn-primary ${BTN}`}>
             Book a call
-            <ArrowUpRight size={16} strokeWidth={2} />
+            <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
           </a>
-          <a
-            href={`mailto:${PROFILE.email}`}
-            className="group inline-flex items-center gap-1.5 text-sm font-medium"
-          >
-            <span className="link-underline">{PROFILE.email}</span>
-            <ArrowUpRight
-              size={14}
-              strokeWidth={2}
-              className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
-              aria-hidden
-            />
+          <a href={`mailto:${PROFILE.email}`} className="text-link text-sm font-medium">
+            {PROFILE.email}
           </a>
         </div>
-
-        <p className="mt-8 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Got a project? Want to collaborate? Tell me about it.
-        </p>
       </div>
     </section>
   );
@@ -318,15 +360,12 @@ function ContactSection() {
 function SiteFooter() {
   return (
     <footer className="relative">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <div className={`${LANE} py-16 sm:py-20`}>
         <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">
           <FooterColumn title="Pages">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="link-underline block w-fit font-medium"
-                >
+                <a href={link.href} className="link-underline block w-fit font-medium">
                   {link.label}
                 </a>
               </li>
@@ -338,32 +377,29 @@ function SiteFooter() {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(link.external ? EXTERNAL : {})}
                   className="group inline-flex w-fit items-center gap-1.5 font-medium"
                 >
                   <span className="link-underline">{link.label}</span>
-                  <ArrowUpRight
-                    size={14}
-                    strokeWidth={2}
-                    className="text-muted-foreground transition-transform duration-300 group-hover:rotate-45"
-                    aria-hidden
-                  />
+                  {link.external && (
+                    <ArrowUpRight
+                      size={14}
+                      strokeWidth={2}
+                      className="text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      aria-hidden
+                    />
+                  )}
                 </a>
               </li>
             ))}
           </FooterColumn>
 
-          {/* Contact info is exactly what <address> is for — the browser's
-           * default italics are reset via not-italic. */}
+          {/* Contact info is exactly what <address> is for; not-italic resets
+           * the browser default. */}
           <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
-              Contact
-            </p>
+            <p className="text-sm text-muted-foreground">Contact</p>
             <address className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm not-italic sm:block sm:space-y-2.5">
-              <a
-                href={`mailto:${PROFILE.email}`}
-                className="link-underline block w-fit font-medium"
-              >
+              <a href={`mailto:${PROFILE.email}`} className="link-underline block w-fit font-medium">
                 {PROFILE.email}
               </a>
               <a
@@ -378,28 +414,25 @@ function SiteFooter() {
         </div>
       </div>
 
-      <div>
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-6 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Wajiha Kulsum</p>
-          <p>{PROFILE.location}</p>
-          <a
-            href="#top"
-            className="group inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-          >
-            Back to top
-            <ArrowUp
-              size={12}
-              strokeWidth={2}
-              className="transition-transform duration-300 group-hover:-translate-y-0.5"
-              aria-hidden
-            />
-          </a>
-        </div>
+      <div className={`${LANE} flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-6 text-xs text-muted-foreground`}>
+        <p>© {new Date().getFullYear()} Wajiha Kulsum. Designed and built by me.</p>
+        <a
+          href="#top"
+          className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
+        >
+          Back to top
+          <ArrowUp
+            size={12}
+            strokeWidth={2}
+            className="transition-transform duration-200 group-hover:-translate-y-0.5"
+            aria-hidden
+          />
+        </a>
       </div>
 
-      {/* Giant outlined name — "Wajiha" on phones, full name on desktop;
-       * clipped to an 0.8em strip so ~80% of the glyphs peek from the edge,
-       * with the cursor glow melting them into the background. */}
+      {/* Giant outlined name: "Wajiha" on phones, full name on desktop;
+       * clipped to an 0.8em strip so the glyphs peek from the edge, with the
+       * cursor glow lighting them in the accent. */}
       <div
         aria-hidden
         className="overflow-hidden px-6 text-[clamp(4.5rem,22vw,13rem)] sm:text-[clamp(3.5rem,13vw,13rem)]"
@@ -408,11 +441,7 @@ function SiteFooter() {
         <FooterName text="Wajiha" className="sm:hidden" />
       </div>
 
-      {/* Progressive blur — melts the name into the page edge */}
-      <div
-        aria-hidden
-        className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-44"
-      />
+      <div aria-hidden className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-44" />
     </footer>
   );
 }
@@ -420,41 +449,11 @@ function SiteFooter() {
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{title}</p>
+      <p className="text-sm text-muted-foreground">{title}</p>
       {/* Phones: links flow inline under the label. Desktop: stacked column. */}
       <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm sm:block sm:space-y-2.5">
         {children}
       </ul>
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Shared                                                                      */
-/* -------------------------------------------------------------------------- */
-
-function SectionHeader({
-  eyebrow,
-  title,
-  description,
-}: {
-  eyebrow: string;
-  title: string;
-  description?: string;
-}) {
-  return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p className="section-eyebrow">{eyebrow}</p>
-        <h2 className="mt-3 font-display text-3xl font-medium tracking-tight sm:text-4xl">
-          {title}
-        </h2>
-      </div>
-      {description && (
-        <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:text-right">
-          {description}
-        </p>
-      )}
     </div>
   );
 }
