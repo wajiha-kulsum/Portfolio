@@ -4,6 +4,7 @@ import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
 import { FooterName } from "@/components/footer-name";
+import { AchievementsList } from "@/components/achievements-list";
 import { HeroOrbit } from "@/components/hero-orbit";
 import {
   AKAIEARN,
@@ -37,6 +38,7 @@ export default function Home() {
         <WorkSection />
         <ValuesSection />
         <ContributionsSection />
+        <AchievementsSection />
         <ContactSection />
       </main>
 
@@ -472,6 +474,23 @@ function ContributionsSection() {
         </SectionTitle>
         <div className="mt-10">
           <ContributionGraph />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Achievements                                                                */
+/* -------------------------------------------------------------------------- */
+
+function AchievementsSection() {
+  return (
+    <section id="achievements" className="pt-28 sm:pt-36">
+      <div className={LANE}>
+        <SectionTitle title="Achievements">Hackathons where I designed and built under a deadline.</SectionTitle>
+        <div className="mt-8">
+          <AchievementsList />
         </div>
       </div>
     </section>
