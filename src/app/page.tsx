@@ -8,11 +8,15 @@ import { HeroOrbit } from "@/components/hero-orbit";
 import {
   AKAIEARN,
   AKAISPACE,
+  EARLY_REPOS,
   MERIDIAN,
   NAV_LINKS,
   PROFILE,
   SOCIAL_LINKS,
+  STORY,
+  STORY_INTRO,
   STUDIES,
+  type Chapter,
   type Project,
   type Shot,
 } from "@/lib/site";
@@ -28,6 +32,7 @@ export default function Home() {
 
       <main id="main">
         <Hero />
+        <StorySection />
         <WorkSection />
         <ContributionsSection />
         <ContactSection />
@@ -154,6 +159,126 @@ function Hero() {
           <a href="#story" className={`btn-outline ${BTN}`}>
             Read my story
           </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Story                                                                       */
+/* -------------------------------------------------------------------------- */
+
+function ChapterVisual({ visual }: { visual: Chapter["visual"] }) {
+  if (visual === "repos") {
+    return (
+      <ul className="overflow-hidden rounded-2xl bg-plate font-mono text-[13px]">
+        {EARLY_REPOS.map((repo) => (
+          <li key={repo.name}>
+            <a
+              href={repo.href}
+              {...EXTERNAL}
+              className="flex items-center justify-between gap-4 px-5 py-3.5 transition-colors duration-200 hover:bg-[var(--hover)]"
+            >
+              <span>
+                <span className="text-muted-foreground">wajiha-kulsum/</span>
+                {repo.name}
+              </span>
+              <span className="tabular-nums text-muted-foreground">{repo.year}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  if (visual === "studies") {
+    const picks = STUDIES.filter((study) => study.name === "Swiftze" || study.name === "Splitr");
+    return (
+      <div className="grid grid-cols-2 gap-4">
+        {picks.map((study) => (
+          <a key={study.name} href={study.href} {...EXTERNAL} className="work relative block">
+            <div className="shot">
+              <ShotImage shot={study.shot} sizes="(min-width: 768px) 260px, 45vw" />
+            </div>
+            <Selection />
+          </a>
+        ))}
+      </div>
+    );
+  }
+  if (visual === "stat") {
+    return (
+      <p className="rounded-2xl bg-plate px-6 py-8 text-[clamp(1.6rem,3vw,2.25rem)] leading-tight tracking-[-0.02em]">
+        15+ React components.
+        <br />
+        <span className="text-muted-foreground">85% test coverage.</span>
+      </p>
+    );
+  }
+  if (visual === "akai") {
+    return (
+      <a href={AKAISPACE.links[1].href} {...EXTERNAL} className="work relative block">
+        <div className="shot">
+          <ShotImage
+            shot={{
+              src: "/work/akaispace-mockup.webp",
+              alt: "AkaiSpace website on a laptop among cherry blossoms",
+              width: 808,
+              height: 632,
+            }}
+            sizes="(min-width: 768px) 540px, 90vw"
+          />
+        </div>
+        <Selection size="808 × 632" />
+      </a>
+    );
+  }
+  return (
+    <a href={MERIDIAN.links[0].href} {...EXTERNAL} className="work relative block">
+      <div className="shot">
+        <ShotImage shot={MERIDIAN.shots[0]} sizes="(min-width: 768px) 540px, 90vw" />
+      </div>
+      <Selection size="1440 × 900" />
+    </a>
+  );
+}
+
+function StorySection() {
+  const words = STORY_INTRO.split(" ");
+  return (
+    <section id="story" className="pt-32 sm:pt-44">
+      <div className={LANE}>
+        <p className="max-w-[30ch] text-[clamp(1.75rem,3.6vw,3rem)] leading-[1.2] tracking-[-0.025em]">
+          {words.map((word, i) => (
+            <span key={i} className="lit-word">
+              {word}{" "}
+            </span>
+          ))}
+        </p>
+
+        <div className="mt-28 sm:mt-36">
+          <SectionTitle title="How I got here" />
+          <ol className="relative mt-14 space-y-20 pl-8 sm:space-y-28 sm:pl-12">
+            <span aria-hidden className="story-rail" />
+            {STORY.map((chapter) => (
+              <li
+                key={chapter.title}
+                className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-14"
+              >
+                <span aria-hidden className="story-dot -ml-8 sm:-ml-12" />
+                <div className="md:sticky md:top-28 md:self-start">
+                  <p className="font-mono text-[13px] text-accent">{chapter.when}</p>
+                  <h3 className="mt-3 text-[clamp(1.6rem,2.8vw,2.1rem)] font-normal leading-tight tracking-[-0.02em]">
+                    {chapter.title}
+                  </h3>
+                  <p className="mt-4 max-w-[48ch] text-lg leading-relaxed text-muted-foreground text-pretty">
+                    {chapter.body}
+                  </p>
+                </div>
+                <ChapterVisual visual={chapter.visual} />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
