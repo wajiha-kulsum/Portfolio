@@ -16,6 +16,7 @@ import {
   STORY,
   STORY_INTRO,
   STUDIES,
+  VALUES,
   type Chapter,
   type Project,
   type Shot,
@@ -34,6 +35,7 @@ export default function Home() {
         <Hero />
         <StorySection />
         <WorkSection />
+        <ValuesSection />
         <ContributionsSection />
         <ContactSection />
       </main>
@@ -425,6 +427,32 @@ function WorkSection() {
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Values                                                                      */
+/* -------------------------------------------------------------------------- */
+
+function ValuesSection() {
+  return (
+    <section id="values" className="pt-28 sm:pt-36">
+      <div className={LANE}>
+        <SectionTitle title="What I care about" />
+        <div className="mt-12 grid gap-x-16 gap-y-12 md:grid-cols-2">
+          {VALUES.map((value) => (
+            <div key={value.title}>
+              <h3 className="text-[clamp(1.4rem,2.4vw,1.85rem)] font-normal leading-tight tracking-[-0.02em]">
+                {value.title}
+              </h3>
+              <p className="mt-3 max-w-[46ch] text-lg leading-relaxed text-muted-foreground text-pretty">
+                {value.body}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
