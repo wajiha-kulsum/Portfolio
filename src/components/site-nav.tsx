@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
+import { InspectToggle } from "@/components/inspect-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NAV_LINKS } from "@/lib/site";
 
@@ -51,7 +52,7 @@ export function SiteNav() {
           }`}
         >
           <a
-            href="#about"
+            href="#top"
             onClick={() => setOpen(false)}
             className="pr-1 font-display text-sm font-semibold tracking-tight"
           >
@@ -77,6 +78,7 @@ export function SiteNav() {
           <div className="mx-1 hidden h-4 w-px shrink-0 bg-border sm:block" aria-hidden />
 
           <div className="flex items-center gap-1">
+            <InspectToggle />
             <ThemeToggle className="shrink-0" />
             <button
               type="button"

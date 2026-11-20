@@ -99,7 +99,7 @@ export function ContributionGraph({ className }: { className?: string }) {
 
   return (
     <div
-      className={`card-shadow rounded-2xl border border-border bg-card p-6 sm:p-8 ${className ?? ""}`}
+      className={`rounded-2xl bg-plate p-6 sm:p-8 ${className ?? ""}`}
       aria-busy={!isReady}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
