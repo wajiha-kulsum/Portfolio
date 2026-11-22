@@ -7,17 +7,14 @@ import { FooterName } from "@/components/footer-name";
 import { AchievementsList } from "@/components/achievements-list";
 import { ExperienceDial } from "@/components/experience-dial";
 import { HeroOrbit } from "@/components/hero-orbit";
+import { Cursor } from "@/components/cursor";
 import {
-  AKAIEARN,
-  AKAISPACE,
-  MERIDIAN,
   NAV_LINKS,
   PROFILE,
   SOCIAL_LINKS,
-  STUDIES,
   VALUES,
-  type Project,
-  type Shot,
+  WORK,
+  type WorkItem,
 } from "@/lib/site";
 
 const LANE = "mx-auto w-full max-w-[1120px] px-6";
@@ -27,6 +24,7 @@ const EXTERNAL = { target: "_blank", rel: "noopener noreferrer" } as const;
 export default function Home() {
   return (
     <div id="top" className="min-h-screen overflow-x-clip bg-background text-foreground">
+      <Cursor />
       <SiteNav />
 
       <main id="main">
@@ -47,38 +45,6 @@ export default function Home() {
 /* -------------------------------------------------------------------------- */
 /* Shared pieces                                                               */
 /* -------------------------------------------------------------------------- */
-
-/** Figma-style selection: frame, four handles and the shot's pixel size. */
-function Selection({ size }: { size?: string }) {
-  return (
-    <span aria-hidden className="sel">
-      <span className="sel-handle" />
-      <span className="sel-handle" />
-      <span className="sel-handle" />
-      <span className="sel-handle" />
-      {size && <span className="sel-tag">{size}</span>}
-    </span>
-  );
-}
-
-function ShotImage({ shot, sizes, priority = false, className = "" }: {
-  shot: Shot;
-  sizes: string;
-  priority?: boolean;
-  className?: string;
-}) {
-  return (
-    <Image
-      src={shot.src}
-      alt={shot.alt}
-      width={shot.width}
-      height={shot.height}
-      sizes={sizes}
-      priority={priority}
-      className={`block h-auto w-full ${className}`}
-    />
-  );
-}
 
 function SectionTitle({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
@@ -170,143 +136,74 @@ function Hero() {
 /* Work                                                                        */
 /* -------------------------------------------------------------------------- */
 
-function ProjectCaption({ project }: { project: Project }) {
-  return (
-    <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
-      <div className="max-w-[58ch]">
-        <h3 className="text-xl font-medium tracking-[-0.01em]">
-          {project.name}
-          <span className="ml-3 text-base font-normal text-muted-foreground">{project.role}</span>
-        </h3>
-        <p className="mt-2 leading-relaxed text-muted-foreground text-pretty">{project.summary}</p>
-      </div>
-      <ul className="flex shrink-0 flex-wrap gap-x-5 gap-y-2 text-sm sm:pt-1">
-        {project.links.map((link) => (
-          <li key={link.href}>
-            <a href={link.href} {...EXTERNAL} className="group inline-flex items-center gap-1 font-medium">
-              <span className="text-link">{link.label}</span>
-              <ArrowUpRight
-                size={14}
-                strokeWidth={2}
-                aria-hidden
-                className="text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </a>
-          </li>
+/** Sizes per grid slot, matching the five-card cycle in globals.css. */
+const WORK_SIZES = [
+  "(min-width: 1120px) 603px, (min-width: 768px) 56vw, 92vw",
+  "(min-width: 1120px) 402px, (min-width: 768px) 37vw, 92vw",
+  "(min-width: 1120px) 1072px, 92vw",
+  "(min-width: 1120px) 402px, (min-width: 768px) 37vw, 92vw",
+  "(min-width: 1120px) 603px, (min-width: 768px) 56vw, 92vw",
+];
+
+function WorkCover({ item, sizes }: { item: WorkItem; sizes: string }) {
+  if (item.shots.length > 1) {
+    // App store screenshots as a strip: the middle one centred, the others peeking in.
+    return (
+      <div className="work-phones">
+        {item.shots.map((shot) => (
+          <Image key={shot.src} src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} sizes="300px" className="work-phone" />
         ))}
-      </ul>
-    </div>
+      </div>
+    );
+  }
+  const [shot] = item.shots;
+  return (
+    <Image
+      src={shot.src}
+      alt={shot.alt}
+      fill
+      sizes={sizes}
+      className="work-img"
+      style={item.focus ? { objectPosition: item.focus } : undefined}
+    />
   );
 }
 
 function WorkSection() {
-  const [, flow, agent] = MERIDIAN.shots;
   return (
     <section id="work" className="pt-28 sm:pt-36">
       <div className={LANE}>
-        <SectionTitle title="Selected work">
+        <SectionTitle title="My work">
           Products I designed, and the ones I also shipped in code.
         </SectionTitle>
 
-        {/* Meridian: the inside of the product */}
-        <article className="mt-14">
-          <div className="grid gap-8 rounded-2xl bg-plate p-5 sm:p-8 md:grid-cols-2 md:gap-8">
-            {[flow, agent].map((shot) => (
-              <a
-                key={shot.src}
-                href={MERIDIAN.links[0].href}
-                {...EXTERNAL}
-                aria-label={`Meridian: ${shot.alt}`}
-                className="work relative block"
-              >
-                <div className="shot">
-                  <ShotImage shot={shot} sizes="(min-width: 1120px) 480px, (min-width: 768px) 45vw, 90vw" />
+        <ul className="work-grid mt-16">
+          {WORK.map((item, index) => (
+            <li key={item.name}>
+              <a href={item.href} {...EXTERNAL} data-cursor="View project" className="work-card group block">
+                <div className="shot work-frame bg-plate">
+                  <WorkCover item={item} sizes={WORK_SIZES[index % 5]} />
                 </div>
-                <Selection size="1440 × 900" />
+                <h3 className="mt-6 text-[clamp(1.4rem,2.2vw,1.75rem)] font-normal leading-tight tracking-[-0.02em]">
+                  {item.name}
+                  <span className="ml-3 text-base tracking-normal text-muted-foreground">{item.role}</span>
+                </h3>
+                <p className="mt-2 max-w-[46ch] text-lg leading-relaxed text-muted-foreground text-pretty">
+                  {item.summary}
+                </p>
               </a>
-            ))}
-          </div>
-          <ProjectCaption project={MERIDIAN} />
-        </article>
+            </li>
+          ))}
+        </ul>
 
-        {/* AkaiSpace and AkaiEarn: one company, web and app */}
-        <div className="mt-20 grid gap-x-6 gap-y-16 lg:grid-cols-12">
-          <article className="lg:col-span-7">
-            <a
-              href={AKAISPACE.links[0].href}
-              {...EXTERNAL}
-              aria-label="Open AkaiSpace, akaispace.xyz"
-              className="work block overflow-hidden rounded-2xl bg-plate lg:h-[440px]"
-            >
-              <div className="relative ml-5 mt-5 sm:ml-8 sm:mt-8 md:w-[720px]">
-                <div className="shot rounded-r-none lg:rounded-b-none">
-                  <ShotImage shot={AKAISPACE.shots[0]} sizes="(min-width: 768px) 720px, 90vw" />
-                </div>
-              </div>
-            </a>
-            <ProjectCaption project={AKAISPACE} />
-          </article>
-
-          <article className="lg:col-span-5">
-            <a
-              href={AKAIEARN.links[0].href}
-              {...EXTERNAL}
-              aria-label="Open AkaiEarn on Google Play"
-              className="work flex h-[360px] items-end justify-center overflow-hidden rounded-2xl bg-plate px-4 pt-8 sm:h-[440px]"
-            >
-              {AKAIEARN.shots.map((shot, index) => (
-                <div
-                  key={shot.src}
-                  className={`shot relative -mb-6 h-[64%] shrink-0 rounded-[14px] ${
-                    index === 1 ? "z-10 -mx-8" : "origin-bottom scale-[0.9]"
-                  }`}
-                >
-                  <Image
-                    src={shot.src}
-                    alt={shot.alt}
-                    width={shot.width}
-                    height={shot.height}
-                    sizes="200px"
-                    className="block h-full w-auto"
-                  />
-                </div>
-              ))}
-            </a>
-            <ProjectCaption project={AKAIEARN} />
-          </article>
-        </div>
-
-        {/* Smaller studies, straight from Behance */}
-        <div className="mt-24">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-            <h3 className="text-xl font-medium tracking-[-0.01em]">More on Behance</h3>
-            <a
-              href={SOCIAL_LINKS[0].href}
-              {...EXTERNAL}
-              className="group inline-flex items-center gap-1 text-sm font-medium"
-            >
-              <span className="text-link">All case studies</span>
-              <ArrowUpRight size={14} strokeWidth={2} aria-hidden className="text-muted-foreground" />
-            </a>
-          </div>
-
-          <ul className="-mx-6 mt-8 flex snap-x snap-mandatory scroll-px-6 gap-5 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0 md:pb-0">
-            {STUDIES.map((study) => (
-              <li key={study.name} className="w-[66%] shrink-0 snap-start md:w-auto">
-                <a href={study.href} {...EXTERNAL} className="work group block">
-                  <div className="relative">
-                    <div className="shot">
-                      <ShotImage shot={study.shot} sizes="(min-width: 768px) 210px, 45vw" />
-                    </div>
-                    <Selection />
-                  </div>
-                  <p className="mt-4 text-sm font-medium">{study.name}</p>
-                  <p className="mt-1 text-sm leading-snug text-muted-foreground">{study.summary}</p>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <a
+          href={SOCIAL_LINKS[0].href}
+          {...EXTERNAL}
+          className="group mt-4 inline-flex items-center gap-1 text-sm font-medium"
+        >
+          <span className="text-link">More case studies on Behance</span>
+          <ArrowUpRight size={14} strokeWidth={2} aria-hidden className="text-muted-foreground" />
+        </a>
       </div>
     </section>
   );

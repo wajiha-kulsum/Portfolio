@@ -325,17 +325,132 @@ body {
   font-size: 11px;
   line-height: 18px;
 }
-@media (hover: hover) {
-  .work:hover .sel {
-    opacity: 1;
-    inset: -5px;
+/* ---------------------------------------------------------------------------
+ * My Work: a staggered grid that repeats every five cards. Wide and tall
+ * (the tall one dropped by 160px), one full width, then tall and wide.
+ * Phones stack every card at full width.
+ * ------------------------------------------------------------------------- */
+.work-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.work-grid > li {
+  width: 100%;
+  margin-bottom: 64px;
+}
+.work-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+.work-img {
+  object-fit: cover;
+}
+@media (min-width: 768px) {
+  .work-grid > li:nth-child(5n + 1) {
+    width: 62.5%;
+    padding-right: 6.25%;
   }
-  .work:hover .shot img {
-    transform: scale(1.015);
+  .work-grid > li:nth-child(5n + 2),
+  .work-grid > li:nth-child(5n + 4) {
+    width: 37.5%;
+    padding-top: 160px;
+  }
+  .work-grid > li:nth-child(5n + 2) .work-frame,
+  .work-grid > li:nth-child(5n + 4) .work-frame {
+    aspect-ratio: 4 / 5;
+  }
+  .work-grid > li:nth-child(5n + 3) {
+    margin-block: 64px 128px;
+  }
+  .work-grid > li:nth-child(5n + 3) .work-frame {
+    aspect-ratio: 16 / 9;
+  }
+  .work-grid > li:nth-child(5n) {
+    width: 62.5%;
+    padding-left: 6.25%;
   }
 }
-.work:focus-visible .sel {
-  opacity: 1;
+
+/* App store screenshots as a strip, the middle one centred */
+.work-phones {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.work-phone {
+  height: 100%;
+  width: auto;
+  flex-shrink: 0;
+}
+
+@media (hover: hover) {
+  .work-card:hover .work-frame > img,
+  .work-card:hover .work-phones {
+    transform: scale(1.03);
+  }
+  .work-phones {
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Cursor (components/cursor.tsx). The dot inverts what is under it; over a
+ * card it hands over to a solid "View project" circle. Both follow the same
+ * position; only their inner span scales, so scaling never lags the mouse.
+ * ------------------------------------------------------------------------- */
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.cursor > span {
+  position: absolute;
+  border-radius: 9999px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+}
+.cursor-dot {
+  mix-blend-mode: difference;
+}
+.cursor-dot > span {
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+}
+.cursor-dot[data-state="link"] > span {
+  transform: scale(2.5);
+}
+.cursor-dot[data-state="view"] > span,
+.cursor-dot[data-state="hidden"] > span {
+  transform: scale(0);
+}
+.cursor-view > span {
+  left: -46px;
+  top: -46px;
+  display: flex;
+  width: 92px;
+  height: 92px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 13px;
+  line-height: 1.25;
+  text-align: center;
+  transform: scale(0);
+}
+.cursor-view[data-state="view"] > span {
+  transform: scale(1);
+}
+html[data-custom-cursor] [data-cursor] {
+  cursor: none;
 }
 
 /* Links inside the work captions and contact */

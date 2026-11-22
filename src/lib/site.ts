@@ -372,6 +372,38 @@ export const STUDIES: Study[] = [
   },
 ];
 
+/** One card in My Work. Several shots render as a row of phone screens. */
+export type WorkItem = {
+  name: string;
+  role: string;
+  summary: string;
+  href: string;
+  shots: Shot[];
+  /** CSS object-position when the cover is cropped to its frame. */
+  focus?: string;
+};
+
+const study = (name: string): WorkItem => {
+  const s = STUDIES.find((item) => item.name === name);
+  if (!s) throw new Error(`Unknown study ${name}`);
+  return { name: s.name, role: "UI/UX design", summary: s.summary, href: s.href, shots: [s.shot] };
+};
+
+/**
+ * My Work, in order. The grid repeats every five cards: wide and tall, one
+ * full width, then tall and wide. Tall slots (2, 4, 7) crop the cover's sides,
+ * so put covers whose subject sits in the middle there.
+ */
+export const WORK: WorkItem[] = [
+  { ...MERIDIAN, href: MERIDIAN.links[0].href, shots: [MERIDIAN.shots[0]], focus: "left top" },
+  { ...AKAIEARN, href: AKAIEARN.links[0].href },
+  { ...AKAISPACE, href: AKAISPACE.links[0].href, focus: "center top" },
+  { ...study("Horizon"), focus: "40% center" },
+  study("Splitr"),
+  study("Penumbra"),
+  { ...study("Swiftze"), focus: "right center" },
+];
+
 /**
  * Hackathons and events. `title` is the line shown in the list: put the real
  * outcome there (winner, finalist, track prize) when you have it.
