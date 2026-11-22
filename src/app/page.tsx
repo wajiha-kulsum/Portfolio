@@ -14,7 +14,6 @@ import {
   NAV_LINKS,
   PROFILE,
   SOCIAL_LINKS,
-  STORY_INTRO,
   STUDIES,
   VALUES,
   type Project,
@@ -32,11 +31,10 @@ export default function Home() {
 
       <main id="main">
         <Hero />
-        <StorySection />
+        <ContributionsSection />
         <ExperienceDial />
         <WorkSection />
         <ValuesSection />
-        <ContributionsSection />
         <AchievementsSection />
         <ContactSection />
       </main>
@@ -159,31 +157,10 @@ function Hero() {
             Book a call
             <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
           </a>
-          <a href="#story" className={`btn-outline ${BTN}`}>
-            Read my story
+          <a href="#experience" className={`btn-outline ${BTN}`}>
+            See my experience
           </a>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Story                                                                       */
-/* -------------------------------------------------------------------------- */
-
-function StorySection() {
-  const words = STORY_INTRO.split(" ");
-  return (
-    <section id="story" className="pt-32 sm:pt-44">
-      <div className={LANE}>
-        <p className="max-w-[30ch] text-[clamp(1.75rem,3.6vw,3rem)] leading-[1.2] tracking-[-0.025em]">
-          {words.map((word, i) => (
-            <span key={i} className="lit-word">
-              {word}{" "}
-            </span>
-          ))}
-        </p>
       </div>
     </section>
   );

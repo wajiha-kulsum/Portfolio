@@ -36,10 +36,6 @@ export const PROFILE = {
   resume: "/Wajiha_Resume.pdf",
 } as const;
 
-/** The one-paragraph version, revealed word by word as you scroll. */
-export const STORY_INTRO =
-  "I started out writing HTML and CSS for internship tasks in 2023. Somewhere between fixing layouts and watching people use them, I cared more about how a product feels than how it compiles. So I learned design properly and kept the code. Now nothing gets lost in handoff, because the handoff is me.";
-
 export type TimelineVisual =
   | { kind: "image"; shot: Shot; href: string }
   | { kind: "stat"; value: string; label: string }
@@ -263,10 +259,9 @@ export const VALUES = [
 ];
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "Work", href: "#work" },
-  { label: "Story", href: "#story" },
-  { label: "Experience", href: "#experience" },
   { label: "Code", href: "#contributions" },
+  { label: "Experience", href: "#experience" },
+  { label: "Work", href: "#work" },
   { label: "Contact", href: "#contact" },
 ];
 
