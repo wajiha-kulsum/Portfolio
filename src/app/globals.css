@@ -555,8 +555,14 @@ body {
   }
 }
 @media (max-width: 767px) {
+  /* Phones: the clock runs across the top under the nav; the header and
+   * cards sit below it at full width. */
   .dial[data-mode="pin"] .dial-header {
-    top: 84px;
+    top: 118px;
+  }
+  .dial-svg {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
   }
   .dial-controls {
     top: auto;

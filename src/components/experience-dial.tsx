@@ -50,6 +50,17 @@ type Geo = {
   cx: number;
   cy: number;
   pointerX: number;
+  /** The pointer, where the current experience sits on the dial. */
+  px: number;
+  py: number;
+  /**
+   * Orientation. `base` is the pointer's angle seen from the dial centre
+   * (0: pointing right, desktop; 90: pointing down, phones) and `dir` the
+   * way later experiences lie along the arc (down on desktop, right on
+   * phones, so time reads top to bottom or left to right).
+   */
+  base: number;
+  dir: 1 | -1;
   contentLeft: number;
   /** Degrees of dial between two experiences. */
   stepDeg: number;
@@ -296,30 +307,33 @@ export function ExperienceDial() {
       // pointer, and the arc from experience 0 to here is the time behind.
       dialRef.current?.setAttribute(
         "transform",
-        `rotate(${(-p * g.stepDeg).toFixed(4)} ${g.cx} ${g.cy})`,
+        `rotate(${(-g.dir * p * g.stepDeg).toFixed(4)} ${g.cx} ${g.cy})`,
       );
-      const end = rad(p * g.stepDeg);
+      const start = rad(g.base);
+      const end = rad(g.base + g.dir * p * g.stepDeg);
       progressRef.current?.setAttribute(
         "d",
         p < 0.001
           ? ""
-          : `M ${g.cx + g.r} ${g.cy} A ${g.r} ${g.r} 0 0 1 ${(g.cx + g.r * Math.cos(end)).toFixed(2)} ${(g.cy + g.r * Math.sin(end)).toFixed(2)}`,
+          : `M ${(g.cx + g.r * Math.cos(start)).toFixed(2)} ${(g.cy + g.r * Math.sin(start)).toFixed(2)} A ${g.r} ${g.r} 0 0 ${g.dir > 0 ? 1 : 0} ${(g.cx + g.r * Math.cos(end)).toFixed(2)} ${(g.cy + g.r * Math.sin(end)).toFixed(2)}`,
       );
 
       // Numbers ride just outside the dial; the one at the pointer gives way
       // to the big number in the card.
       const ring = g.r + (g.mobile ? 16 : 28);
       const visibleDeg =
-        (Math.asin(Math.min(1, g.h / 2 / ring)) * 180) / Math.PI;
+        (Math.asin(Math.min(1, (g.mobile ? g.w : g.h) / 2 / ring)) * 180) /
+        Math.PI;
       numRefs.current.forEach((el, i) => {
         if (!el) return;
         const d = i - p;
         const theta = d * g.stepDeg;
-        const nx = g.cx + Math.cos(rad(theta)) * ring;
-        const ny = g.cy + Math.sin(rad(theta)) * ring;
+        const angle = rad(g.base + g.dir * theta);
+        const nx = g.cx + Math.cos(angle) * ring;
+        const ny = g.cy + Math.sin(angle) * ring;
         const near = clamp((Math.abs(d) - 0.3) / 0.4, 0, 1);
         const far = clamp(1 - Math.abs(theta) / visibleDeg, 0, 1);
-        el.style.transform = `translate(${nx.toFixed(1)}px, ${ny.toFixed(1)}px) translate(-50%, -50%) rotate(${theta.toFixed(2)}deg)`;
+        el.style.transform = `translate(${nx.toFixed(1)}px, ${ny.toFixed(1)}px) translate(-50%, -50%) rotate(${(g.dir * theta).toFixed(2)}deg)`;
         el.style.opacity = (near * far * 0.6).toFixed(3);
       });
 
@@ -339,9 +353,13 @@ export function ExperienceDial() {
           // never stack.
           const o = smooth(clamp(1 - ad / 0.46, 0, 1));
           card.style.setProperty("--y", `${(d * 110).toFixed(1)}px`);
-          card.style.setProperty("--s", (1 - Math.min(ad, 1) * 0.05).toFixed(4));
+          card.style.setProperty(
+            "--s",
+            (1 - Math.min(ad, 1) * 0.05).toFixed(4),
+          );
           card.style.opacity = o.toFixed(3);
-          card.style.filter = ad < 0.01 ? "none" : `blur(${(ad * 10).toFixed(2)}px)`;
+          card.style.filter =
+            ad < 0.01 ? "none" : `blur(${(ad * 10).toFixed(2)}px)`;
           card.style.visibility = o < 0.01 ? "hidden" : "visible";
           card.style.pointerEvents = o > 0.6 ? "auto" : "none";
         }
@@ -394,16 +412,21 @@ export function ExperienceDial() {
       measuredH = h;
       const mobile = w < 768;
       const laneLeft = Math.max(mobile ? 16 : 24, (w - 1120) / 2 + 24);
-      // A tall, thin clock: a big radius with the centre far off screen, so
-      // the arc spans the whole height but bulges only a little.
-      const r = mobile ? clamp(h * 1.1, 620, 1000) : clamp(h * 1.25, 760, 1400);
-      const pointerX = mobile ? 22 : Math.max(64, laneLeft - 80);
-      const contentLeft = pointerX + (mobile ? 46 : 104);
+      // Desktop: a tall, thin clock on the left, its centre far off screen so
+      // the arc spans the whole height but bulges only a little. Phones: the
+      // same clock turned on its side across the top, just under the nav, so
+      // the cards get the full width below it.
+      const r = mobile ? clamp(w * 1.3, 440, 700) : clamp(h * 1.25, 760, 1400);
+      const pointerX = mobile ? Math.round(w / 2) : Math.max(64, laneLeft - 80);
+      const pointerY = 74;
+      const contentLeft = mobile ? 16 : pointerX + 104;
       const contentRight = mobile ? 16 : Math.max(24, (w - 1120) / 2 + 24);
       const gap = mobile ? 36 : h < 720 ? 36 : 48;
       const step = Math.round(clamp(h * 0.85, 560, 820));
       // Space along the arc between two experiences, as an angle.
-      const stepDeg = (clamp(h * 0.17, 96, 160) / r) * (180 / Math.PI);
+      const stepDeg =
+        ((mobile ? clamp(w * 0.3, 100, 140) : clamp(h * 0.17, 96, 160)) / r) *
+        (180 / Math.PI);
       stage.style.setProperty("--content-left", `${contentLeft}px`);
       stage.style.setProperty("--content-right", `${contentRight}px`);
 
@@ -428,9 +451,13 @@ export function ExperienceDial() {
         w,
         h,
         r,
-        cx: pointerX - r,
-        cy,
+        cx: mobile ? pointerX : pointerX - r,
+        cy: mobile ? pointerY - r : cy,
         pointerX,
+        px: pointerX,
+        py: mobile ? pointerY : cy,
+        base: mobile ? 90 : 0,
+        dir: mobile ? -1 : 1,
         contentLeft,
         stepDeg,
         step,
@@ -510,12 +537,13 @@ export function ExperienceDial() {
   const ticks = (() => {
     if (!geo) return [];
     const minorDeg = geo.stepDeg / TICKS_PER_STEP;
-    const margin = (Math.asin(Math.min(1, geo.h / geo.r)) * 180) / Math.PI;
+    const span = geo.mobile ? geo.w : geo.h;
+    const margin = (Math.asin(Math.min(1, span / geo.r)) * 180) / Math.PI;
     const from = Math.floor(-margin / minorDeg);
     const to = Math.ceil((last * geo.stepDeg + margin) / minorDeg);
     return Array.from({ length: to - from + 1 }, (_, n) => {
       const k = from + n;
-      const deg = k * minorDeg;
+      const deg = geo.base + geo.dir * k * minorDeg;
       const entryIndex = k / TICKS_PER_STEP;
       const major =
         Number.isInteger(entryIndex) && entryIndex >= 0 && entryIndex <= last;
@@ -632,25 +660,20 @@ export function ExperienceDial() {
             </g>
             {!geo.mobile && (
               <line
-                x1={geo.pointerX + 14}
-                y1={geo.cy}
+                x1={geo.px + 14}
+                y1={geo.py}
                 x2={geo.contentLeft - 18}
-                y2={geo.cy}
+                y2={geo.py}
                 className="dial-hand"
               />
             )}
             <circle
-              cx={geo.pointerX}
-              cy={geo.cy}
+              cx={geo.px}
+              cy={geo.py}
               r={9}
               className="dial-pointer-halo"
             />
-            <circle
-              cx={geo.pointerX}
-              cy={geo.cy}
-              r={4}
-              className="dial-pointer"
-            />
+            <circle cx={geo.px} cy={geo.py} r={4} className="dial-pointer" />
           </svg>
         )}
 
