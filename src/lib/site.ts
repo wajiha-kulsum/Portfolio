@@ -239,22 +239,18 @@ export const TIMELINE: TimelineEntry[] = [
   },
 ];
 
-export const VALUES = [
+export type Article = { title: string; dek: string; date: string; readTime: string; href: string };
+
+export const MEDIUM = "https://medium.com/@wajihakulsum786";
+
+/** Articles on Medium, newest first. Add new ones at the top. */
+export const WRITING: Article[] = [
   {
-    title: "Nothing lost in handoff",
-    body: "I design with the build in mind and build with the design open. The spacing in Figma is the spacing in production.",
-  },
-  {
-    title: "Complex things, made calm",
-    body: "Web3 wallets, AI data pipelines, OTC trades. My job is to make them feel obvious to someone using them for the first time.",
-  },
-  {
-    title: "Research before pixels",
-    body: "I start by talking to people and mapping the flow. At The Tann Mann Foundation that work raised usability by 25%.",
-  },
-  {
-    title: "Tested, not hoped",
-    body: "I write tests for what I ship. At Pitchmatter my components reached 85% coverage.",
+    title: "So you want to get into UI/UX design? Here's where to actually start",
+    dek: "A no-fluff guide for beginners who don't know where to begin: UI versus UX, training your eye, and learning Figma properly.",
+    date: "Feb 2026",
+    readTime: "4 min read",
+    href: "https://medium.com/@wajihakulsum786/so-you-want-to-get-into-ui-ux-design-heres-where-to-actually-start-553277151f06",
   },
 ];
 
@@ -269,6 +265,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { label: "Behance", href: "https://www.behance.net/wajihakulsum", external: true },
   { label: "LinkedIn", href: "https://linkedin.com/in/wajihakulsum/", external: true },
   { label: "GitHub", href: "https://github.com/wajiha-kulsum", external: true },
+  { label: "Medium", href: MEDIUM, external: true },
   { label: "Resume", href: "/Wajiha_Resume.pdf", external: false },
 ];
 

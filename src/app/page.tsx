@@ -12,7 +12,8 @@ import {
   NAV_LINKS,
   PROFILE,
   SOCIAL_LINKS,
-  VALUES,
+  MEDIUM,
+  WRITING,
   WORK,
   type WorkItem,
 } from "@/lib/site";
@@ -32,7 +33,7 @@ export default function Home() {
         <ContributionsSection />
         <ExperienceDial />
         <WorkSection />
-        <ValuesSection />
+        <WritingSection />
         <AchievementsSection />
         <ContactSection />
       </main>
@@ -210,26 +211,51 @@ function WorkSection() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Values                                                                      */
+/* Writing                                                                     */
 /* -------------------------------------------------------------------------- */
 
-function ValuesSection() {
+function WritingSection() {
   return (
-    <section id="values" className="pt-28 sm:pt-36">
+    <section id="writing" className="pt-28 sm:pt-36">
       <div className={LANE}>
-        <SectionTitle title="What I care about" />
-        <div className="mt-12 grid gap-x-16 gap-y-12 md:grid-cols-2">
-          {VALUES.map((value) => (
-            <div key={value.title}>
-              <h3 className="text-[clamp(1.4rem,2.4vw,1.85rem)] font-normal leading-tight tracking-[-0.02em]">
-                {value.title}
-              </h3>
-              <p className="mt-3 max-w-[46ch] text-lg leading-relaxed text-muted-foreground text-pretty">
-                {value.body}
-              </p>
-            </div>
+        <SectionTitle title="Writing">Notes on design, for people starting where I did.</SectionTitle>
+
+        <ul className="mt-12 border-b border-border">
+          {WRITING.map((article) => (
+            <li key={article.href} className="border-t border-border">
+              <a
+                href={article.href}
+                {...EXTERNAL}
+                data-cursor="Read article"
+                className="group grid gap-x-10 gap-y-3 py-10 md:grid-cols-[160px_minmax(0,1fr)_auto]"
+              >
+                <p className="text-sm text-muted-foreground md:pt-2">
+                  {article.date}
+                  <span className="block">{article.readTime}</span>
+                </p>
+                <div>
+                  <h3 className="max-w-[28ch] text-[clamp(1.5rem,3vw,2.25rem)] font-normal leading-[1.15] tracking-[-0.02em] text-balance underline decoration-transparent decoration-1 underline-offset-[6px] transition-[text-decoration-color] duration-200 group-hover:decoration-current">
+                    {article.title}
+                  </h3>
+                  <p className="mt-3 max-w-[56ch] text-lg leading-relaxed text-muted-foreground text-pretty">
+                    {article.dek}
+                  </p>
+                </div>
+                <ArrowUpRight
+                  size={22}
+                  strokeWidth={1.75}
+                  aria-hidden
+                  className="hidden text-muted-foreground transition-transform duration-200 group-hover:-translate-y-1 group-hover:translate-x-1 md:block"
+                />
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
+
+        <a href={MEDIUM} {...EXTERNAL} className="group mt-8 inline-flex items-center gap-1 text-sm font-medium">
+          <span className="text-link">Follow me on Medium</span>
+          <ArrowUpRight size={14} strokeWidth={2} aria-hidden className="text-muted-foreground" />
+        </a>
       </div>
     </section>
   );
