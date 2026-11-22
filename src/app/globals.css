@@ -482,47 +482,405 @@ body {
   }
 }
 
-/* Story chapters: a rail that fills as you read */
-.story-rail {
+/* ---------------------------------------------------------------------------
+ * Experience dial. data-mode: static (no JS or short screens: a plain list)
+ * or pin (sticky; the component writes positions on every scroll frame).
+ * Geometry from the component: --cy, --content-left, --content-right; per
+ * element: --y, --s and for neighbour rows --o (opacity) and --b (blur).
+ * ------------------------------------------------------------------------- */
+.dial {
+  --dial-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dial-line: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --dial-minor: color-mix(in srgb, var(--foreground) 22%, transparent);
+  --dial-mid: color-mix(in srgb, var(--foreground) 38%, transparent);
+  --dial-major: color-mix(in srgb, var(--foreground) 62%, transparent);
+}
+
+/* The link target sits where the pinned view should land. */
+.dial-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.dial[data-mode="pin"] .dial-anchor {
+  top: 96px;
+}
+
+/* Static list */
+.dial-stage {
+  margin-inline: auto;
+  max-width: 1120px;
+  padding-inline: 24px;
+}
+.dial-list {
+  margin-top: 48px;
+  display: grid;
+  gap: 72px;
+}
+
+/* Pinned stage */
+.dial[data-mode="pin"] .dial-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  max-width: none;
+  padding: 0;
+  overflow: hidden;
+}
+.dial[data-mode="pin"] .dial-header {
+  position: absolute;
+  top: 96px;
+  left: var(--content-left);
+  right: var(--content-right);
+}
+.dial-controls {
+  position: absolute;
+  z-index: 2;
+  top: 104px;
+  right: var(--content-right);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Short laptop screens: give the height to the experiences. */
+@media (max-height: 720px) and (min-width: 768px) {
+  .dial[data-mode="pin"] .dial-header {
+    top: 88px;
+  }
+  .dial[data-mode="pin"] .dial-header p {
+    display: none;
+  }
+  .dial-controls {
+    top: 88px;
+  }
+}
+@media (max-width: 767px) {
+  .dial[data-mode="pin"] .dial-header {
+    top: 84px;
+  }
+  .dial-controls {
+    top: auto;
+    bottom: 20px;
+  }
+}
+.dial[data-mode="pin"] .dial-list {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: block;
+  /* A full-stage layer: let clicks through to the controls and the clock;
+   * the cards and rows switch their own pointer events on when visible. */
+  pointer-events: none;
+}
+
+/* The clock: long and faint, fading out at the top and bottom, so it reads
+ * as the page's time axis rather than a widget. */
+.dial-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 4%, #000 26%, #000 74%, transparent 96%);
+  mask-image: linear-gradient(to bottom, transparent 4%, #000 26%, #000 74%, transparent 96%);
+}
+.dial-arc {
+  fill: none;
+  stroke: var(--dial-line);
+  stroke-width: 1;
+}
+.dial-tick {
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+.dial-tick-minor {
+  stroke: var(--dial-minor);
+}
+.dial-tick-mid {
+  stroke: var(--dial-mid);
+}
+.dial-tick-major {
+  stroke: var(--dial-major);
+  stroke-width: 1.5;
+}
+/* Time already passed: the arc from the first experience to now */
+.dial-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.dial-hand {
+  stroke: color-mix(in srgb, var(--accent) 55%, transparent);
+  stroke-width: 1;
+}
+.dial-pointer {
+  fill: var(--accent);
+}
+.dial-pointer-halo {
+  fill: color-mix(in srgb, var(--accent) 12%, transparent);
+  stroke: color-mix(in srgb, var(--accent) 35%, transparent);
+  stroke-width: 1;
+}
+.dial-arcnum {
   position: absolute;
   left: 0;
   top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--border);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
-.story-rail::after {
+
+/* One experience */
+.dial-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+.dial-bignum {
+  display: none;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: clamp(3.5rem, 6.5vw, 5.75rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+.dial-smallnum {
+  margin-right: 10px;
+  color: var(--foreground);
+}
+@media (min-width: 640px) {
+  .dial-grid {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 32px;
+  }
+  .dial-bignum {
+    display: block;
+    align-self: center;
+  }
+  .dial-smallnum {
+    display: none;
+  }
+  .dial-visual {
+    grid-column: 2;
+  }
+}
+@media (min-width: 1024px) {
+  .dial-grid {
+    grid-template-columns: auto minmax(0, 46ch) minmax(0, 380px);
+    align-items: center;
+  }
+  .dial-visual {
+    grid-column: 3;
+  }
+}
+.dial-visual {
+  max-width: 420px;
+}
+
+/* Highlights: what was built, used or achieved */
+.dial-highlights {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.dial-highlights li {
+  position: relative;
+  padding-left: 18px;
+}
+.dial-highlights li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+/* Facts: duration, where, tools */
+.dial-chips {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.dial-chips li {
+  border-radius: 9999px;
+  background: var(--plate);
+  padding: 4px 10px;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+@media (max-width: 767px) {
+  .dial[data-mode="pin"] .dial-highlights {
+    display: none;
+  }
+  /* One line of chips on phones */
+  .dial[data-mode="pin"] .dial-chips {
+    flex-wrap: nowrap;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+}
+
+/* Pinned positions, all written per scroll frame: everything hangs from the
+ * pointer line (--cy). No CSS transitions on position, so motion follows the
+ * scroll exactly and never lags or overshoots. */
+.dial[data-mode="pin"] .dial-item {
+  position: absolute;
+  left: var(--content-left);
+  right: var(--content-right);
+  top: var(--cy);
+}
+.dial[data-mode="pin"] .dial-detail {
+  --y: 0px;
+  --s: 1;
+  transform: translate3d(0, calc(-50% + var(--y)), 0) scale(var(--s));
+  transform-origin: left center;
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity, filter;
+}
+
+.dial-compact {
+  --y: 0px;
+  --s: 1;
+  --o: 0;
+  --b: 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  max-width: 100%;
+  align-items: baseline;
+  gap: 14px;
+  white-space: nowrap;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  text-align: left;
+  cursor: pointer;
+  transform-origin: left center;
+  transform: translate3d(0, calc(-50% + var(--y)), 0) scale(var(--s));
+  opacity: var(--o);
+  filter: blur(var(--b));
+  visibility: hidden;
+  transition: color 0.2s ease;
+  will-change: transform, opacity, filter;
+}
+.dial-compact > span:first-child,
+.dial-compact > span:nth-child(2) {
+  font-size: 13px;
+}
+.dial-compact > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (hover: hover) {
+  .dial-compact:hover {
+    opacity: 0.9;
+    filter: none;
+  }
+}
+.dial-compact:focus-visible {
+  opacity: 1;
+  filter: none;
+}
+
+/* Visuals */
+.dial-media,
+.dial-panel {
+  position: relative;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--plate);
+}
+.dial[data-mode="pin"] .dial-media,
+.dial[data-mode="pin"] .dial-panel {
+  max-height: max(140px, calc(100dvh - 560px));
+}
+@media (max-width: 767px) {
+  .dial[data-mode="pin"] .dial-media,
+  .dial[data-mode="pin"] .dial-panel {
+    max-height: max(130px, calc(100dvh - 700px));
+  }
+}
+.dial-media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--accent);
-  transform-origin: top;
-  transform: scaleY(1);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--shot-outline);
+  pointer-events: none;
 }
-@supports (animation-timeline: view()) {
-  .story-rail::after {
-    animation: rail-fill linear both;
-    animation-timeline: view();
-    animation-range: entry 30% exit 70%;
-  }
-  @keyframes rail-fill {
-    from {
-      transform: scaleY(0);
-    }
-    to {
-      transform: scaleY(1);
-    }
-  }
+.dial-panel {
+  flex-direction: column;
+  padding: clamp(16px, 2vw, 24px);
 }
-.story-dot {
+.dial-media-arrow {
   position: absolute;
-  left: -5px;
-  top: 10px;
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
   background: var(--background);
-  box-shadow: inset 0 0 0 1px var(--accent);
+  color: var(--foreground);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease, transform 0.35s var(--dial-ease);
+}
+.dial-media:hover .dial-media-arrow,
+.dial-media:focus-visible .dial-media-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* Controls */
+.dial-btn {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--background);
+  box-shadow: inset 0 0 0 1px var(--border);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
+}
+.dial-btn:hover:not(:disabled) {
+  background: var(--hover);
+}
+.dial-btn:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.dial-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.dial-btn-solid {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: none;
+}
+.dial-btn-solid:hover:not(:disabled) {
+  background: var(--accent);
+  opacity: 0.88;
 }
 
 /* ---------------------------------------------------------------------------

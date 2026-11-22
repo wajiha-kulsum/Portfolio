@@ -40,54 +40,207 @@ export const PROFILE = {
 export const STORY_INTRO =
   "I started out writing HTML and CSS for internship tasks in 2023. Somewhere between fixing layouts and watching people use them, I cared more about how a product feels than how it compiles. So I learned design properly and kept the code. Now nothing gets lost in handoff, because the handoff is me.";
 
-export type Chapter = {
-  when: string;
+export type TimelineVisual =
+  | { kind: "image"; shot: Shot; href: string }
+  | { kind: "stat"; value: string; label: string }
+  /** A short dated list, e.g. repos or events; `prefix` is shown muted. */
+  | { kind: "list"; prefix?: string; items: { name: string; date: string }[] };
+
+export type TimelineEntry = {
+  /** Shown big, e.g. "Dec 2023". */
+  date: string;
   title: string;
+  /** Where, and the role or format. */
+  org: string;
   body: string;
-  /** Which visual the chapter shows. */
-  visual: "repos" | "studies" | "stat" | "akai" | "meridian";
+  /** Two or three specifics: what was built, used or achieved. */
+  highlights: string[];
+  /** Short facts shown as chips: duration, where, tools. */
+  meta: string[];
+  visual: TimelineVisual;
 };
 
-export const STORY: Chapter[] = [
+/**
+ * The experience timeline, oldest first. Facts come from the resume, the
+ * GitHub repos (dates are repo creation months) and the live sites.
+ */
+export const TIMELINE: TimelineEntry[] = [
   {
-    when: "2023 - 2024",
-    title: "Learning to build",
-    body: "My first internships, at CodSoft, Prodigy InfoTech and Octanet, were all front end: landing pages, a blog called QuillQuest and a lot of CSS. Then came my own projects, from health-care tools to MentorHer.",
-    visual: "repos",
+    date: "Dec 2023",
+    title: "First internship",
+    org: "CodSoft, web development intern",
+    meta: ["HTML", "CSS", "JavaScript"],
+    body: "Where it started. My first internship was all front end: real briefs, real deadlines and sites that had to work on every screen.",
+    highlights: [
+      "Built and deployed landing pages and small web apps",
+      "Responsive layouts in plain HTML, CSS and JavaScript",
+    ],
+    visual: {
+      kind: "list",
+      prefix: "wajiha-kulsum/",
+      items: [
+        { name: "CODSOFT", date: "Dec 2023" },
+        { name: "OCTANET_JANUARY", date: "Jan 2024" },
+        { name: "PRODIGY_WD_01", date: "Jan 2024" },
+      ],
+    },
   },
   {
-    when: "Early 2025",
-    title: "Design pulled me in",
-    body: "At The Tann Mann Foundation I led the design from wireframes to high-fidelity prototypes, grounded in user research. Usability went up 25%. I kept going on Behance with Splitr, DocoPrint and Swiftze.",
-    visual: "studies",
+    date: "Jan 2024",
+    title: "Two internships at once",
+    org: "Prodigy InfoTech and Octanet, front-end intern",
+    meta: ["1 month", "HTML", "CSS", "JavaScript"],
+    body: "Two front-end internships in parallel taught me to plan my time and finish what I start. QuillQuest, a calligraphy blog from that month, is still live.",
+    highlights: [
+      "Four web development tasks for Prodigy InfoTech in one month",
+      "Octanet's January project alongside it",
+      "QuillQuest: editorial layout, typography and a supplies section",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://quillquest-ten.vercel.app/",
+      shot: {
+        src: "/work/quillquest.webp",
+        alt: "QuillQuest home page: Where art meets letters",
+        width: 1200,
+        height: 750,
+      },
+    },
   },
   {
-    when: "Jul - Oct 2025",
+    date: "Feb 2025",
+    title: "Into UX design",
+    org: "The Tann Mann Foundation, UI/UX design intern",
+    meta: ["2 months", "Remote", "Figma", "User research"],
+    body: "My first design role, remote. I led the work from research and wireframes to high-fidelity Figma prototypes, in collaborative design sprints.",
+    highlights: [
+      "User research shaped every screen",
+      "Iterative prototyping and user testing",
+      "Standardized design patterns and user flows",
+    ],
+    visual: { kind: "stat", value: "+25%", label: "interface usability after the research-led redesign" },
+  },
+  {
+    date: "Mar 2025",
+    title: "MentorHer",
+    org: "Personal project, design and build",
+    meta: ["Next.js", "Tailwind CSS", "MongoDB", "Socket.IO"],
+    body: "A mentorship platform I designed and built end to end, and still deployed. It was my first product where I owned every decision, from flows to code.",
+    highlights: [
+      "Personal dashboards for session tracking and resources",
+      "A community forum and chat for peer support",
+      "A user-friendly, pastel-themed interface",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://mentorher.vercel.app",
+      shot: {
+        src: "/work/mentorher.webp",
+        alt: "MentorHer home page: Your journey, her guidance, limitless possibilities",
+        width: 1200,
+        height: 750,
+      },
+    },
+  },
+  {
+    date: "Jul 2025",
     title: "Shipping with a team",
-    body: "At Pitchmatter I was on the other side of the handoff: React components with Redux and Axios, and the tests to back them.",
-    visual: "stat",
+    org: "Pitchmatter, full-stack developer intern",
+    meta: ["4 months", "Remote", "React", "Redux", "Testing Library"],
+    body: "Four months on the build side of the handoff, remote. I learned what makes a design easy or hard to ship, and how to test what I ship.",
+    highlights: [
+      "15+ React components with Redux and Axios",
+      "Boosted performance by 35%",
+      "Automated tests with React Testing Library",
+    ],
+    visual: { kind: "stat", value: "85%", label: "test coverage across the components I shipped" },
   },
   {
-    when: "Dec 2025 - May 2026",
+    date: "Oct 2025",
+    title: "Splitr",
+    org: "Personal project, product design",
+    meta: ["Figma", "Mobile app", "Dark and light mode"],
+    body: "An expense-splitting app for trips, dinners and monthly rent, designed in Figma from onboarding to settling up, in dark and light mode.",
+    highlights: [
+      "Equal, percentage and custom splits",
+      "Group tracking and clear settle-up flows",
+      "Onboarding and a mobile banking-style home",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://www.behance.net/gallery/239413715/Spliter",
+      shot: {
+        src: "/work/splitr.webp",
+        alt: "Splitr onboarding and wallet screens in dark mode",
+        width: 808,
+        height: 632,
+      },
+    },
+  },
+  {
+    date: "Dec 2025",
     title: "Designing for AI",
-    body: "At AkaiSpace I designed AkaiEarn, an Android app where anyone can earn by labeling data for AI, and the AkaiSpace website. Both are live.",
-    visual: "akai",
+    org: "AkaiSpace, UI/UX design intern",
+    meta: ["6 months", "On-site", "Figma", "Design systems"],
+    body: "Six months on-site designing for an AI data company. I made complex web3 and data-labeling workflows simple enough for anyone to use.",
+    highlights: [
+      "AkaiEarn: user flows to hi-fi prototypes, now on Google Play",
+      "Designed the AkaiSpace website",
+      "Prototypes and a design system for AI-powered tools",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://www.behance.net/gallery/250951879/Web-Design",
+      shot: {
+        src: "/work/akaispace-mockup.webp",
+        alt: "AkaiSpace website on a laptop among cherry blossoms",
+        width: 808,
+        height: 632,
+      },
+    },
   },
   {
-    when: "2026",
-    title: "Design and code, end to end",
-    body: "Meridian is a market where AI agents buy spare LLM capacity. I designed it and built it, from the order book diagrams to the agent limits.",
-    visual: "meridian",
+    date: "Mar 2026",
+    title: "Hackathon season",
+    org: "EthMumbai, Coherence and Monad Blitz",
+    meta: ["Team builds", "Web3", "Rapid prototyping"],
+    body: "A run of hackathons where I designed and built with a team against the clock, from Ethereum apps in Mumbai to a one-day build on Monad.",
+    highlights: [
+      "EthMumbai, the city's Ethereum hackathon",
+      "Coherence 2026 with team CRWDSTRK",
+      "Monad Blitz: shipped Monowire in a single day",
+    ],
+    visual: {
+      kind: "list",
+      items: [
+        { name: "EthMumbai", date: "Mar 2026" },
+        { name: "Coherence 2026", date: "Mar 2026" },
+        { name: "Monad Blitz", date: "May 2026" },
+      ],
+    },
   },
-];
-
-/** Early repos shown in the first chapter, all real and public. */
-export const EARLY_REPOS = [
-  { name: "CODSOFT", year: "2023", href: "https://codsoft-two-sooty.vercel.app" },
-  { name: "QuillQuest", year: "2024", href: "https://quillquest-ten.vercel.app/" },
-  { name: "Spotify landing", year: "2024", href: "https://spotify-clone-landing-page.vercel.app" },
-  { name: "Bento grid", year: "2024", href: "https://bento-grid-blond.vercel.app" },
-  { name: "MentorHer", year: "2025", href: "https://mentorher.vercel.app" },
+  {
+    date: "Nov 2026",
+    title: "Meridian",
+    org: "Design and front end, end to end",
+    meta: ["Product design", "TypeScript", "NEAR"],
+    body: "A market where AI agents buy spare LLM capacity on NEAR. Sellers list what their keys won't use, and agents spend inside a daily limit set on chain.",
+    highlights: [
+      "Order book and payment flow diagrams that animate the idea",
+      "Agent spending limits you can raise from your phone",
+      "A receipts page that recomputes the index in the browser",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://www.tradeonmeridian.xyz/",
+      shot: {
+        src: "/work/meridian-hero.webp",
+        alt: "Meridian home page: Compute expires. Markets don't.",
+        width: 1920,
+        height: 1200,
+      },
+    },
+  },
 ];
 
 export const VALUES = [
@@ -112,6 +265,7 @@ export const VALUES = [
 export const NAV_LINKS: NavLink[] = [
   { label: "Work", href: "#work" },
   { label: "Story", href: "#story" },
+  { label: "Experience", href: "#experience" },
   { label: "Code", href: "#contributions" },
   { label: "Contact", href: "#contact" },
 ];
