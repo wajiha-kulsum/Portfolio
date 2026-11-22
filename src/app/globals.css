@@ -558,7 +558,22 @@ body {
   /* Phones: the clock runs across the top under the nav; the header and
    * cards sit below it at full width. */
   .dial[data-mode="pin"] .dial-header {
-    top: 118px;
+    top: 136px;
+  }
+  /* Slimmer cards when the phone browser leaves little height */
+  .dial[data-mode="pin"]:is([data-fit="1"], [data-fit="2"], [data-fit="3"]) .dial-header p,
+  .dial[data-mode="pin"]:is([data-fit="1"], [data-fit="2"], [data-fit="3"]) .dial-visual {
+    display: none;
+  }
+  .dial[data-mode="pin"]:is([data-fit="2"], [data-fit="3"]) .dial-chips,
+  .dial[data-mode="pin"][data-fit="3"] .dial-body {
+    display: none;
+  }
+  .dial[data-mode="pin"][data-fit="2"] .dial-body {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
   .dial-svg {
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);

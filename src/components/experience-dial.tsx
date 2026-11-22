@@ -418,7 +418,9 @@ export function ExperienceDial() {
       // the cards get the full width below it.
       const r = mobile ? clamp(w * 1.3, 440, 700) : clamp(h * 1.25, 760, 1400);
       const pointerX = mobile ? Math.round(w / 2) : Math.max(64, laneLeft - 80);
-      const pointerY = 74;
+      // Just below the nav pill, so the pointer and the arc's centre are in
+      // clear view while the arc's ends run up behind the nav.
+      const pointerY = 100;
       const contentLeft = mobile ? 16 : pointerX + 104;
       const contentRight = mobile ? 16 : Math.max(24, (w - 1120) / 2 + 24);
       const gap = mobile ? 36 : h < 720 ? 36 : 48;
@@ -434,14 +436,29 @@ export function ExperienceDial() {
       // with at least one neighbour above and below; pin only if that fits
       // between the header and the bottom edge, otherwise fall back to the
       // plain list so nothing is ever cropped.
+      // Phone browsers show far less height than the screen (address bar and
+      // toolbars), so on phones the card slims down until the clock fits:
+      // fit 1 drops the picture, fit 2 also the chips and long lines, fit 3
+      // keeps just the date, title and role (small phones). The
+      // plain list below keeps every detail.
       section.dataset.mode = "pin";
-      const half =
-        Math.max(...detailRefs.current.map((el) => el?.offsetHeight ?? 0)) / 2;
+      let half = 0;
+      let top = 0;
+      let bottom = 0;
+      let minCy = 0;
+      let maxCy = -1;
+      for (const fit of mobile ? [0, 1, 2, 3] : [0]) {
+        section.dataset.fit = String(fit);
+        half =
+          Math.max(...detailRefs.current.map((el) => el?.offsetHeight ?? 0)) /
+          2;
+        top = header.offsetTop + header.offsetHeight + 8;
+        bottom = h - 16 - (mobile ? MOBILE_CONTROLS : 0);
+        minCy = top + half + gap + COMPACT_HALF;
+        maxCy = bottom - (half + gap + COMPACT_HALF);
+        if (minCy <= maxCy) break;
+      }
       const reach = half + gap + COMPACT_HALF;
-      const top = header.offsetTop + header.offsetHeight + 8;
-      const bottom = h - 16 - (mobile ? MOBILE_CONTROLS : 0);
-      const minCy = top + reach;
-      const maxCy = bottom - reach;
       const cy = Math.round(clamp((top + bottom) / 2, minCy, maxCy));
       const above = clamp(Math.floor((cy - reach - top) / ROW) + 1, 1, 3);
       const below = clamp(Math.floor((bottom - (cy + reach)) / ROW) + 1, 1, 3);
@@ -469,6 +486,7 @@ export function ExperienceDial() {
       };
       geoRef.current = next;
       currentMode = minCy <= maxCy && w >= 340 ? "pin" : "static";
+      if (currentMode === "static") section.dataset.fit = "0";
       section.dataset.mode = currentMode;
       setMode(currentMode);
       setGeo(next);
@@ -725,7 +743,7 @@ export function ExperienceDial() {
                       <p className="mt-1 font-mono text-[13px] text-accent">
                         {item.org}
                       </p>
-                      <p className="mt-3 leading-relaxed text-muted-foreground text-pretty">
+                      <p className="dial-body mt-3 leading-relaxed text-muted-foreground text-pretty">
                         {item.body}
                       </p>
                       <ul className="dial-highlights">
