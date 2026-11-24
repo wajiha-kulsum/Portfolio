@@ -154,8 +154,8 @@ function tilt(event: React.PointerEvent<HTMLElement>) {
   const r = el.getBoundingClientRect();
   const x = (event.clientX - r.left) / r.width - 0.5;
   const y = (event.clientY - r.top) / r.height - 0.5;
-  el.style.setProperty("--ry", `${(x * 8).toFixed(2)}deg`);
-  el.style.setProperty("--rx", `${(-y * 6).toFixed(2)}deg`);
+  el.style.setProperty("--ry", `${(x * 5).toFixed(2)}deg`);
+  el.style.setProperty("--rx", `${(-y * 4).toFixed(2)}deg`);
 }
 function untilt(event: React.PointerEvent<HTMLElement>) {
   event.currentTarget.style.removeProperty("--rx");

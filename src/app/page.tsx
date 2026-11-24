@@ -225,9 +225,21 @@ function WritingSection() {
       <div className={LANE}>
         <SectionTitle title="Writing">The guide I wish I&rsquo;d had when I started.</SectionTitle>
 
+        {/* The essay's own cover, as a big way in */}
+        <a href={article.href} {...EXTERNAL} data-cursor="Read article" className="essay-banner mt-12">
+          <Image
+            src="/work/essay-banner.jpg"
+            alt="Want to get into UI/UX? Here's where to actually start. Continue reading"
+            width={1600}
+            height={533}
+            sizes="(min-width: 1120px) 1072px, 92vw"
+            className="block h-auto w-full"
+          />
+        </a>
+
         {/* Desktop: essay and quote on the left, sections on the right.
             Phones: essay, then sections, then the quote. */}
-        <article className="mt-12 grid gap-x-16 gap-y-12 border-t border-border pt-10 lg:grid-cols-12 lg:grid-rows-[auto_1fr]">
+        <article className="mt-12 grid gap-x-16 gap-y-12 lg:grid-cols-12 lg:grid-rows-[auto_1fr]">
           {/* The essay: what it is and where to read it */}
           <div className="lg:col-span-5">
             <p className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-muted-foreground">

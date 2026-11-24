@@ -1193,3 +1193,48 @@ html[data-custom-cursor] [data-cursor] {
     display: none;
   }
 }
+
+/* The essay's cover in Writing: lifts and zooms a touch on hover */
+.essay-banner {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 14px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.essay-banner img {
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .essay-banner:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 28px 56px -32px color-mix(in srgb, var(--foreground) 40%, transparent);
+  }
+  .essay-banner:hover img {
+    transform: scale(1.02);
+  }
+}
+
+/* Soft hovers on the current experience card */
+.dial-chips li {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.dial-highlights li::before {
+  transition: background-color 0.25s ease;
+}
+.dial-panel {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .dial-chips li:hover {
+    background: color-mix(in srgb, var(--accent) 12%, var(--plate));
+    color: var(--foreground);
+  }
+  .dial-highlights li:hover::before {
+    background: var(--accent);
+  }
+  .dial-panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--foreground) 35%, transparent);
+  }
+}
