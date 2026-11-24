@@ -147,6 +147,21 @@ function playTick(ctx: AudioContext, major: boolean) {
 /* Visual for one experience                                                   */
 /* -------------------------------------------------------------------------- */
 
+/** Tilts a screenshot toward the pointer, a few degrees at most. */
+function tilt(event: React.PointerEvent<HTMLElement>) {
+  if (event.pointerType !== "mouse") return;
+  const el = event.currentTarget;
+  const r = el.getBoundingClientRect();
+  const x = (event.clientX - r.left) / r.width - 0.5;
+  const y = (event.clientY - r.top) / r.height - 0.5;
+  el.style.setProperty("--ry", `${(x * 8).toFixed(2)}deg`);
+  el.style.setProperty("--rx", `${(-y * 6).toFixed(2)}deg`);
+}
+function untilt(event: React.PointerEvent<HTMLElement>) {
+  event.currentTarget.style.removeProperty("--rx");
+  event.currentTarget.style.removeProperty("--ry");
+}
+
 function Visual({
   visual,
   tabbable,
@@ -161,14 +176,17 @@ function Visual({
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={tabbable ? undefined : -1}
+        data-cursor="Visit site"
         className="dial-media group"
+        onPointerMove={tilt}
+        onPointerLeave={untilt}
         aria-label={`${visual.shot.alt} (opens in a new tab)`}
       >
         <Image
           src={visual.shot.src}
           alt={visual.shot.alt}
           fill
-          sizes="(min-width: 1024px) 380px, 80vw"
+          sizes="(min-width: 1024px) 560px, 90vw"
           className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
         />
         <span aria-hidden className="dial-media-arrow">
@@ -604,7 +622,7 @@ export function ExperienceDial() {
             Experience
           </h2>
           <p className="mt-2 text-muted-foreground">
-            From my first internship to Meridian
+            Where I&rsquo;ve worked, newest first
             {pinned ? ". Scroll to move through time." : "."}
           </p>
         </div>

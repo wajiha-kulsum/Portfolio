@@ -756,7 +756,7 @@ html[data-custom-cursor] [data-cursor] {
 }
 @media (min-width: 1024px) {
   .dial-grid {
-    grid-template-columns: auto minmax(0, 46ch) minmax(0, 380px);
+    grid-template-columns: auto minmax(0, 40ch) minmax(0, 560px);
     align-items: center;
   }
   .dial-visual {
@@ -764,7 +764,7 @@ html[data-custom-cursor] [data-cursor] {
   }
 }
 .dial-visual {
-  max-width: 420px;
+  max-width: 600px;
 }
 
 /* Highlights: what was built, used or achieved */
@@ -893,12 +893,22 @@ html[data-custom-cursor] [data-cursor] {
 }
 .dial[data-mode="pin"] .dial-media,
 .dial[data-mode="pin"] .dial-panel {
-  max-height: max(140px, calc(100dvh - 560px));
+  max-height: max(160px, calc(100dvh - 430px));
 }
 @media (max-width: 767px) {
   .dial[data-mode="pin"] .dial-media,
   .dial[data-mode="pin"] .dial-panel {
     max-height: max(130px, calc(100dvh - 700px));
+  }
+}
+/* Screenshots lean toward the pointer (vars set by the component) */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .dial-media {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.35s var(--dial-ease), box-shadow 0.35s var(--dial-ease);
+  }
+  .dial-media:hover {
+    box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--foreground) 35%, transparent);
   }
 }
 .dial-media::after {

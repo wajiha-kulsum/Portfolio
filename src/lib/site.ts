@@ -57,185 +57,88 @@ export type TimelineEntry = {
 };
 
 /**
- * The experience timeline, oldest first. Facts come from the resume, the
- * GitHub repos (dates are repo creation months) and the live sites.
+ * Work experience, newest first. Facts come from the resume, the live sites
+ * and the GitHub repos.
  */
 export const TIMELINE: TimelineEntry[] = [
   {
-    date: "Dec 2023",
-    title: "First internship",
-    org: "CodSoft, web development intern",
-    meta: ["HTML", "CSS", "JavaScript"],
-    body: "Where it started. My first internship was all front end: real briefs, real deadlines and sites that had to work on every screen.",
+    date: "Oct 2026 - Present",
+    title: "Eastwards Consulting",
+    org: "UI/UX designer and front-end developer, contract",
+    meta: ["Contract", "Next.js", "TypeScript", "Tailwind CSS"],
+    body: "I designed and built the website of an IT consulting firm end to end, from the visual language to production Next.js.",
     highlights: [
-      "Built and deployed landing pages and small web apps",
-      "Responsive layouts in plain HTML, CSS and JavaScript",
-    ],
-    visual: {
-      kind: "list",
-      prefix: "wajiha-kulsum/",
-      items: [
-        { name: "CODSOFT", date: "Dec 2023" },
-        { name: "OCTANET_JANUARY", date: "Jan 2024" },
-        { name: "PRODIGY_WD_01", date: "Jan 2024" },
-      ],
-    },
-  },
-  {
-    date: "Jan 2024",
-    title: "Two internships at once",
-    org: "Prodigy InfoTech and Octanet, front-end intern",
-    meta: ["1 month", "HTML", "CSS", "JavaScript"],
-    body: "Two front-end internships in parallel taught me to plan my time and finish what I start. QuillQuest, a calligraphy blog from that month, is still live.",
-    highlights: [
-      "Four web development tasks for Prodigy InfoTech in one month",
-      "Octanet's January project alongside it",
-      "QuillQuest: editorial layout, typography and a supplies section",
+      "20+ responsive pages, including 13 service pages",
+      "Page templates and a reusable component library",
+      "Motion and interaction design across the site",
     ],
     visual: {
       kind: "image",
-      href: "https://quillquest-ten.vercel.app/",
+      href: "https://eastwards.vercel.app",
       shot: {
-        src: "/work/quillquest.webp",
-        alt: "QuillQuest home page: Where art meets letters",
-        width: 1200,
-        height: 750,
+        src: "/work/eastwards.webp",
+        alt: "Eastwards Consulting home page: Technology that moves business forward",
+        width: 1440,
+        height: 900,
       },
     },
   },
   {
-    date: "Feb 2025",
-    title: "Into UX design",
-    org: "The Tann Mann Foundation, UI/UX design intern",
+    date: "Dec 2025 - May 2026",
+    title: "AkaiSpace",
+    org: "UI/UX design intern, on-site",
+    meta: ["6 months", "On-site", "Figma", "Design systems"],
+    body: "Six months on-site designing for an AI data company. I made complex web3 and data-labeling workflows simple enough for anyone to use.",
+    highlights: [
+      "AkaiEarn: user flows to hi-fi prototypes, now on Google Play",
+      "Designed the AkaiSpace website and its visual language",
+      "A design system and component library for AI tools",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://www.akaispace.xyz/",
+      shot: {
+        src: "/work/akaispace-live.webp",
+        alt: "AkaiSpace home page with the headline Embodied AI needs senses",
+        width: 1600,
+        height: 1000,
+      },
+    },
+  },
+  {
+    date: "Jul 2025 - Oct 2025",
+    title: "Pitchmatter",
+    org: "Full-stack developer intern, remote",
+    meta: ["4 months", "Remote", "React", "Redux", "Testing Library"],
+    body: "Four months on the build side of the handoff. I learned what makes a design easy or hard to ship, and how to test what I ship.",
+    highlights: [
+      "15+ reusable React components with Redux and Axios",
+      "35% faster performance on the screens I owned",
+      "85% test coverage with React Testing Library",
+    ],
+    visual: {
+      kind: "image",
+      href: "https://www.pitchmatter.com/",
+      shot: {
+        src: "/work/pitchmatter.webp",
+        alt: "Pitchmatter home page: Still trusting luck? With fundraising success",
+        width: 1440,
+        height: 900,
+      },
+    },
+  },
+  {
+    date: "Feb 2025 - Mar 2025",
+    title: "The Tann Mann Gaadi",
+    org: "UI/UX design intern, remote",
     meta: ["2 months", "Remote", "Figma", "User research"],
-    body: "My first design role, remote. I led the work from research and wireframes to high-fidelity Figma prototypes, in collaborative design sprints.",
+    body: "My first design role, for a non-profit. I led the work from research and wireframes to high-fidelity Figma prototypes, in collaborative design sprints.",
     highlights: [
       "User research shaped every screen",
       "Iterative prototyping and user testing",
       "Standardized design patterns and user flows",
     ],
     visual: { kind: "stat", value: "+25%", label: "interface usability after the research-led redesign" },
-  },
-  {
-    date: "Mar 2025",
-    title: "MentorHer",
-    org: "Personal project, design and build",
-    meta: ["Next.js", "Tailwind CSS", "MongoDB", "Socket.IO"],
-    body: "A mentorship platform I designed and built end to end, and still deployed. It was my first product where I owned every decision, from flows to code.",
-    highlights: [
-      "Personal dashboards for session tracking and resources",
-      "A community forum and chat for peer support",
-      "A user-friendly, pastel-themed interface",
-    ],
-    visual: {
-      kind: "image",
-      href: "https://mentorher.vercel.app",
-      shot: {
-        src: "/work/mentorher.webp",
-        alt: "MentorHer home page: Your journey, her guidance, limitless possibilities",
-        width: 1200,
-        height: 750,
-      },
-    },
-  },
-  {
-    date: "Jul 2025",
-    title: "Shipping with a team",
-    org: "Pitchmatter, full-stack developer intern",
-    meta: ["4 months", "Remote", "React", "Redux", "Testing Library"],
-    body: "Four months on the build side of the handoff, remote. I learned what makes a design easy or hard to ship, and how to test what I ship.",
-    highlights: [
-      "15+ React components with Redux and Axios",
-      "Boosted performance by 35%",
-      "Automated tests with React Testing Library",
-    ],
-    visual: { kind: "stat", value: "85%", label: "test coverage across the components I shipped" },
-  },
-  {
-    date: "Oct 2025",
-    title: "Splitr",
-    org: "Personal project, product design",
-    meta: ["Figma", "Mobile app", "Dark and light mode"],
-    body: "An expense-splitting app for trips, dinners and monthly rent, designed in Figma from onboarding to settling up, in dark and light mode.",
-    highlights: [
-      "Equal, percentage and custom splits",
-      "Group tracking and clear settle-up flows",
-      "Onboarding and a mobile banking-style home",
-    ],
-    visual: {
-      kind: "image",
-      href: "https://www.behance.net/gallery/239413715/Spliter",
-      shot: {
-        src: "/work/splitr.webp",
-        alt: "Splitr onboarding and wallet screens in dark mode",
-        width: 808,
-        height: 632,
-      },
-    },
-  },
-  {
-    date: "Dec 2025",
-    title: "Designing for AI",
-    org: "AkaiSpace, UI/UX design intern",
-    meta: ["6 months", "On-site", "Figma", "Design systems"],
-    body: "Six months on-site designing for an AI data company. I made complex web3 and data-labeling workflows simple enough for anyone to use.",
-    highlights: [
-      "AkaiEarn: user flows to hi-fi prototypes, now on Google Play",
-      "Designed the AkaiSpace website",
-      "Prototypes and a design system for AI-powered tools",
-    ],
-    visual: {
-      kind: "image",
-      href: "https://www.behance.net/gallery/250951879/Web-Design",
-      shot: {
-        src: "/work/akaispace-mockup.webp",
-        alt: "AkaiSpace website on a laptop among cherry blossoms",
-        width: 808,
-        height: 632,
-      },
-    },
-  },
-  {
-    date: "Mar 2026",
-    title: "Hackathon season",
-    org: "EthMumbai, Coherence and Monad Blitz",
-    meta: ["Team builds", "Web3", "Rapid prototyping"],
-    body: "A run of hackathons where I designed and built with a team against the clock, from Ethereum apps in Mumbai to a one-day build on Monad.",
-    highlights: [
-      "EthMumbai, the city's Ethereum hackathon",
-      "Coherence 2026 with team CRWDSTRK",
-      "Monad Blitz: shipped Monowire in a single day",
-    ],
-    visual: {
-      kind: "list",
-      items: [
-        { name: "EthMumbai", date: "Mar 2026" },
-        { name: "Coherence 2026", date: "Mar 2026" },
-        { name: "Monad Blitz", date: "May 2026" },
-      ],
-    },
-  },
-  {
-    date: "Nov 2026",
-    title: "Meridian",
-    org: "Design and front end, end to end",
-    meta: ["Product design", "TypeScript", "NEAR"],
-    body: "A market where AI agents buy spare LLM capacity on NEAR. Sellers list what their keys won't use, and agents spend inside a daily limit set on chain.",
-    highlights: [
-      "Order book and payment flow diagrams that animate the idea",
-      "Agent spending limits you can raise from your phone",
-      "A receipts page that recomputes the index in the browser",
-    ],
-    visual: {
-      kind: "image",
-      href: "https://www.tradeonmeridian.xyz/",
-      shot: {
-        src: "/work/meridian-hero.webp",
-        alt: "Meridian home page: Compute expires. Markets don't.",
-        width: 1920,
-        height: 1200,
-      },
-    },
   },
 ];
 
