@@ -19,9 +19,6 @@ export type Project = {
   shots: Shot[];
 };
 
-/** Smaller pieces shown as a row of Behance covers. */
-export type Study = { name: string; summary: string; href: string; shot: Shot };
-
 export const PROFILE = {
   name: "Wajiha Kulsum",
   role: "Product designer and front-end developer",
@@ -237,41 +234,6 @@ export const AKAIEARN: Project = {
   ],
 };
 
-const cover = (src: string, alt: string): Shot => ({ src, alt, width: 808, height: 632 });
-
-export const STUDIES: Study[] = [
-  {
-    name: "Penumbra",
-    summary: "Waitlist for a private OTC trading desk",
-    href: "https://www.behance.net/gallery/250964789/Web-Design-Waitlist",
-    shot: cover("/work/penumbra.webp", "Penumbra waitlist page on a desktop monitor"),
-  },
-  {
-    name: "Horizon",
-    summary: "Landing page concept for an AI lab",
-    href: "https://www.behance.net/gallery/252502023/AI-Landing-Page-Concept",
-    shot: cover("/work/horizon.webp", "AI landing page concept on a laptop on a desk"),
-  },
-  {
-    name: "Splitr",
-    summary: "Expense splitting, onboarding to settle up",
-    href: "https://www.behance.net/gallery/239413715/Spliter",
-    shot: cover("/work/splitr.webp", "Splitr onboarding and wallet screens in dark mode"),
-  },
-  {
-    name: "DocoPrint",
-    summary: "Ordering and tracking print jobs",
-    href: "https://www.behance.net/gallery/239408869/Printing",
-    shot: cover("/work/docoprint.webp", "DocoPrint login and order status wireframes"),
-  },
-  {
-    name: "Swiftze",
-    summary: "Storefront for a made-to-measure tailor",
-    href: "https://www.behance.net/gallery/239410135/Clothing-Design",
-    shot: cover("/work/swiftze.webp", "Swiftze clothing store pages in Figma"),
-  },
-];
-
 /**
  * One card in My Work. With a `cover`, the card shows the cover first and
  * swaps to the real screen (`shot`) on hover.
@@ -288,16 +250,10 @@ export type WorkItem = {
   focus?: string;
 };
 
-const study = (name: string): WorkItem => {
-  const s = STUDIES.find((item) => item.name === name);
-  if (!s) throw new Error(`Unknown study ${name}`);
-  return { name: s.name, role: "UI/UX design", summary: s.summary, href: s.href, shot: s.shot };
-};
-
 /**
- * My Work, in order. The grid repeats every five cards: wide and tall, one
- * full width, then tall and wide. Tall slots (2, 4, 7) crop the cover's sides,
- * so put covers whose subject sits in the middle there.
+ * My Work, in order: wide and tall, then full width. A last card left on
+ * its own also runs full width. Covers and screens are Figma SVG exports,
+ * served as they are; width and height are the frame's size in Figma.
  */
 export const WORK: WorkItem[] = [
   {
@@ -318,12 +274,12 @@ export const WORK: WorkItem[] = [
     role: AKAIEARN.role,
     summary: "Earn by labeling data for AI",
     href: AKAIEARN.links[0].href,
-    cover: { src: "/work/akaiearn-cover.svg", alt: "Akai Earn logo on a dark splash screen", width: 393, height: 852 },
+    cover: { src: "/work/akaiearn-cover.svg", alt: "Akai Earn logo on a dark splash screen", width: 481, height: 701 },
     shot: {
       src: "/work/akaiearn-page.svg",
       alt: "AkaiEarn task screen: complete AI tasks and earn points",
-      width: 393,
-      height: 852,
+      width: 481,
+      height: 701,
     },
   },
   {
@@ -340,10 +296,19 @@ export const WORK: WorkItem[] = [
     },
     focus: "center top",
   },
-  { ...study("Horizon"), focus: "40% center" },
-  { ...study("Splitr"), summary: "Expense splitting for trips and rent" },
-  study("Penumbra"),
-  { ...study("Swiftze"), focus: "right center" },
+  {
+    name: "Penumbra",
+    role: "UI/UX design",
+    summary: "Waitlist for a private OTC trading desk",
+    href: "https://www.behance.net/gallery/250964789/Web-Design-Waitlist",
+    cover: { src: "/work/penumbra-cover.svg", alt: "Penumbra logo on black", width: 1440, height: 983 },
+    shot: {
+      src: "/work/penumbra-page.svg",
+      alt: "Penumbra waitlist page: Get early access",
+      width: 1440,
+      height: 983,
+    },
+  },
 ];
 
 /**

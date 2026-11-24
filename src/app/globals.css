@@ -366,6 +366,11 @@ body {
   .work-grid > li:nth-child(5n + 3) .work-frame {
     aspect-ratio: 16 / 9;
   }
+  /* A last card left alone in its row runs full width */
+  .work-grid > li:last-child:is(:nth-child(5n + 1), :nth-child(5n + 4)) {
+    width: 100%;
+    padding: 0;
+  }
   .work-grid > li:nth-child(5n) {
     width: 62.5%;
     padding-left: 6.25%;
