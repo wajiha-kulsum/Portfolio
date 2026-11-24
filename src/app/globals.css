@@ -1216,29 +1216,3 @@ html[data-custom-cursor] [data-cursor] {
     box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--foreground) 35%, transparent);
   }
 }
-
-/* ---------------------------------------------------------------------------
- * Footer end card: carries data-theme="dark", so it is dark in both themes
- * and every token inside (text, muted, border, buttons) follows.
- * ------------------------------------------------------------------------- */
-.end-card {
-  padding: 28px 24px;
-  border-radius: 28px;
-  background: var(--plate);
-  box-shadow: inset 0 0 0 1px var(--border);
-  color: var(--foreground);
-}
-@media (min-width: 640px) {
-  .end-card {
-    padding: 48px;
-  }
-}
-@media (min-width: 1024px) {
-  .end-card {
-    padding: 64px;
-  }
-}
-/* The footer name, a touch more present than the page watermark */
-.footer-name {
-  --watermark: color-mix(in srgb, var(--foreground) 22%, transparent);
-}
