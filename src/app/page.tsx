@@ -226,49 +226,49 @@ function WritingSection() {
         <SectionTitle title="Writing">The guide I wish I&rsquo;d had when I started.</SectionTitle>
         <h3 className="sr-only">{article.title}</h3>
 
-        {/* The essay's own cover is the way in: it already says what it is */}
-        <a href={article.href} {...EXTERNAL} data-cursor="Read article" className="essay-banner mt-12">
-          <Image
-            src="/work/essay-banner.jpg"
-            alt={`${article.title}. Continue reading on Medium`}
-            width={1600}
-            height={533}
-            sizes="(min-width: 1120px) 1072px, 92vw"
-            className="block h-auto w-full"
-          />
-        </a>
-
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-          <p className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-muted-foreground">
-            <span className="text-foreground">Essay on Medium</span>
-            <span>{article.date}</span>
-            <span>{article.readTime}</span>
-          </p>
-          <a href={article.href} {...EXTERNAL} className={`btn-primary ${BTN}`}>
-            Read the essay
-            <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
-            <span className="sr-only">(opens Medium in a new tab)</span>
+        {/* One compact card: the cover is the way in, the lessons say what's inside */}
+        <div className="essay-card mt-10">
+          <a href={article.href} {...EXTERNAL} data-cursor="Read article" className="essay-banner">
+            <Image
+              src="/work/essay-banner.jpg"
+              alt={`${article.title}. Continue reading on Medium`}
+              width={1600}
+              height={533}
+              sizes="(min-width: 1120px) 600px, 92vw"
+              className="block h-auto w-full"
+            />
           </a>
-        </div>
 
-        {/* What's inside, as tiles: each jumps to its part of the essay */}
-        <p className="mt-14 font-mono text-[13px] text-muted-foreground">
-          {article.lessons.length} lessons inside
-        </p>
-        <ol className="lessons mt-4">
-          {article.lessons.map((lesson, i) => (
-            <li key={lesson.label}>
-              <a href={`${article.href}#:~:text=${encodeURIComponent(lesson.find)}`} {...EXTERNAL} className="lesson">
-                <span className="lesson-num tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                <ArrowUpRight size={16} strokeWidth={2} aria-hidden className="lesson-arrow" />
-                <span className="lesson-label">
-                  {lesson.label}
-                  <span className="sr-only">, opens Medium in a new tab</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ol>
+          <div className="flex flex-col gap-4 px-2 pb-3 pt-1 lg:px-4 lg:py-1">
+            <p className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-muted-foreground">
+              <span className="text-foreground">Essay on Medium</span>
+              <span>{article.date}</span>
+              <span>{article.readTime}</span>
+            </p>
+
+            <ol className="flex flex-wrap gap-1.5" aria-label={`${article.lessons.length} lessons inside`}>
+              {article.lessons.map((lesson, i) => (
+                <li key={lesson.label}>
+                  <a
+                    href={`${article.href}#:~:text=${encodeURIComponent(lesson.find)}`}
+                    {...EXTERNAL}
+                    className="lesson-pill"
+                  >
+                    <span className="lesson-pill-num tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                    {lesson.label}
+                    <span className="sr-only">, opens Medium in a new tab</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+
+            <a href={article.href} {...EXTERNAL} className={`btn-primary self-start ${BTN}`}>
+              Read the essay
+              <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
+              <span className="sr-only">(opens Medium in a new tab)</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

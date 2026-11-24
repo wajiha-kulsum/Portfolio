@@ -1125,112 +1125,71 @@ html[data-custom-cursor] [data-cursor] {
 }
 
 /* ---------------------------------------------------------------------------
- * Writing: the essay's lessons as tiles. A row of seven on desktop, a
- * swipeable strip on phones. Hover or focus fills a tile with the accent.
+ * Writing: one compact essay card. Cover on the left, what's inside on the
+ * right (stacked on phones). The lessons are pills that fill with the
+ * accent on hover or focus.
  * ------------------------------------------------------------------------- */
-.lessons {
+.essay-card {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(136px, 1fr);
-  gap: 12px;
-  margin-inline: -24px;
-  padding: 4px 24px 8px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 24px;
-  scrollbar-width: none;
-}
-.lessons::-webkit-scrollbar {
-  display: none;
-}
-.lessons > li {
-  scroll-snap-align: start;
+  gap: 16px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+  background: var(--plate);
 }
 @media (min-width: 1024px) {
-  .lessons {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    margin-inline: 0;
-    padding-inline: 0;
-    overflow: visible;
+  .essay-card {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 24px;
   }
 }
-.lesson {
-  position: relative;
-  display: flex;
-  height: 100%;
-  aspect-ratio: 4 / 5;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 16px;
-  border-radius: 14px;
-  background: var(--plate);
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.lesson-num {
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: clamp(2rem, 3vw, 2.5rem);
-  line-height: 1;
-  letter-spacing: -0.05em;
-  color: var(--muted-foreground);
-  transition: color 0.3s ease;
-}
-.lesson-label {
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.25;
-  text-wrap: balance;
-}
-.lesson-arrow {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  opacity: 0;
-  transform: translate(-4px, 4px);
-  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.lesson:focus-visible {
-  background: var(--accent);
-  color: var(--accent-ink);
-}
-.lesson:focus-visible .lesson-num {
-  color: inherit;
-}
-@media (hover: hover) {
-  .lesson:hover {
-    background: var(--accent);
-    color: var(--accent-ink);
-    transform: translateY(-4px);
-  }
-  .lesson:hover .lesson-num {
-    color: inherit;
-  }
-  .lesson:hover .lesson-arrow,
-  .lesson:focus-visible .lesson-arrow {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* The essay's cover in Writing: lifts and zooms a touch on hover */
 .essay-banner {
-  position: relative;
   display: block;
   overflow: hidden;
-  border-radius: 14px;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 12px;
 }
 .essay-banner img {
   transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (hover: hover) {
-  .essay-banner:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 28px 56px -32px color-mix(in srgb, var(--foreground) 40%, transparent);
-  }
   .essay-banner:hover img {
-    transform: scale(1.02);
+    transform: scale(1.03);
+  }
+}
+.lesson-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 13px 0 11px;
+  border-radius: 9999px;
+  background: var(--background);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lesson-pill-num {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  transition: color 0.25s ease;
+}
+.lesson-pill:focus-visible {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.lesson-pill:focus-visible .lesson-pill-num {
+  color: inherit;
+}
+@media (hover: hover) {
+  .lesson-pill:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
+    transform: translateY(-2px);
+  }
+  .lesson-pill:hover .lesson-pill-num {
+    color: inherit;
   }
 }
 
