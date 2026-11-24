@@ -1125,72 +1125,91 @@ html[data-custom-cursor] [data-cursor] {
 }
 
 /* ---------------------------------------------------------------------------
- * Writing: the essay's sections as an index. Every line is always shown,
- * so hover changes colour only and nothing below it moves.
+ * Writing: the essay's lessons as tiles. A row of seven on desktop, a
+ * swipeable strip on phones. Hover or focus fills a tile with the accent.
  * ------------------------------------------------------------------------- */
-.essay-title {
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
-  transition: text-decoration-color 0.2s ease;
-}
-.essay-title:hover,
-.essay-title:focus-visible {
-  text-decoration-color: currentColor;
-}
-.essay-row {
+.lessons {
   display: grid;
-  grid-template-columns: 1.75rem minmax(0, 1fr);
-  align-items: baseline;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(136px, 1fr);
   gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
+  margin-inline: -24px;
+  padding: 4px 24px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 24px;
+  scrollbar-width: none;
 }
-@media (min-width: 640px) {
-  .essay-row {
-    grid-template-columns: 2.25rem minmax(0, 1fr);
-    gap: 16px;
+.lessons::-webkit-scrollbar {
+  display: none;
+}
+.lessons > li {
+  scroll-snap-align: start;
+}
+@media (min-width: 1024px) {
+  .lessons {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
   }
 }
-.essay-num {
+.lesson {
+  position: relative;
+  display: flex;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--plate);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lesson-num {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
   color: var(--muted-foreground);
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
 }
-.essay-head {
-  display: inline;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  transition: text-decoration-color 0.2s ease;
+.lesson-label {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-wrap: balance;
 }
-.essay-row:hover .essay-head,
-.essay-row:focus-visible .essay-head {
-  text-decoration-color: currentColor;
-}
-.essay-arrow {
-  display: inline-block;
-  margin-left: 6px;
-  vertical-align: -1px;
-  color: var(--muted-foreground);
+.lesson-arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   opacity: 0;
-  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+  transform: translate(-4px, 4px);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.essay-row:hover .essay-num,
-.essay-row:focus-visible .essay-num,
-.essay-row:hover .essay-arrow,
-.essay-row:focus-visible .essay-arrow {
-  color: var(--accent);
+.lesson:focus-visible {
+  background: var(--accent);
+  color: var(--accent-ink);
 }
-.essay-row:hover .essay-arrow,
-.essay-row:focus-visible .essay-arrow {
-  opacity: 1;
-  transform: translate(2px, -2px);
+.lesson:focus-visible .lesson-num {
+  color: inherit;
 }
-@media (hover: none) {
-  .essay-arrow {
-    display: none;
+@media (hover: hover) {
+  .lesson:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
+    transform: translateY(-4px);
+  }
+  .lesson:hover .lesson-num {
+    color: inherit;
+  }
+  .lesson:hover .lesson-arrow,
+  .lesson:focus-visible .lesson-arrow {
+    opacity: 1;
+    transform: none;
   }
 }
 

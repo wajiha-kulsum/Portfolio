@@ -224,12 +224,13 @@ function WritingSection() {
     <section id="writing" className="pt-28 sm:pt-36">
       <div className={LANE}>
         <SectionTitle title="Writing">The guide I wish I&rsquo;d had when I started.</SectionTitle>
+        <h3 className="sr-only">{article.title}</h3>
 
-        {/* The essay's own cover, as a big way in */}
+        {/* The essay's own cover is the way in: it already says what it is */}
         <a href={article.href} {...EXTERNAL} data-cursor="Read article" className="essay-banner mt-12">
           <Image
             src="/work/essay-banner.jpg"
-            alt="Want to get into UI/UX? Here's where to actually start. Continue reading"
+            alt={`${article.title}. Continue reading on Medium`}
             width={1600}
             height={533}
             sizes="(min-width: 1120px) 1072px, 92vw"
@@ -237,69 +238,37 @@ function WritingSection() {
           />
         </a>
 
-        {/* Desktop: essay and quote on the left, sections on the right.
-            Phones: essay, then sections, then the quote. */}
-        <article className="mt-12 grid gap-x-16 gap-y-12 lg:grid-cols-12 lg:grid-rows-[auto_1fr]">
-          {/* The essay: what it is and where to read it */}
-          <div className="lg:col-span-5">
-            <p className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-muted-foreground">
-              <span className="text-foreground">Essay on Medium</span>
-              <span>{article.date}</span>
-              <span>{article.readTime}</span>
-            </p>
-            <h3 className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] font-medium leading-[1.08] tracking-[-0.025em] text-balance">
-              <a href={article.href} {...EXTERNAL} data-cursor="Read article" className="essay-title">
-                {article.title}
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+          <p className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-muted-foreground">
+            <span className="text-foreground">Essay on Medium</span>
+            <span>{article.date}</span>
+            <span>{article.readTime}</span>
+          </p>
+          <a href={article.href} {...EXTERNAL} className={`btn-primary ${BTN}`}>
+            Read the essay
+            <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
+            <span className="sr-only">(opens Medium in a new tab)</span>
+          </a>
+        </div>
+
+        {/* What's inside, as tiles: each jumps to its part of the essay */}
+        <p className="mt-14 font-mono text-[13px] text-muted-foreground">
+          {article.lessons.length} lessons inside
+        </p>
+        <ol className="lessons mt-4">
+          {article.lessons.map((lesson, i) => (
+            <li key={lesson.label}>
+              <a href={`${article.href}#:~:text=${encodeURIComponent(lesson.find)}`} {...EXTERNAL} className="lesson">
+                <span className="lesson-num tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                <ArrowUpRight size={16} strokeWidth={2} aria-hidden className="lesson-arrow" />
+                <span className="lesson-label">
+                  {lesson.label}
+                  <span className="sr-only">, opens Medium in a new tab</span>
+                </span>
               </a>
-            </h3>
-            <p className="mt-4 max-w-[44ch] text-lg leading-relaxed text-muted-foreground text-pretty">{article.dek}</p>
-            <a href={article.href} {...EXTERNAL} className={`btn-primary mt-8 ${BTN}`}>
-              Read the essay
-              <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
-              <span className="sr-only">(opens Medium in a new tab)</span>
-            </a>
-          </div>
-
-          {/* What's inside: each section links straight to its place in the essay */}
-          <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
-            <p className="font-mono text-[13px] text-muted-foreground">In this essay</p>
-            <ol className="mt-3 border-t border-border">
-              {article.sections.map((section, i) => (
-                <li key={section.title}>
-                  <a
-                    href={`${article.href}#:~:text=${encodeURIComponent(section.find)}`}
-                    {...EXTERNAL}
-                    className="essay-row"
-                  >
-                    <span className="essay-num font-mono text-[13px] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="min-w-0">
-                      <span className="essay-head text-[1.0625rem] font-medium leading-snug tracking-[-0.01em]">
-                        {/* The arrow stays on the last word's line, so it never wraps alone */}
-                        {section.title.slice(0, section.title.lastIndexOf(" ") + 1)}
-                        <span className="whitespace-nowrap">
-                          {section.title.slice(section.title.lastIndexOf(" ") + 1)}
-                          <span className="sr-only">, opens Medium in a new tab</span>
-                          <ArrowUpRight size={15} strokeWidth={2} aria-hidden className="essay-arrow" />
-                        </span>
-                      </span>
-                      <span className="mt-1 block text-[15px] leading-relaxed text-muted-foreground text-pretty">
-                        {section.line}
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          {/* Its last line, under the essay on desktop and after the list on phones */}
-          <blockquote className="self-start border-l-2 border-accent pl-5 lg:col-span-5 lg:col-start-1 lg:row-start-2">
-            <p className="-indent-[0.42em] text-[clamp(1.35rem,2.1vw,1.6rem)] leading-snug tracking-[-0.015em] whitespace-pre-line">
-              &ldquo;{article.quote.replace(". ", ".\n")}&rdquo;
-            </p>
-            <footer className="mt-2 text-sm text-muted-foreground">The essay&rsquo;s last line</footer>
-          </blockquote>
-        </article>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
