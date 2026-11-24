@@ -481,13 +481,32 @@ html[data-custom-cursor] [data-cursor] {
   animation-delay: var(--d, 0ms);
 }
 
-/* GitHub heat cell */
-.heat-cell {
-  border-radius: 3px;
-  transition: transform 0.15s ease, opacity 0.2s ease;
+/* GitHub contributions as isometric bars: the top takes the level colour,
+ * the two visible sides are the same colour in shade. */
+.iso {
+  /* Sides shade toward a dark accent, so pale bars stay blue, not grey */
+  --iso-shade: color-mix(in oklab, var(--accent) 40%, #000);
 }
-.heat-cell:hover {
-  transform: scale(1.3);
+.iso-bar polygon {
+  transition: fill 0.15s ease;
+}
+.iso-t {
+  fill: var(--c);
+}
+.iso-l {
+  fill: color-mix(in oklab, var(--c) 84%, var(--iso-shade));
+}
+.iso-r {
+  fill: color-mix(in oklab, var(--c) 68%, var(--iso-shade));
+}
+@media (hover: hover) {
+  .iso-bar:hover .iso-t {
+    fill: var(--foreground);
+  }
+  .iso-bar:hover .iso-l,
+  .iso-bar:hover .iso-r {
+    fill: color-mix(in oklab, var(--foreground) 70%, var(--c));
+  }
 }
 
 /* ---------------------------------------------------------------------------

@@ -27,23 +27,6 @@ export type ContributionSnapshot = {
 
 /** Displayed window: 53 full weeks, ending on the latest known day. */
 export const WINDOW_DAYS = 371;
-export const DAYS_PER_WEEK = 7;
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
-
 const HEAT_LEVELS: HeatLevel[] = [0, 1, 2, 3, 4];
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -123,32 +106,6 @@ export function normalizeSnapshot(
   return { total, asOf, days };
 }
 
-/** Chops the flat day list into week columns of exactly seven cells. */
-export function groupByWeeks(days: ContributionDay[]): ContributionDay[][] {
-  const weeks: ContributionDay[][] = [];
-  for (let i = 0; i < days.length; i += DAYS_PER_WEEK) {
-    weeks.push(days.slice(i, i + DAYS_PER_WEEK));
-  }
-  return weeks;
-}
-
-/**
- * One short month label per week column. A label is shown the first time a
- * new month appears, so the names sit in the row above the graph grid.
- */
-export function getMonthLabels(weeks: ContributionDay[][]): (string | null)[] {
-  const monthOf = (day: ContributionDay | undefined) => {
-    if (!day || !isIsoDate(day.date)) return "";
-    return MONTHS[Number(day.date.slice(5, 7)) - 1] ?? "";
-  };
-
-  return weeks.map((week, index) => {
-    const current = monthOf(week[0]);
-    const previous = index > 0 ? monthOf(weeks[index - 1][0]) : "";
-    return current && current !== previous ? current : null;
-  });
-}
-
 /** Runtime guard for API responses, keeps bad payloads out of the UI. */
 export function isContributionSnapshot(value: unknown): value is ContributionSnapshot {
   if (!isRecord(value)) return false;
@@ -161,4 +118,45 @@ export function isContributionSnapshot(value: unknown): value is ContributionSna
       (day.count === null || isCount(day.count)) &&
       safeLevel(day.level) !== null,
   );
+}
+
+export type Streak = { days: number; start: string; end: string };
+
+export type ContributionStats = {
+  busiest: { count: number; date: string } | null;
+  longest: Streak | null;
+  current: Streak | null;
+};
+
+/**
+ * Busiest day and streaks, as GitHub's own profile used to show them. A day
+ * counts as active when it has contributions (or, with no count, a level).
+ * The current streak may end yesterday: today can still be empty.
+ */
+export function getStats(days: ContributionDay[]): ContributionStats {
+  const active = (day: ContributionDay) => (day.count ?? day.level) > 0;
+
+  let busiest: ContributionStats["busiest"] = null;
+  let longest: Streak | null = null;
+  let runStart = -1;
+  days.forEach((day, i) => {
+    if (day.count !== null && day.count > 0 && (!busiest || day.count > busiest.count)) {
+      busiest = { count: day.count, date: day.date };
+    }
+    if (!active(day)) {
+      runStart = -1;
+      return;
+    }
+    if (runStart < 0) runStart = i;
+    const length = i - runStart + 1;
+    if (!longest || length > longest.days) longest = { days: length, start: days[runStart].date, end: day.date };
+  });
+
+  let end = days.length - 1;
+  if (end >= 0 && !active(days[end])) end -= 1;
+  let start = end;
+  while (start >= 0 && active(days[start])) start -= 1;
+  const current = end > start ? { days: end - start, start: days[start + 1].date, end: days[end].date } : null;
+
+  return { busiest, longest, current };
 }

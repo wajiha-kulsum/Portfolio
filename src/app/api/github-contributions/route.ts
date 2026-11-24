@@ -111,14 +111,23 @@ async function fetchFromGraphQL(): Promise<ContributionSnapshot | null> {
 
 /**
  * Scrapes github.com/users/<name>/contributions: each calendar cell carries
- * a `data-date` and a `data-level`. The HTML has no per-day counts, so those
- * stay null (= unknown, level only); the yearly total is read from the page
- * header. This is the only token-free source left since third-party mirrors
- * of the calendar keep going dead.
+ * an `id`, a `data-date` and a `data-level`, and a hidden <tool-tip for=id>
+ * holds the day's text ("6 contributions on December 14th."). Counts come
+ * from that text; a day without a tooltip stays null (level only). The
+ * yearly total is read from the page header. This is the only token-free
+ * source left since third-party mirrors of the calendar keep going dead.
  */
 async function fetchFromPublicPage(): Promise<ContributionSnapshot | null> {
   try {
     const html = await fetchText(`https://github.com/users/${USERNAME}/contributions`);
+
+    const counts = new Map<string, number>();
+    for (const match of html.matchAll(/<tool-tip\b[^>]*\bfor="([^"]+)"[^>]*>([^<]*)<\/tool-tip>/g)) {
+      const text = match[2].trim();
+      const n = /^([\d,]+) contributions?\b/.exec(text)?.[1];
+      if (n) counts.set(match[1], Number(n.replace(/,/g, "")));
+      else if (/^No contributions\b/.test(text)) counts.set(match[1], 0);
+    }
 
     const raw: Array<{ date: string; count: number | null; level: number | null }> = [];
     for (const match of html.matchAll(/<td\b[^>]*>/g)) {
@@ -126,11 +135,12 @@ async function fetchFromPublicPage(): Promise<ContributionSnapshot | null> {
       const date = /data-date="(\d{4}-\d{2}-\d{2})"/.exec(tag)?.[1];
       const level = /data-level="(\d)"/.exec(tag)?.[1];
       if (!date || level === undefined) continue;
-      raw.push({ date, count: null, level: Number(level) });
+      const id = /\bid="([^"]+)"/.exec(tag)?.[1];
+      raw.push({ date, count: id ? (counts.get(id) ?? null) : null, level: Number(level) });
     }
     if (raw.length === 0) return null;
 
-    const total = Number(/(\d+)\s+contributions\s+in the last year/.exec(html)?.[1]);
+    const total = Number(/([\d,]+)\s+contributions\s+in the last year/.exec(html)?.[1]?.replace(/,/g, ""));
 
     return normalizeSnapshot(raw, Number.isFinite(total) ? total : null);
   } catch {
