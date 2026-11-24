@@ -139,7 +139,20 @@ export const TIMELINE: TimelineEntry[] = [
   },
 ];
 
-export type Article = { title: string; dek: string; date: string; readTime: string; href: string };
+export type Article = {
+  title: string;
+  dek: string;
+  date: string;
+  readTime: string;
+  href: string;
+  /**
+   * The essay's own sections: a heading, one line from it, and `find`, an
+   * exact phrase from the section used as a text-fragment link into it.
+   */
+  sections: { title: string; line: string; find: string }[];
+  /** A closing line worth quoting. */
+  quote: string;
+};
 
 export const MEDIUM = "https://medium.com/@wajihakulsum786";
 
@@ -147,10 +160,48 @@ export const MEDIUM = "https://medium.com/@wajihakulsum786";
 export const WRITING: Article[] = [
   {
     title: "So you want to get into UI/UX design? Here's where to actually start",
-    dek: "A no-fluff guide for beginners who don't know where to begin: UI versus UX, training your eye, and learning Figma properly.",
+    dek: "Seven steps from confused to your first portfolio: learn to see before you design, learn one tool properly, and never skip the UX.",
     date: "Feb 2026",
     readTime: "4 min read",
     href: "https://medium.com/@wajihakulsum786/so-you-want-to-get-into-ui-ux-design-heres-where-to-actually-start-553277151f06",
+    sections: [
+      {
+        title: "Clear up the confusion: UI vs UX",
+        line: "UX is about how something feels to use. UI is about how it looks.",
+        find: "This is the question every beginner Googles",
+      },
+      {
+        title: "Develop your eye before you design",
+        line: "Before you learn how to design, you need to learn how to see.",
+        find: "Good designers are obsessive observers",
+      },
+      {
+        title: "Pick your tool and actually learn it",
+        line: "The industry standard right now is Figma, and it's free for individual use.",
+        find: "The industry standard right now is Figma",
+      },
+      {
+        title: "Don't skip the UX part",
+        line: "Professionals almost always start with wireframes: rough on purpose, to find the flow.",
+        find: "make the mistake of jumping straight into",
+      },
+      {
+        title: "Build a portfolio before you feel ready",
+        line: "Don't wait until you're good enough. Build one now, and let it grow with you.",
+        find: "a mindset shift that will speed everything up",
+      },
+      {
+        title: "Find your community",
+        line: "Learning design alone is hard. Share work, ask questions, get honest feedback.",
+        find: "Learning design alone is hard",
+      },
+      {
+        title: "The honest truth about the learning curve",
+        line: "For a while your taste will be ahead of your skills. Everyone goes through it.",
+        find: "has a frustrating middle stage",
+      },
+    ],
+    quote: "Go make something ugly. That's how it starts.",
   },
 ];
 

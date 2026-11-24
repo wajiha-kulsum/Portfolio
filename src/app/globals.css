@@ -1123,3 +1123,73 @@ html[data-custom-cursor] [data-cursor] {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Writing: the essay's sections as an index. Every line is always shown,
+ * so hover changes colour only and nothing below it moves.
+ * ------------------------------------------------------------------------- */
+.essay-title {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition: text-decoration-color 0.2s ease;
+}
+.essay-title:hover,
+.essay-title:focus-visible {
+  text-decoration-color: currentColor;
+}
+.essay-row {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 640px) {
+  .essay-row {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+.essay-num {
+  color: var(--muted-foreground);
+  transition: color 0.2s ease;
+}
+.essay-head {
+  display: inline;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+.essay-row:hover .essay-head,
+.essay-row:focus-visible .essay-head {
+  text-decoration-color: currentColor;
+}
+.essay-arrow {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -1px;
+  color: var(--muted-foreground);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+.essay-row:hover .essay-num,
+.essay-row:focus-visible .essay-num,
+.essay-row:hover .essay-arrow,
+.essay-row:focus-visible .essay-arrow {
+  color: var(--accent);
+}
+.essay-row:hover .essay-arrow,
+.essay-row:focus-visible .essay-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+@media (hover: none) {
+  .essay-arrow {
+    display: none;
+  }
+}
