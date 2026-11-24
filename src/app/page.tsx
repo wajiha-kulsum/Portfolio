@@ -4,6 +4,7 @@ import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
 import { FooterName } from "@/components/footer-name";
+import { CopyEmail } from "@/components/copy-email";
 import { AchievementsList } from "@/components/achievements-list";
 import { ExperienceDial } from "@/components/experience-dial";
 import { HeroOrbit } from "@/components/hero-orbit";
@@ -34,7 +35,6 @@ export default function Home() {
         <WorkSection />
         <WritingSection />
         <AchievementsSection />
-        <ContactSection />
       </main>
 
       <SiteFooter />
@@ -314,105 +314,118 @@ function AchievementsSection() {
 /* Contact + footer                                                            */
 /* -------------------------------------------------------------------------- */
 
-function ContactSection() {
-  return (
-    <section id="contact" className="pb-16 pt-32 sm:pt-44">
-      <div className={LANE}>
-        <h2 className="text-[clamp(3rem,10vw,7.5rem)] font-normal leading-[0.95] tracking-[-0.045em]">
-          Let&rsquo;s work
-          <br />
-          together
-        </h2>
-
-        <p className="mt-8 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
-          Got a product that needs designing, building, or both? Tell me about it.
-        </p>
-
-        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-          <a href={PROFILE.booking} {...EXTERNAL} className={`btn-primary ${BTN}`}>
-            Book a call
-            <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
-          </a>
-          <a href={`mailto:${PROFILE.email}`} className="text-link text-sm font-medium">
-            {PROFILE.email}
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function SiteFooter() {
   return (
-    <footer className="relative">
-      <div className={`${LANE} py-16 sm:py-20`}>
-        <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">
-          <FooterColumn title="Pages">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a href={link.href} className="link-underline block w-fit font-medium">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </FooterColumn>
+    <footer className="relative pt-24 sm:pt-32">
+      <div className={LANE}>
+        {/* The end card: always dark, so the page closes on one strong moment.
+         * It is also the Contact section the nav links to. */}
+        <div id="contact" data-theme="dark" className="end-card">
+          <div className="flex items-center gap-3">
+            <Image
+              src={PROFILE.avatar}
+              alt=""
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-full"
+            />
+            <div className="leading-tight">
+              <p className="text-sm font-medium">{PROFILE.name}</p>
+              <p className="mt-0.5 inline-flex items-center gap-2 text-sm text-muted-foreground">
+                <span aria-hidden className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 motion-safe:animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+                </span>
+                {PROFILE.availability}
+              </p>
+            </div>
+          </div>
 
-          <FooterColumn title="Elsewhere">
-            {SOCIAL_LINKS.map((link) => (
-              <li key={link.label}>
+          <h2 className="mt-10 text-[clamp(2.75rem,8vw,6.5rem)] font-normal leading-[0.95] tracking-[-0.045em]">
+            Let&rsquo;s work
+            <br />
+            together
+          </h2>
+
+          <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <p className="max-w-[40ch] text-lg leading-relaxed text-muted-foreground">
+              Got a product that needs designing, building, or both? Tell me about it.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <a href={PROFILE.booking} {...EXTERNAL} className={`btn-primary ${BTN}`}>
+                Book a call
+                <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
+              </a>
+              <CopyEmail email={PROFILE.email} className={`btn-outline ${BTN}`} />
+            </div>
+          </div>
+
+          <div className="mt-14 grid gap-10 border-t border-border pt-10 sm:grid-cols-3 sm:gap-12">
+            <FooterColumn title="Pages">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="link-underline block w-fit font-medium">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </FooterColumn>
+
+            <FooterColumn title="Elsewhere">
+              {SOCIAL_LINKS.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    {...(link.external ? EXTERNAL : {})}
+                    className="group inline-flex w-fit items-center gap-1.5 font-medium"
+                  >
+                    <span className="link-underline">{link.label}</span>
+                    {link.external && (
+                      <ArrowUpRight
+                        size={14}
+                        strokeWidth={2}
+                        className="text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden
+                      />
+                    )}
+                  </a>
+                </li>
+              ))}
+            </FooterColumn>
+
+            {/* Contact info is exactly what <address> is for; not-italic resets
+             * the browser default. */}
+            <div>
+              <p className="text-sm text-muted-foreground">Contact</p>
+              {/* The email lives in the copy button above */}
+              <address className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm not-italic sm:block sm:space-y-2.5">
                 <a
-                  href={link.href}
-                  {...(link.external ? EXTERNAL : {})}
-                  className="group inline-flex w-fit items-center gap-1.5 font-medium"
+                  href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
+                  className="link-underline block w-fit font-medium"
                 >
-                  <span className="link-underline">{link.label}</span>
-                  {link.external && (
-                    <ArrowUpRight
-                      size={14}
-                      strokeWidth={2}
-                      className="text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
-                  )}
+                  {PROFILE.phone}
                 </a>
-              </li>
-            ))}
-          </FooterColumn>
-
-          {/* Contact info is exactly what <address> is for; not-italic resets
-           * the browser default. */}
-          <div>
-            <p className="text-sm text-muted-foreground">Contact</p>
-            <address className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm not-italic sm:block sm:space-y-2.5">
-              <a href={`mailto:${PROFILE.email}`} className="link-underline block w-fit font-medium">
-                {PROFILE.email}
-              </a>
-              <a
-                href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
-                className="link-underline block w-fit font-medium"
-              >
-                {PROFILE.phone}
-              </a>
-              <span className="block text-muted-foreground">{PROFILE.location}</span>
-            </address>
+                <span className="block text-muted-foreground">{PROFILE.location}</span>
+              </address>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className={`${LANE} flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-6 text-xs text-muted-foreground`}>
-        <p>© {new Date().getFullYear()} Wajiha Kulsum. Designed and built by me.</p>
-        <a
-          href="#top"
-          className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
-        >
-          Back to top
-          <ArrowUp
-            size={12}
-            strokeWidth={2}
-            className="transition-transform duration-200 group-hover:-translate-y-0.5"
-            aria-hidden
-          />
-        </a>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-6 text-xs text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} Wajiha Kulsum. Designed and built by me.</p>
+          <a
+            href="#top"
+            className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
+          >
+            Back to top
+            <ArrowUp
+              size={12}
+              strokeWidth={2}
+              className="transition-transform duration-200 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </a>
+        </div>
       </div>
 
       {/* Giant outlined name: "Wajiha" on phones, full name on desktop;
