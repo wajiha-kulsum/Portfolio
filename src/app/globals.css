@@ -481,31 +481,15 @@ html[data-custom-cursor] [data-cursor] {
   animation-delay: var(--d, 0ms);
 }
 
-/* GitHub contributions as isometric bars: the top takes the level colour,
- * the two visible sides are the same colour in shade. */
-.iso {
-  /* Sides shade toward a dark accent, so pale bars stay blue, not grey */
-  --iso-shade: color-mix(in oklab, var(--accent) 40%, #000);
-}
-.iso-bar polygon {
-  transition: fill 0.15s ease;
-}
-.iso-t {
-  fill: var(--c);
-}
-.iso-l {
-  fill: color-mix(in oklab, var(--c) 84%, var(--iso-shade));
-}
-.iso-r {
-  fill: color-mix(in oklab, var(--c) 68%, var(--iso-shade));
+/* GitHub contribution cell. Hover marks the day with a ring in the text
+ * colour; the tooltip carries the numbers. */
+.gh-cell {
+  border-radius: 3px;
+  transition: box-shadow 0.15s ease;
 }
 @media (hover: hover) {
-  .iso-bar:hover .iso-t {
-    fill: var(--foreground);
-  }
-  .iso-bar:hover .iso-l,
-  .iso-bar:hover .iso-r {
-    fill: color-mix(in oklab, var(--foreground) 70%, var(--c));
+  .gh-cell:hover {
+    box-shadow: 0 0 0 1.5px var(--foreground);
   }
 }
 

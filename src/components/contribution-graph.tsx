@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   WINDOW_DAYS,
-  getStats,
   isContributionSnapshot,
   type ContributionDay,
   type ContributionSnapshot,
@@ -17,17 +16,8 @@ type State =
 
 type Tip = { index: number; x: number; y: number };
 
-/* Isometric projection: weeks run down and to the right, weekdays down and
- * to the left, bar height straight up. Units are SVG user units. */
-const UNIT = 12;
-const DX = UNIT * Math.cos(Math.PI / 6);
-const DY = UNIT * 0.5;
-const MAX_H = 104;
-const FLOOR_H = 1.5;
-const GAP = 0.1;
-
-const point = (week: number, weekday: number, h = 0) =>
-  `${((week - weekday) * DX).toFixed(1)},${((week + weekday) * DY - h).toFixed(1)}`;
+/** Weeks shown on phones, newest last; wider screens show the whole year. */
+const PHONE_WEEKS = 22;
 
 const SKELETON: ContributionDay[] = Array.from({ length: WINDOW_DAYS }, () => ({
   date: "",
@@ -35,6 +25,7 @@ const SKELETON: ContributionDay[] = Array.from({ length: WINDOW_DAYS }, () => ({
   level: 0,
 }));
 
+const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
 const fullDate = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
   weekday: "short",
@@ -42,8 +33,7 @@ const fullDate = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   year: "numeric",
 });
-const shortDate = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short", day: "numeric" });
-const asDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
+const monthName = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short" });
 
 function countLabel(day: ContributionDay): string {
   if (day.count === null) return day.level === 0 ? "No contributions" : "Contribution activity";
@@ -51,81 +41,67 @@ function countLabel(day: ContributionDay): string {
   return `${day.count} ${day.count === 1 ? "contribution" : "contributions"}`;
 }
 
-/** The bars, back to front so nearer bars paint over the ones behind. */
-function IsoBars({ days }: { days: ContributionDay[] }) {
-  const firstWeekday = days[0]?.date ? asDate(days[0].date).getUTCDay() : 0;
-  const weeks = Math.ceil((days.length + firstWeekday) / 7);
-  const max = Math.max(1, ...days.map((day) => day.count ?? 0));
-
-  const cells = days.map((day, index) => {
-    const slot = index + firstWeekday;
-    // Log scale: one 150-commit day should not flatten every ordinary day.
-    const fraction = day.count === null ? day.level / 4 : Math.log1p(day.count) / Math.log1p(max);
-    const h = fraction > 0 ? 4 + fraction * (MAX_H - 4) : FLOOR_H;
-    return { day, index, week: Math.floor(slot / 7), weekday: slot % 7, h };
-  });
-  cells.sort((a, b) => a.week + a.weekday - (b.week + b.weekday));
-
-  const minX = -7 * DX - 2;
-  const maxX = weeks * DX + 2;
-  const minY = -MAX_H - 4;
-  const maxY = (weeks + 7) * DY + 2;
-
-  return (
-    <svg viewBox={`${minX} ${minY} ${maxX - minX} ${maxY - minY}`} className="block h-auto w-full" aria-hidden>
-      {cells.map(({ day, index, week, weekday, h }) => {
-        const a0 = week + GAP;
-        const a1 = week + 1 - GAP;
-        const b0 = weekday + GAP;
-        const b1 = weekday + 1 - GAP;
-        return (
-          <g
-            key={index}
-            data-i={index}
-            className="iso-bar"
-            style={{ "--c": `var(--level-${day.level})` } as React.CSSProperties}
-          >
-            <polygon className="iso-r" points={`${point(a1, b0)} ${point(a1, b1)} ${point(a1, b1, h)} ${point(a1, b0, h)}`} />
-            <polygon className="iso-l" points={`${point(a0, b1)} ${point(a1, b1)} ${point(a1, b1, h)} ${point(a0, b1, h)}`} />
-            <polygon className="iso-t" points={`${point(a0, b0, h)} ${point(a1, b0, h)} ${point(a1, b1, h)} ${point(a0, b1, h)}`} />
-          </g>
-        );
-      })}
-    </svg>
-  );
+/**
+ * Week columns, Sunday on top, so every row is a real weekday. Slots before
+ * the first day are null (empty). Each week also gets a month label when it
+ * holds the first week of a new month.
+ */
+function toWeeks(days: ContributionDay[]) {
+  const offset = days[0]?.date ? asDate(days[0].date).getUTCDay() : 0;
+  const weeks: { label: string | null; slots: (number | null)[] }[] = [];
+  let lastMonth = "";
+  for (let slot = 0; slot < offset + days.length; slot += 7) {
+    const slots = Array.from({ length: 7 }, (_, row) => {
+      const index = slot + row - offset;
+      return index >= 0 && index < days.length ? index : null;
+    });
+    const first = slots.find((index) => index !== null);
+    const iso = first != null ? days[first].date : "";
+    const month = iso ? monthName.format(asDate(iso)) : "";
+    weeks.push({ label: month && month !== lastMonth ? month : null, slots });
+    lastMonth = month || lastMonth;
+  }
+  // Drop a label that would sit on the very first, partial column.
+  if (weeks.length > 1 && weeks[0].label && weeks[1].label) weeks[0].label = null;
+  return weeks;
 }
 
-function Stat({ label, value, unit, note, align = "left" }: {
-  label: string;
-  value: string;
-  unit: string;
-  note: string;
-  align?: "left" | "right";
-}) {
+/** The grid itself, kept apart so a moving tooltip never re-renders 371 cells. */
+function Grid({ days, ready }: { days: ContributionDay[]; ready: boolean }) {
+  const weeks = toWeeks(days);
   return (
-    <div className={align === "right" ? "md:text-right" : ""}>
-      <p className="text-[13px] text-muted-foreground">{label}</p>
-      <div className={`mt-1.5 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:gap-2.5 ${align === "right" ? "md:justify-end" : ""}`}>
-        <span className="text-[clamp(2rem,3.4vw,2.6rem)] font-medium leading-[0.85] tracking-[-0.03em] tabular-nums">
-          {value}
-        </span>
-        <span className="text-left leading-tight">
-          <span className="block text-sm">{unit}</span>
-          <span className="block whitespace-nowrap text-xs text-muted-foreground">{note}</span>
-        </span>
-      </div>
+    <div className={`flex gap-[3px] sm:gap-1 ${ready ? "" : "animate-pulse"}`}>
+      {weeks.map((week, w) => (
+        <div
+          key={w}
+          className={`min-w-0 flex-1 flex-col gap-[3px] sm:gap-1 ${w < weeks.length - PHONE_WEEKS ? "hidden sm:flex" : "flex"}`}
+        >
+          <span className="relative h-4 text-[11px] leading-4 text-muted-foreground">
+            {week.label && <span className="absolute left-0 top-0 whitespace-nowrap">{week.label}</span>}
+          </span>
+          {week.slots.map((index, row) =>
+            index === null ? (
+              <span key={row} className="aspect-square" />
+            ) : (
+              <span
+                key={row}
+                data-i={index}
+                className="gh-cell aspect-square"
+                style={{ backgroundColor: `var(--level-${days[index].level})` }}
+              />
+            ),
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
-const range = (start: string, end: string) =>
-  start === end ? shortDate.format(asDate(start)) : `${shortDate.format(asDate(start))} - ${shortDate.format(asDate(end))}`;
-
 /**
- * The GitHub contribution year as an isometric bar chart: one bar per day,
- * height by commits, colour by GitHub's level. Hover or tap a bar for its
- * count and date. Data comes from our API route (cached hourly); states are
- * explicit: loading floor, ready, or an honest error.
+ * The GitHub contribution year as a flat heat grid that sits straight on
+ * the page. Hover or tap a day for its count and date. Data comes from our
+ * API route (cached hourly); states are explicit: loading, ready, or an
+ * honest error.
  */
 export function ContributionGraph({ className }: { className?: string }) {
   const [state, setState] = useState<State>({ status: "loading" });
@@ -163,102 +139,56 @@ export function ContributionGraph({ className }: { className?: string }) {
 
   const isReady = state.status === "ready";
   const days = isReady ? state.snapshot.days : SKELETON;
-  // Same element between renders, so a moving tooltip never re-renders 371 bars.
-  const bars = useMemo(() => <IsoBars days={days} />, [days]);
-  const stats = useMemo(() => getStats(days), [days]);
-
-  const total = isReady ? (state.snapshot.total ?? days.reduce((sum, day) => sum + (day.count ?? 0), 0)) : 0;
+  const grid = useMemo(() => <Grid days={days} ready={isReady} />, [days, isReady]);
   const tipDay = tip ? days[tip.index] : null;
 
+  const summary = isReady
+    ? state.snapshot.total !== null
+      ? `${state.snapshot.total.toLocaleString("en-US")} contributions in the last year`
+      : "Contribution activity in the last year"
+    : state.status === "error"
+      ? "Couldn't load the graph. GitHub is unreachable right now."
+      : "Loading contributions";
+
   const onPointerOver = (event: React.PointerEvent<HTMLDivElement>) => {
-    const bar = (event.target as Element).closest("[data-i]");
+    const cell = (event.target as Element).closest("[data-i]");
     const wrap = wrapRef.current;
-    if (!isReady || !bar || !wrap) return setTip(null);
-    const r = bar.getBoundingClientRect();
+    if (!isReady || !cell || !wrap) return setTip(null);
+    const r = cell.getBoundingClientRect();
     const box = wrap.getBoundingClientRect();
     const x = Math.min(Math.max(r.left + r.width / 2 - box.left, 80), box.width - 80);
-    setTip({ index: Number(bar.getAttribute("data-i")), x, y: r.top - box.top });
+    setTip({ index: Number(cell.getAttribute("data-i")), x, y: r.top - box.top });
   };
 
-  const hidden = isReady ? "" : "invisible";
-
   return (
-    <div className={`rounded-2xl bg-plate p-6 sm:p-8 ${className ?? ""}`} aria-busy={!isReady}>
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <a
-          href="https://github.com/wajiha-kulsum"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-link text-sm font-medium"
-        >
-          github.com/wajiha-kulsum
-        </a>
-        {state.status === "error" ? (
-          <p aria-live="polite" className="text-sm text-muted-foreground">
-            Couldn&rsquo;t load the graph. GitHub is unreachable right now.
-          </p>
-        ) : (
-          <div aria-hidden className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span className="mr-1">Less</span>
-            {[0, 1, 2, 3, 4].map((level) => (
-              <span key={level} className="h-2.5 w-2.5 rounded-[3px]" style={{ backgroundColor: `var(--level-${level})` }} />
-            ))}
-            <span className="ml-1">More</span>
-          </div>
-        )}
+    <div className={className} aria-busy={!isReady}>
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm">
+        <p aria-live="polite" className="text-muted-foreground">
+          {summary}
+        </p>
+        <div aria-hidden className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          <span className="mr-1">Less</span>
+          {[0, 1, 2, 3, 4].map((level) => (
+            <span key={level} className="h-2.5 w-2.5 rounded-[2px]" style={{ backgroundColor: `var(--level-${level})` }} />
+          ))}
+          <span className="ml-1">More</span>
+        </div>
       </div>
 
-      <div ref={wrapRef} className="relative mt-6">
-        <div
-          role="img"
-          aria-label={
-            isReady
-              ? `GitHub contributions for the last year, ${total} in total, shown as a 3D bar chart`
-              : "GitHub contributions, loading"
-          }
-          className={`iso mx-auto max-w-[760px] ${isReady ? "" : "animate-pulse"}`}
-          onPointerOver={onPointerOver}
-          onPointerLeave={() => setTip(null)}
-        >
-          {bars}
-        </div>
-
-        <div className={`mt-8 grid grid-cols-2 gap-6 md:absolute md:right-0 md:top-0 md:mt-0 md:grid-cols-1 md:gap-6 ${hidden}`}>
-          <Stat
-            align="right"
-            label="1 year total"
-            value={total.toLocaleString("en-US")}
-            unit="contributions"
-            note="on GitHub"
-          />
-          <Stat
-            align="right"
-            label="Busiest day"
-            value={String(stats.busiest?.count ?? 0)}
-            unit="contributions"
-            note={stats.busiest ? shortDate.format(asDate(stats.busiest.date)) : "No data yet"}
-          />
-        </div>
-        <div className={`mt-6 grid grid-cols-2 gap-6 md:absolute md:bottom-0 md:left-0 md:mt-0 md:grid-cols-1 ${hidden}`}>
-          <Stat
-            label="Longest streak"
-            value={String(stats.longest?.days ?? 0)}
-            unit={stats.longest?.days === 1 ? "day" : "days"}
-            note={stats.longest ? range(stats.longest.start, stats.longest.end) : "No streak yet"}
-          />
-          <Stat
-            label="Current streak"
-            value={String(stats.current?.days ?? 0)}
-            unit={stats.current?.days === 1 ? "day" : "days"}
-            note={stats.current ? range(stats.current.start, stats.current.end) : "Starts with the next commit"}
-          />
-        </div>
+      <div
+        ref={wrapRef}
+        role="img"
+        aria-label={isReady ? `GitHub contributions heat map. ${summary}.` : "GitHub contributions, loading"}
+        className="relative mt-5"
+        onPointerOver={onPointerOver}
+        onPointerLeave={() => setTip(null)}
+      >
+        {grid}
 
         {tip && tipDay && (
           <div
-            role="status"
             className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-lg bg-foreground px-3 py-2 text-background shadow-lg"
-            style={{ left: tip.x, top: tip.y - 10 }}
+            style={{ left: tip.x, top: tip.y - 8 }}
           >
             <p className="text-sm font-medium">{countLabel(tipDay)}</p>
             <p className="text-xs opacity-70">{fullDate.format(asDate(tipDay.date))}</p>
