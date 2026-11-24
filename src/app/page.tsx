@@ -146,16 +146,27 @@ const WORK_SIZES = [
   "(min-width: 1120px) 603px, (min-width: 768px) 56vw, 92vw",
 ];
 
+/**
+ * A cover pair keeps its own aspect ratio. A tall phone screen is capped so
+ * the whole card fits on screen: at most 560px or 70% of the viewport high.
+ */
+function frameStyle(item: WorkItem): React.CSSProperties {
+  const ratio = item.shot.width / item.shot.height;
+  return ratio < 1
+    ? { aspectRatio: `${item.shot.width} / ${item.shot.height}`, width: `min(100%, calc(min(560px, 70vh) * ${ratio.toFixed(4)}))` }
+    : { aspectRatio: `${item.shot.width} / ${item.shot.height}` };
+}
+
 /** The real screen, with the cover on top until the card is hovered. */
 function WorkCover({ item, sizes }: { item: WorkItem; sizes: string }) {
   const position = item.focus ? { objectPosition: item.focus } : undefined;
-  // Cover pairs are HD design exports: serve them sharper than the default 75.
-  const quality = item.cover ? 95 : undefined;
+  // Cover pairs are Figma SVG exports, served as they are (no re-encoding).
+  const svg = item.shot.src.endsWith(".svg");
   return (
     <>
-      <Image src={item.shot.src} alt={item.shot.alt} fill sizes={sizes} quality={quality} className="work-img" style={position} />
+      <Image src={item.shot.src} alt={item.shot.alt} fill sizes={sizes} unoptimized={svg} className="work-img" style={position} />
       {item.cover && (
-        <Image src={item.cover.src} alt={item.cover.alt} fill sizes={sizes} quality={quality} className="work-img work-cover" />
+        <Image src={item.cover.src} alt={item.cover.alt} fill sizes={sizes} unoptimized={svg} className="work-img work-cover" />
       )}
     </>
   );
@@ -175,7 +186,7 @@ function WorkSection() {
               <a href={item.href} {...EXTERNAL} data-cursor="View project" className="work-card group block">
                 <div
                   className="shot work-frame bg-plate"
-                  style={item.cover ? { aspectRatio: `${item.shot.width} / ${item.shot.height}` } : undefined}
+                  style={item.cover ? frameStyle(item) : undefined}
                 >
                   <WorkCover item={item} sizes={WORK_SIZES[index % 5]} />
                 </div>
