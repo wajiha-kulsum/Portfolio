@@ -272,21 +272,26 @@ export const STUDIES: Study[] = [
   },
 ];
 
-/** One card in My Work. Several shots render as a row of phone screens. */
+/**
+ * One card in My Work. With a `cover`, the card shows the cover first and
+ * swaps to the real screen (`shot`) on hover.
+ */
 export type WorkItem = {
   name: string;
   role: string;
+  /** One line under the title; keep it under about 40 characters. */
   summary: string;
   href: string;
-  shots: Shot[];
-  /** CSS object-position when the cover is cropped to its frame. */
+  shot: Shot;
+  cover?: Shot;
+  /** CSS object-position when the screen is cropped to its frame. */
   focus?: string;
 };
 
 const study = (name: string): WorkItem => {
   const s = STUDIES.find((item) => item.name === name);
   if (!s) throw new Error(`Unknown study ${name}`);
-  return { name: s.name, role: "UI/UX design", summary: s.summary, href: s.href, shots: [s.shot] };
+  return { name: s.name, role: "UI/UX design", summary: s.summary, href: s.href, shot: s.shot };
 };
 
 /**
@@ -295,11 +300,50 @@ const study = (name: string): WorkItem => {
  * so put covers whose subject sits in the middle there.
  */
 export const WORK: WorkItem[] = [
-  { ...MERIDIAN, href: MERIDIAN.links[0].href, shots: [MERIDIAN.shots[0]], focus: "left top" },
-  { ...AKAIEARN, href: AKAIEARN.links[0].href },
-  { ...AKAISPACE, href: AKAISPACE.links[0].href, focus: "center top" },
+  {
+    name: MERIDIAN.name,
+    role: MERIDIAN.role,
+    summary: "A market for spare LLM capacity on NEAR",
+    href: MERIDIAN.links[0].href,
+    cover: { src: "/work/meridian-cover.webp", alt: "Meridian wordmark on blue", width: 1600, height: 902 },
+    shot: {
+      src: "/work/meridian-site.webp",
+      alt: "Meridian home page: Compute expires. Markets don't.",
+      width: 1600,
+      height: 902,
+    },
+    focus: "center top",
+  },
+  {
+    name: AKAIEARN.name,
+    role: AKAIEARN.role,
+    summary: "Earn by labeling data for AI",
+    href: AKAIEARN.links[0].href,
+    cover: { src: "/work/akaiearn-cover.webp", alt: "Akai Earn logo on a dark splash screen", width: 900, height: 1951 },
+    shot: {
+      src: "/work/akaiearn-page.webp",
+      alt: "AkaiEarn task screen: complete AI tasks and earn points",
+      width: 900,
+      height: 1951,
+    },
+    focus: "center 30%",
+  },
+  {
+    name: AKAISPACE.name,
+    role: AKAISPACE.role,
+    summary: "Website for an embodied-AI data company",
+    href: AKAISPACE.links[0].href,
+    cover: { src: "/work/akaispace-cover.webp", alt: "AkaiSpace logo", width: 2000, height: 1419 },
+    shot: {
+      src: "/work/akaispace-landing.webp",
+      alt: "AkaiSpace landing page: Labelled data, zero hassle",
+      width: 2000,
+      height: 1419,
+    },
+    focus: "center top",
+  },
   { ...study("Horizon"), focus: "40% center" },
-  study("Splitr"),
+  { ...study("Splitr"), summary: "Expense splitting for trips and rent" },
   study("Penumbra"),
   { ...study("Swiftze"), focus: "right center" },
 ];

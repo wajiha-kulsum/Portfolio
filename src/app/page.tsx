@@ -146,27 +146,16 @@ const WORK_SIZES = [
   "(min-width: 1120px) 603px, (min-width: 768px) 56vw, 92vw",
 ];
 
+/** The real screen, with the cover on top until the card is hovered. */
 function WorkCover({ item, sizes }: { item: WorkItem; sizes: string }) {
-  if (item.shots.length > 1) {
-    // App store screenshots as a strip: the middle one centred, the others peeking in.
-    return (
-      <div className="work-phones">
-        {item.shots.map((shot) => (
-          <Image key={shot.src} src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} sizes="300px" className="work-phone" />
-        ))}
-      </div>
-    );
-  }
-  const [shot] = item.shots;
+  const position = item.focus ? { objectPosition: item.focus } : undefined;
   return (
-    <Image
-      src={shot.src}
-      alt={shot.alt}
-      fill
-      sizes={sizes}
-      className="work-img"
-      style={item.focus ? { objectPosition: item.focus } : undefined}
-    />
+    <>
+      <Image src={item.shot.src} alt={item.shot.alt} fill sizes={sizes} className="work-img" style={position} />
+      {item.cover && (
+        <Image src={item.cover.src} alt={item.cover.alt} fill sizes={sizes} className="work-img work-cover" />
+      )}
+    </>
   );
 }
 
@@ -189,7 +178,7 @@ function WorkSection() {
                   {item.name}
                   <span className="ml-3 text-base tracking-normal text-muted-foreground">{item.role}</span>
                 </h3>
-                <p className="mt-2 max-w-[46ch] text-lg leading-relaxed text-muted-foreground text-pretty">
+                <p className="mt-2 truncate text-lg leading-relaxed text-muted-foreground">
                   {item.summary}
                 </p>
               </a>

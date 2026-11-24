@@ -372,27 +372,19 @@ body {
   }
 }
 
-/* App store screenshots as a strip, the middle one centred */
-.work-phones {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+/* A cover sits over the real screen and fades out on hover or focus */
+.work-cover {
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.work-phone {
-  height: 100%;
-  width: auto;
-  flex-shrink: 0;
+.work-card:focus-visible .work-cover {
+  opacity: 0;
 }
-
 @media (hover: hover) {
-  .work-card:hover .work-frame > img,
-  .work-card:hover .work-phones {
-    transform: scale(1.03);
+  .work-card:hover .work-cover {
+    opacity: 0;
   }
-  .work-phones {
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  .work-card:hover .work-frame > img {
+    transform: scale(1.03);
   }
 }
 
