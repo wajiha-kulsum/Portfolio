@@ -149,11 +149,13 @@ const WORK_SIZES = [
 /** The real screen, with the cover on top until the card is hovered. */
 function WorkCover({ item, sizes }: { item: WorkItem; sizes: string }) {
   const position = item.focus ? { objectPosition: item.focus } : undefined;
+  // Cover pairs are HD design exports: serve them sharper than the default 75.
+  const quality = item.cover ? 95 : undefined;
   return (
     <>
-      <Image src={item.shot.src} alt={item.shot.alt} fill sizes={sizes} className="work-img" style={position} />
+      <Image src={item.shot.src} alt={item.shot.alt} fill sizes={sizes} quality={quality} className="work-img" style={position} />
       {item.cover && (
-        <Image src={item.cover.src} alt={item.cover.alt} fill sizes={sizes} className="work-img work-cover" />
+        <Image src={item.cover.src} alt={item.cover.alt} fill sizes={sizes} quality={quality} className="work-img work-cover" />
       )}
     </>
   );
@@ -171,7 +173,10 @@ function WorkSection() {
           {WORK.map((item, index) => (
             <li key={item.name}>
               <a href={item.href} {...EXTERNAL} data-cursor="View project" className="work-card group block">
-                <div className="shot work-frame bg-plate">
+                <div
+                  className="shot work-frame bg-plate"
+                  style={item.cover ? { aspectRatio: `${item.shot.width} / ${item.shot.height}` } : undefined}
+                >
                   <WorkCover item={item} sizes={WORK_SIZES[index % 5]} />
                 </div>
                 <h3 className="mt-6 text-[clamp(1.4rem,2.2vw,1.75rem)] font-normal leading-tight tracking-[-0.02em]">

@@ -301,6 +301,32 @@ const study = (name: string): WorkItem => {
  */
 export const WORK: WorkItem[] = [
   {
+    name: AKAISPACE.name,
+    role: AKAISPACE.role,
+    summary: "Website for an embodied-AI data company",
+    href: AKAISPACE.links[0].href,
+    cover: { src: "/work/akaispace-cover.webp", alt: "AkaiSpace logo", width: 2880, height: 2044 },
+    shot: {
+      src: "/work/akaispace-landing.webp",
+      alt: "AkaiSpace landing page: Labelled data, zero hassle",
+      width: 2880,
+      height: 2044,
+    },
+  },
+  {
+    name: AKAIEARN.name,
+    role: AKAIEARN.role,
+    summary: "Earn by labeling data for AI",
+    href: AKAIEARN.links[0].href,
+    cover: { src: "/work/akaiearn-cover.webp", alt: "Akai Earn logo on a dark splash screen", width: 1572, height: 3408 },
+    shot: {
+      src: "/work/akaiearn-page.webp",
+      alt: "AkaiEarn task screen: complete AI tasks and earn points",
+      width: 1572,
+      height: 3408,
+    },
+  },
+  {
     name: MERIDIAN.name,
     role: MERIDIAN.role,
     summary: "A market for spare LLM capacity on NEAR",
@@ -311,34 +337,6 @@ export const WORK: WorkItem[] = [
       alt: "Meridian home page: Compute expires. Markets don't.",
       width: 1600,
       height: 902,
-    },
-    focus: "center top",
-  },
-  {
-    name: AKAIEARN.name,
-    role: AKAIEARN.role,
-    summary: "Earn by labeling data for AI",
-    href: AKAIEARN.links[0].href,
-    cover: { src: "/work/akaiearn-cover.webp", alt: "Akai Earn logo on a dark splash screen", width: 900, height: 1951 },
-    shot: {
-      src: "/work/akaiearn-page.webp",
-      alt: "AkaiEarn task screen: complete AI tasks and earn points",
-      width: 900,
-      height: 1951,
-    },
-    focus: "center 30%",
-  },
-  {
-    name: AKAISPACE.name,
-    role: AKAISPACE.role,
-    summary: "Website for an embodied-AI data company",
-    href: AKAISPACE.links[0].href,
-    cover: { src: "/work/akaispace-cover.webp", alt: "AkaiSpace logo", width: 2000, height: 1419 },
-    shot: {
-      src: "/work/akaispace-landing.webp",
-      alt: "AkaiSpace landing page: Labelled data, zero hassle",
-      width: 2000,
-      height: 1419,
     },
     focus: "center top",
   },
