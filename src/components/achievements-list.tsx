@@ -107,7 +107,7 @@ export function AchievementsList() {
               />
               <circle cx="78" cy="100" r="32" className="ach-card-dot" />
             </svg>
-            <span className="ach-card-name">{item.event}</span>
+            <span className="ach-card-name">{item.project ?? item.event}</span>
           </div>
         ))}
       </div>

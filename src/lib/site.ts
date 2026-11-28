@@ -338,30 +338,36 @@ export type Achievement = {
   title: string;
   kind: string;
   href: string;
+  /** Shown big on the hover card: the project or team. Falls back to `event`. */
+  project?: string;
 };
 
 export const ACHIEVEMENTS: Achievement[] = [
   {
     event: "EthMumbai",
-    title: "Built at EthMumbai, the city's Ethereum hackathon",
+    title: "Built at EthMumbai and won the city's Ethereum hackathon",
+    project: "Penumbra",
     kind: "Ethereum hackathon",
     href: "https://github.com/wajiha-kulsum/penumbra",
   },
   {
     event: "Monad Blitz",
-    title: "Shipped Monowire in a single day at Monad Blitz",
+    title: "Shipped Monowire in a single day and won runner-up at Monad Blitz",
+    project: "Monowire",
     kind: "One-day build sprint",
     href: "https://github.com/wajiha-kulsum/monowire-blitz",
   },
   {
     event: "PEC Hacks",
-    title: "Competed at PEC Hacks, Punjab Engineering College",
+    title: "Shortlisted in the top 10 at PEC Hacks",
+    project: "Serenity",
     kind: "Hackathon",
     href: "https://linkedin.com/in/wajihakulsum/",
   },
   {
     event: "NIT Agartala",
     title: "Took a product from idea to demo at NIT Agartala",
+    project: "Team CRWDSTRK",
     kind: "Hackathon",
     href: "https://linkedin.com/in/wajihakulsum/",
   },
