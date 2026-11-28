@@ -35,9 +35,6 @@
   --glass-highlight: rgba(255, 255, 255, 0.95);
   --glass-sheen: rgba(255, 255, 255, 0.5);
   --glass-shadow: rgba(20, 20, 30, 0.14);
-  --name-glow: color-mix(in srgb, var(--accent) 70%, transparent);
-  --name-spot-radius: 5cm; /* the cursor glow radius (≈190px) */
-  --watermark: rgba(20, 20, 22, 0.16);
   --shot-outline: rgba(20, 20, 22, 0.08);
 
   /* Contribution heat levels: the accent ramp, not GitHub green */
@@ -65,8 +62,6 @@
   --glass-highlight: rgba(255, 255, 255, 0.09);
   --glass-sheen: rgba(255, 255, 255, 0.16);
   --glass-shadow: rgba(0, 0, 0, 0.55);
-  --name-glow: color-mix(in srgb, var(--accent) 75%, transparent);
-  --watermark: rgba(242, 242, 240, 0.14);
   --shot-outline: rgba(255, 255, 255, 0.08);
 
   --level-0: #1c1c21;
@@ -216,41 +211,6 @@ body {
 .link-underline:focus-visible::after {
   transform: scaleX(1);
   transform-origin: 0 50%;
-}
-
-/* Progressive blur: fully blurred at the bottom edge, dissolving to nothing
- * upward. The gradient mask feathers the backdrop-filter itself, so the
- * footer name melts into the page instead of being cut by a hard line.
- * Without backdrop-filter support the layer is simply invisible. */
-/* Footer name cursor glow — a 5 cm-radius light following the pointer.
- * The glow copy of the glyphs is revealed through a radial mask centered
- * on --mx/--my (set by the component). Fades in while the pointer is over
- * the strip; harmless without backdrop/mask support. */
-.name-glow {
-  color: transparent;
-  opacity: 0;
-  filter: drop-shadow(0 0 0.07em var(--name-glow));
-  -webkit-mask-image: radial-gradient(
-    circle var(--name-spot-radius) at var(--mx, -999px) var(--my, -999px),
-    black 0%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    circle var(--name-spot-radius) at var(--mx, -999px) var(--my, -999px),
-    black 0%,
-    transparent 100%
-  );
-  transition: opacity 0.4s ease;
-}
-.footer-name:hover .name-glow {
-  opacity: 1;
-}
-
-.blur-fade {
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
-  mask-image: linear-gradient(to top, black 0%, transparent 100%);
 }
 
 /* Mobile menu entrance */
@@ -1215,4 +1175,16 @@ html[data-custom-cursor] [data-cursor] {
     transform: translateY(-3px);
     box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--foreground) 35%, transparent);
   }
+}
+
+/* Footer name: bold, lowercase, set edge to edge. The size is a share of
+ * the container's width (cqi), tuned so "wajiha kulsum" fills it. */
+.footer-name {
+  font-family: var(--font-familjen), system-ui, sans-serif;
+  font-size: 17.2cqi;
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  user-select: none;
 }

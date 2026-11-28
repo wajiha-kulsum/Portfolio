@@ -3,13 +3,11 @@ import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 import { SiteNav } from "@/components/site-nav";
 import { ContributionGraph } from "@/components/contribution-graph";
-import { FooterName } from "@/components/footer-name";
 import { AchievementsList } from "@/components/achievements-list";
 import { ExperienceDial } from "@/components/experience-dial";
 import { HeroOrbit } from "@/components/hero-orbit";
 import { Cursor } from "@/components/cursor";
 import {
-  NAV_LINKS,
   PROFILE,
   SOCIAL_LINKS,
   WRITING,
@@ -342,103 +340,71 @@ function ContactSection() {
   );
 }
 
+/**
+ * The footer is one dark band in both themes, laid out like a closing title
+ * card: three small facts, the name set edge to edge, then how to reach me.
+ */
 function SiteFooter() {
+  const year = new Date().getFullYear();
   return (
-    <footer className="relative">
-      <div className={`${LANE} py-16 sm:py-20`}>
-        <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">
-          <FooterColumn title="Pages">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a href={link.href} className="link-underline block w-fit font-medium">
+    <footer data-theme="dark" className="border-t border-border bg-background text-foreground">
+      <div className={`${LANE} pb-8 pt-12 sm:pt-14`}>
+        <div className="grid grid-cols-2 gap-5 font-mono text-[12.5px] leading-relaxed sm:grid-cols-4 sm:gap-6">
+          <p className="col-span-2">
+            Product design and front-end development
+            <span className="block text-muted-foreground">UI/UX, Figma, React, Next.js</span>
+          </p>
+          <p>
+            {PROFILE.availability}
+            <a href="#work" className="link-underline block w-fit">
+              View work
+            </a>
+          </p>
+          <p className="text-right">
+            {PROFILE.location}
+            <span className="block text-muted-foreground">{year}</span>
+          </p>
+        </div>
+
+        {/* The name, sized to the footer's own width so it always runs edge to edge */}
+        <div aria-hidden className="@container my-10 sm:my-14">
+          <p className="footer-name">wajiha kulsum</p>
+        </div>
+
+        <div className="grid gap-4 font-mono text-[12.5px] sm:grid-cols-4 sm:gap-6">
+          <a href={PROFILE.booking} {...EXTERNAL} className="link-underline w-fit sm:col-span-2">
+            Book a call
+          </a>
+          <a href={`mailto:${PROFILE.email}`} className="link-underline w-fit">
+            {PROFILE.email}
+          </a>
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 sm:justify-end">
+            {SOCIAL_LINKS.map((link) => (
+              <li key={link.label}>
+                <a href={link.href} {...(link.external ? EXTERNAL : {})} className="link-underline">
                   {link.label}
                 </a>
               </li>
             ))}
-          </FooterColumn>
+          </ul>
+        </div>
 
-          <FooterColumn title="Elsewhere">
-            {SOCIAL_LINKS.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  {...(link.external ? EXTERNAL : {})}
-                  className="group inline-flex w-fit items-center gap-1.5 font-medium"
-                >
-                  <span className="link-underline">{link.label}</span>
-                  {link.external && (
-                    <ArrowUpRight
-                      size={14}
-                      strokeWidth={2}
-                      className="text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
-                  )}
-                </a>
-              </li>
-            ))}
-          </FooterColumn>
-
-          {/* Contact info is exactly what <address> is for; not-italic resets
-           * the browser default. */}
-          <div>
-            <p className="text-sm text-muted-foreground">Contact</p>
-            <address className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm not-italic sm:block sm:space-y-2.5">
-              <a href={`mailto:${PROFILE.email}`} className="link-underline block w-fit font-medium">
-                {PROFILE.email}
-              </a>
-              <a
-                href={`tel:${PROFILE.phone.replace(/-/g, "")}`}
-                className="link-underline block w-fit font-medium"
-              >
-                {PROFILE.phone}
-              </a>
-              <span className="block text-muted-foreground">{PROFILE.location}</span>
-            </address>
-          </div>
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 font-mono text-[12px] text-muted-foreground">
+          <p>&copy; {year} Wajiha Kulsum. Designed and built by me.</p>
+          <a
+            href="#top"
+            className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
+          >
+            Back to top
+            <ArrowUp
+              size={12}
+              strokeWidth={2}
+              className="transition-transform duration-200 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </a>
         </div>
       </div>
-
-      <div className={`${LANE} flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-6 text-xs text-muted-foreground`}>
-        <p>© {new Date().getFullYear()} Wajiha Kulsum. Designed and built by me.</p>
-        <a
-          href="#top"
-          className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
-        >
-          Back to top
-          <ArrowUp
-            size={12}
-            strokeWidth={2}
-            className="transition-transform duration-200 group-hover:-translate-y-0.5"
-            aria-hidden
-          />
-        </a>
-      </div>
-
-      {/* Giant outlined name: "Wajiha" on phones, full name on desktop;
-       * clipped to an 0.8em strip so the glyphs peek from the edge, with the
-       * cursor glow lighting them in the accent. */}
-      <div
-        aria-hidden
-        className="overflow-hidden px-6 text-[clamp(4.5rem,22vw,13rem)] sm:text-[clamp(3.5rem,13vw,13rem)]"
-      >
-        <FooterName text="Wajiha Kulsum" className="hidden sm:block" />
-        <FooterName text="Wajiha" className="sm:hidden" />
-      </div>
-
-      <div aria-hidden className="blur-fade pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-44" />
     </footer>
-  );
-}
-
-function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <p className="text-sm text-muted-foreground">{title}</p>
-      {/* Phones: links flow inline under the label. Desktop: stacked column. */}
-      <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm sm:block sm:space-y-2.5">
-        {children}
-      </ul>
-    </div>
   );
 }
