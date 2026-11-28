@@ -7,6 +7,7 @@ import { AchievementsList } from "@/components/achievements-list";
 import { ExperienceDial } from "@/components/experience-dial";
 import { HeroOrbit } from "@/components/hero-orbit";
 import { Cursor } from "@/components/cursor";
+import { LocalTime } from "@/components/local-time";
 import {
   PROFILE,
   SOCIAL_LINKS,
@@ -312,23 +313,37 @@ function AchievementsSection() {
 /* -------------------------------------------------------------------------- */
 
 /**
- * Contact and footer in one dark band (both themes), laid out like a
- * closing title card: the call to action, three small facts, the name set
- * edge to edge, then links. The nav's Contact link lands here.
+ * Contact and footer in one dark band (both themes) that rises with rounded
+ * corners: a personal call to action with my photo in the headline, three
+ * real facts about right now, the name set edge to edge, and a sign-off.
+ * The nav's Contact link lands here.
  */
 function SiteFooter() {
   const year = new Date().getFullYear();
+  const [essay] = WRITING;
   return (
     <footer
       id="contact"
       data-theme="dark"
-      className="mt-28 border-t border-border bg-background text-foreground sm:mt-36"
+      className="mt-28 rounded-t-[2rem] border-t border-border bg-background text-foreground sm:mt-36 sm:rounded-t-[3rem]"
     >
       <div className={`${LANE} pb-8 pt-16 sm:pt-24`}>
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <p className="inline-flex items-center gap-2 font-mono text-[12.5px] text-muted-foreground">
+          <span aria-hidden className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 motion-safe:animate-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+          </span>
+          {PROFILE.availability}
+        </p>
+
+        <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h2 className="text-[clamp(2.75rem,7vw,5.5rem)] font-normal leading-[0.95] tracking-[-0.045em]">
-              Let&rsquo;s work together
+            <h2 className="text-[clamp(2.75rem,7vw,5.5rem)] font-normal leading-[1.02] tracking-[-0.045em]">
+              Let&rsquo;s work{" "}
+              <span className="footer-photo">
+                <Image src={PROFILE.avatar} alt="" fill sizes="120px" className="object-cover" />
+              </span>{" "}
+              together
             </h2>
             <p className="mt-5 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
               Got a product that needs designing, building, or both? Tell me about it.
@@ -345,29 +360,38 @@ function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 gap-5 border-t border-border pt-8 font-mono text-[12.5px] leading-relaxed sm:mt-20 sm:grid-cols-4 sm:gap-6">
-          <p className="col-span-2">
-            Product design and front-end development
-            <span className="block text-muted-foreground">UI/UX, Figma, React, Next.js</span>
-          </p>
+        {/* Three real things about right now */}
+        <div className="mt-16 grid gap-6 border-t border-border pt-8 font-mono text-[12.5px] leading-relaxed sm:mt-20 sm:grid-cols-3">
           <p>
-            {PROFILE.availability}
-            <a href="#work" className="link-underline block w-fit">
-              View work
+            <span className="block text-muted-foreground">Right now</span>
+            Designing and building at{" "}
+            <a href="https://eastwards.vercel.app" {...EXTERNAL} className="link-underline">
+              Eastwards
             </a>
           </p>
-          <p className="text-right">
-            {PROFILE.location}
-            <span className="block text-muted-foreground">{year}</span>
+          <p>
+            <span className="block text-muted-foreground">Latest writing</span>
+            <a href={essay.href} {...EXTERNAL} className="link-underline">
+              Want to get into UI/UX?
+            </a>
+          </p>
+          <p className="sm:text-right">
+            <span className="block text-muted-foreground">{PROFILE.location}</span>
+            <LocalTime />
           </p>
         </div>
 
-        {/* The name, sized to the footer's own width so it always runs edge to edge */}
+        {/* The name, sized to the footer's own width so it always runs edge to
+         * edge; each letter lifts when the pointer passes over it. */}
         <div aria-hidden className="@container my-10 sm:my-14">
-          <p className="footer-name">wajiha kulsum</p>
+          <p className="footer-name">
+            {"wajiha kulsum".split("").map((ch, i) => (ch === " " ? " " : <span key={i}>{ch}</span>))}
+          </p>
         </div>
 
-        <div className="flex flex-col gap-4 font-mono text-[12px] sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-mono text-[12.5px] text-muted-foreground">Thanks for scrolling all the way down.</p>
+
+        <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 font-mono text-[12px] sm:flex-row sm:items-center sm:justify-between">
           <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[12.5px]">
             {SOCIAL_LINKS.map((link) => (
               <li key={link.label}>
