@@ -32,7 +32,6 @@ export default function Home() {
         <WorkSection />
         <WritingSection />
         <AchievementsSection />
-        <ContactSection />
       </main>
 
       <SiteFooter />
@@ -312,44 +311,41 @@ function AchievementsSection() {
 /* Contact + footer                                                            */
 /* -------------------------------------------------------------------------- */
 
-function ContactSection() {
-  return (
-    <section id="contact" className="pb-16 pt-32 sm:pt-44">
-      <div className={LANE}>
-        <h2 className="text-[clamp(3rem,10vw,7.5rem)] font-normal leading-[0.95] tracking-[-0.045em]">
-          Let&rsquo;s work
-          <br />
-          together
-        </h2>
-
-        <p className="mt-8 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
-          Got a product that needs designing, building, or both? Tell me about it.
-        </p>
-
-        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-          <a href={PROFILE.booking} {...EXTERNAL} className={`btn-primary ${BTN}`}>
-            Book a call
-            <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
-          </a>
-          <a href={`mailto:${PROFILE.email}`} className="text-link text-sm font-medium">
-            {PROFILE.email}
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /**
- * The footer is one dark band in both themes, laid out like a closing title
- * card: three small facts, the name set edge to edge, then how to reach me.
+ * Contact and footer in one dark band (both themes), laid out like a
+ * closing title card: the call to action, three small facts, the name set
+ * edge to edge, then links. The nav's Contact link lands here.
  */
 function SiteFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer data-theme="dark" className="border-t border-border bg-background text-foreground">
-      <div className={`${LANE} pb-8 pt-12 sm:pt-14`}>
-        <div className="grid grid-cols-2 gap-5 font-mono text-[12.5px] leading-relaxed sm:grid-cols-4 sm:gap-6">
+    <footer
+      id="contact"
+      data-theme="dark"
+      className="mt-28 border-t border-border bg-background text-foreground sm:mt-36"
+    >
+      <div className={`${LANE} pb-8 pt-16 sm:pt-24`}>
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <h2 className="text-[clamp(2.75rem,7vw,5.5rem)] font-normal leading-[0.95] tracking-[-0.045em]">
+              Let&rsquo;s work together
+            </h2>
+            <p className="mt-5 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
+              Got a product that needs designing, building, or both? Tell me about it.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap items-center gap-x-8 gap-y-5">
+            <a href={PROFILE.booking} {...EXTERNAL} className={`btn-primary ${BTN}`}>
+              Book a call
+              <ArrowUpRight size={16} strokeWidth={2} aria-hidden />
+            </a>
+            <a href={`mailto:${PROFILE.email}`} className="text-link text-sm font-medium">
+              {PROFILE.email}
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-16 grid grid-cols-2 gap-5 border-t border-border pt-8 font-mono text-[12.5px] leading-relaxed sm:mt-20 sm:grid-cols-4 sm:gap-6">
           <p className="col-span-2">
             Product design and front-end development
             <span className="block text-muted-foreground">UI/UX, Figma, React, Next.js</span>
@@ -371,14 +367,8 @@ function SiteFooter() {
           <p className="footer-name">wajiha kulsum</p>
         </div>
 
-        <div className="grid gap-4 font-mono text-[12.5px] sm:grid-cols-4 sm:gap-6">
-          <a href={PROFILE.booking} {...EXTERNAL} className="link-underline w-fit sm:col-span-2">
-            Book a call
-          </a>
-          <a href={`mailto:${PROFILE.email}`} className="link-underline w-fit">
-            {PROFILE.email}
-          </a>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1 sm:justify-end">
+        <div className="flex flex-col gap-4 font-mono text-[12px] sm:flex-row sm:items-center sm:justify-between">
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[12.5px]">
             {SOCIAL_LINKS.map((link) => (
               <li key={link.label}>
                 <a href={link.href} {...(link.external ? EXTERNAL : {})} className="link-underline">
@@ -387,22 +377,21 @@ function SiteFooter() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 font-mono text-[12px] text-muted-foreground">
-          <p>&copy; {year} Wajiha Kulsum. Designed and built by me.</p>
-          <a
-            href="#top"
-            className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
-          >
-            Back to top
-            <ArrowUp
-              size={12}
-              strokeWidth={2}
-              className="transition-transform duration-200 group-hover:-translate-y-0.5"
-              aria-hidden
-            />
-          </a>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-muted-foreground sm:justify-end">
+            <p>&copy; {year} Wajiha Kulsum. Designed and built by me.</p>
+            <a
+              href="#top"
+              className="group inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-foreground"
+            >
+              Back to top
+              <ArrowUp
+                size={12}
+                strokeWidth={2}
+                className="transition-transform duration-200 group-hover:-translate-y-0.5"
+                aria-hidden
+              />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
