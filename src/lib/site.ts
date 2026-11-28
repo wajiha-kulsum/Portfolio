@@ -345,14 +345,14 @@ export type Achievement = {
 export const ACHIEVEMENTS: Achievement[] = [
   {
     event: "EthMumbai",
-    title: "Built at EthMumbai and won the city's Ethereum hackathon",
+    title: "Built at EthMumbai and won",
     project: "Penumbra",
     kind: "Ethereum hackathon",
     href: "https://github.com/wajiha-kulsum/penumbra",
   },
   {
     event: "Monad Blitz",
-    title: "Shipped Monowire in a single day and won runner-up at Monad Blitz",
+    title: "Won runner-up at Monad Blitz in a single day",
     project: "Monowire",
     kind: "One-day build sprint",
     href: "https://github.com/wajiha-kulsum/monowire-blitz",
@@ -370,11 +370,5 @@ export const ACHIEVEMENTS: Achievement[] = [
     project: "Team CRWDSTRK",
     kind: "Hackathon",
     href: "https://linkedin.com/in/wajihakulsum/",
-  },
-  {
-    event: "Coherence 2026",
-    title: "Built with team CRWDSTRK at Coherence 2026",
-    kind: "Hackathon",
-    href: "https://github.com/wajiha-kulsum/COHERENCE-26_CRWDSTRK",
   },
 ];
