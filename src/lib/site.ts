@@ -331,7 +331,8 @@ export const WORK: WorkItem[] = [
 
 /**
  * Hackathons and events. `title` is the line shown in the list: put the real
- * outcome there (winner, finalist, track prize) when you have it.
+ * outcome there (winner, finalist, track prize) when you have it. A line
+ * break in it sets its two lines.
  */
 export type Achievement = {
   event: string;
@@ -345,28 +346,28 @@ export type Achievement = {
 export const ACHIEVEMENTS: Achievement[] = [
   {
     event: "EthMumbai",
-    title: "Built at EthMumbai and won",
+    title: "Built at EthMumbai\nand won",
     project: "Penumbra",
     kind: "Ethereum hackathon",
     href: "https://github.com/wajiha-kulsum/penumbra",
   },
   {
     event: "Monad Blitz",
-    title: "Won runner-up at Monad Blitz in a single day",
+    title: "Won runner-up in a day\nat Monad Blitz",
     project: "Monowire",
     kind: "One-day build sprint",
     href: "https://github.com/wajiha-kulsum/monowire-blitz",
   },
   {
     event: "PEC Hacks",
-    title: "Shortlisted in the top 10 at PEC Hacks",
+    title: "Shortlisted in the top 10\nat PEC Hacks",
     project: "Serenity",
     kind: "Hackathon",
     href: "https://linkedin.com/in/wajihakulsum/",
   },
   {
     event: "NIT Agartala",
-    title: "Took a product from idea to demo at NIT Agartala",
+    title: "Took a product from idea\nto demo at NIT Agartala",
     project: "Team CRWDSTRK",
     kind: "Hackathon",
     href: "https://linkedin.com/in/wajihakulsum/",
